@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Teams</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+<form action="get">
+  Team name:<br>
+  <input type="text" name="teamname">
+  <br>
+  Year:<br>
+  <input type="text" name="teamyear">
+  <input type="submit" text="YOLLA" name="yolla">
+</form>
+    <footer>
+      <div id="datetime">{{ current_time }}</div>
+    </footer>
+  </body>
+</html>
