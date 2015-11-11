@@ -1,6 +1,6 @@
 import datetime
 import os
-import psycopg2 as dbb
+#import psycopg2 as dbb
 
 from flask import Flask
 from flask import render_template
@@ -19,8 +19,9 @@ def teams():
     now = datetime.datetime.now()
     return render_template('teams.html', current_time=now.ctime())
 
-
-
+@app.route('/layout')
+def layout():
+    return render_template('layout.html')
 
 if __name__ == '__main__':
     PORT = int(os.getenv('VCAP_APP_PORT', '5000'))
