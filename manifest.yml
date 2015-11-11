@@ -1,6 +1,6 @@
 applications:
 - services:
-  -ElephantSQL-is
+  - ElephantSQL-is
   disk_quota: 1024M
   host: itucsdb1507
   name: itucsdb1507
