@@ -1,9 +1,13 @@
 import datetime
+import json
 import os
-import psycopg2 as dbapi
+import psycopg2 as dbapi2
+import re
 
 from flask import Flask
+from flask import redirect
 from flask import render_template
+from flask.helpers import url_for
 
 
 app = Flask(__name__)
@@ -21,7 +25,7 @@ def get_elephantsql_dsn(vcap_services):
 
 
 @app.route('/')
-def home():
+def home_page():
     now = datetime.datetime.now()
     return render_template('home.html', current_time=now.ctime())
 
@@ -33,6 +37,42 @@ def teams():
 @app.route('/layout')
 def layout():
     return render_template('layout.html')
+
+
+
+
+@app.route('/initdb')
+def initialize_database():
+    with dbapi2.connect(app.config['dsn']) as connection:
+        cursor = connection.cursor()
+
+        query = """DROP TABLE IF EXISTS COUNTER"""
+        cursor.execute(query)
+
+        query = """CREATE TABLE COUNTER (N INTEGER)"""
+        cursor.execute(query)
+
+        query = """INSERT INTO COUNTER (N) VALUES (0)"""
+        cursor.execute(query)
+
+        connection.commit()
+    return redirect(url_for('home_page'))
+
+
+@app.route('/count')
+def counter_page():
+    with dbapi2.connect(app.config['dsn']) as connection:
+        cursor = connection.cursor()
+
+        query = "UPDATE COUNTER SET N = N + 1"
+        cursor.execute(query)
+        connection.commit()
+
+        query = "SELECT N FROM COUNTER"
+        cursor.execute(query)
+        count = cursor.fetchone()[0]
+    return "This page was accessed %d times." % count
+
 
 if __name__ == '__main__':
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')
