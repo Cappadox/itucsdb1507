@@ -102,7 +102,7 @@ def counter_page():
         query = "SELECT N FROM COUNTER"
         cursor.execute(query)
         count = cursor.fetchone()[0]
-    return "This page was accessed %d times. DENEME " % count
+    return "This page was accessed %d times." % count
 
 
 if __name__ == '__main__':
