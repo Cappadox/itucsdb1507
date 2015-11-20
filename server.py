@@ -34,6 +34,11 @@ def teams():
     now = datetime.datetime.now()
     return render_template('teams.html', current_time=now.ctime())
 
+@app.route('/players')
+def players():
+    now = datetime.datetime.now()
+    return render_template('players.html', current_time=now.ctime())
+
 @app.route('/layout')
 def layout():
     return render_template('layout.html')
