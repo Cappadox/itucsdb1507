@@ -39,8 +39,6 @@ def layout():
     return render_template('layout.html')
 
 
-
-
 @app.route('/initdb')
 def initialize_database():
     with dbapi2.connect(app.config['dsn']) as connection:
