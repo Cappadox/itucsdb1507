@@ -5,3 +5,16 @@ class Player:
         self.teamid = teamid
         self.age = age
         self.kitno = kitno
+
+'''
+    tablo sql kodu
+
+    CREATE TABLE PLAYERS
+    (
+    ID INTEGER PRIMARY KEY,
+    NAME VARCHAR(50) NOT NULL,
+    TEAMID INTEGER REFERENCES TEAMS(ID),
+    AGE INTEGER NOT NULL,
+    KITNO INTEGER
+    )
+'''
