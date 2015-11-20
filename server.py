@@ -61,25 +61,21 @@ def create_teams():
     with dbapi2.connect(app.config['dsn']) as connection:
         cursor = connection.cursor()
 
-    query = """select ID from TEAMS"""
+    query = """CREATE TABLE TEAMS
+    (
+    ID INTEGER PRIMARY KEY,
+    NAME VARCHAR(50) NOT NULL,
+    YEAR INTEGER NOT NULL,
+     STANDING INTEGER,
+     AVGFAN FLOAT
+      )"""
+
     cursor.execute(query)
-    tempid = cursor.fetchone()[0]
 
-    if tempid is None:
-        query = """CREATE TABLE TEAMS
-        (
-        ID INTEGER PRIMARY KEY,
-        NAME VARCHAR(50) NOT NULL,
-        YEAR INTEGER NOT NULL,
-        STANDING INTEGER,
-        AVGFAN FLOAT
-        )"""
-        cursor.execute(query)
+    query = """ INSERT INTO TEAMS (ID, NAME, YEAR, STANDING, AVGFAN) VALUES (1, 'FENERBAHCE', 1907, 1, 52000)"""
+    cursor.execute(query)
 
-        query = """ INSERT INTO TEAMS (ID, NAME, YEAR, STANDING, AVGFAN) VALUES (1, 'FENERBAHCE', 1907, 1, 52000)"""
-        cursor.execute(query)
-
-        connection.commit()
+    connection.commit()
 
     query = """ select NAME from TEAMS """
     cursor.execute(query)
