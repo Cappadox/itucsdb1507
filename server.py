@@ -47,33 +47,21 @@ def layout():
 
 
 @app.route('/initdb')
-def initialize_database():
+def create_tables():
     with dbapi2.connect(app.config['dsn']) as connection:
         cursor = connection.cursor()
 
-        query = """DROP TABLE IF EXISTS COUNTER"""
+        query = """CREATE TABLE IF NOT EXISTS PLAYERS
+        (
+        ID INTEGER PRIMARY KEY,
+        NAME VARCHAR(50) NOT NULL,
+        TEAMID INTEGER REFERENCES TEAMS(ID),
+        AGE INTEGER NOT NULL,
+        KITNO INTEGER
+        ) """
         cursor.execute(query)
 
-        query = """CREATE TABLE COUNTER (N INTEGER)"""
-        cursor.execute(query)
-
-        query = """INSERT INTO COUNTER (N) VALUES (0)"""
-        cursor.execute(query)
-
-        connection.commit()
-    return redirect(url_for('home_page'))
-
-@app.route('/createTeams')
-def create_teams():
-    with dbapi2.connect(app.config['dsn']) as connection:
-        cursor = connection.cursor()
-
-    query = """select ID from TEAMS"""
-    cursor.execute(query)
-    tempid = cursor.fetchone()[0]
-
-    if tempid is None:
-        query = """CREATE TABLE TEAMS
+        query = """CREATE TABLE IF NOT EXISTS TEAMS
         (
         ID INTEGER PRIMARY KEY,
         NAME VARCHAR(50) NOT NULL,
@@ -82,17 +70,12 @@ def create_teams():
         AVGFAN FLOAT
         )"""
         cursor.execute(query)
-
-        query = """ INSERT INTO TEAMS (ID, NAME, YEAR, STANDING, AVGFAN) VALUES (1, 'FENERBAHCE', 1907, 1, 52000)"""
-        cursor.execute(query)
-
         connection.commit()
 
-    query = """ select NAME from TEAMS """
-    cursor.execute(query)
+    return redirect(url_for('home_page'))
 
-    name = cursor.fetchone()[0]
-    return "Sampiyon %s." % name
+@app.route('/createTeams')
+
 
 
 @app.route('/count')
