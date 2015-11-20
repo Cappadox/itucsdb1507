@@ -77,12 +77,6 @@ def create_teams():
 
     connection.commit()
 
-    query = """ select NAME from TEAMS """
-    cursor.execute(query)
-
-    name = cursor.fetchone()[0]
-    return "Sampiyon %s." % name
-
 
 @app.route('/count')
 def counter_page():
