@@ -71,10 +71,6 @@ def create_teams():
      )"""
 
     cursor.execute(query)
-
-    query = """ INSERT INTO TEAMS (ID, NAME, YEAR, STANDING, AVGFAN) VALUES (1, 'FENERBAHCE', 1907, 1, 52000)"""
-    cursor.execute(query)
-
     connection.commit()
 
 
