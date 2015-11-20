@@ -66,9 +66,9 @@ def create_teams():
     ID INTEGER PRIMARY KEY,
     NAME VARCHAR(50) NOT NULL,
     YEAR INTEGER NOT NULL,
-     STANDING INTEGER,
-     AVGFAN FLOAT
-      )"""
+    STANDING INTEGER,
+    AVGFAN FLOAT
+     )"""
 
     cursor.execute(query)
 
