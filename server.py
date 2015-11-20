@@ -34,9 +34,16 @@ def teams():
     now = datetime.datetime.now()
     return render_template('teams.html', current_time=now.ctime())
 
+@app.route('/players')
+def players():
+    now = datetime.datetime.now()
+    return render_template('players.html', current_time=now.ctime())
+
 @app.route('/layout')
 def layout():
     return render_template('layout.html')
+
+
 
 
 @app.route('/initdb')
@@ -61,22 +68,31 @@ def create_teams():
     with dbapi2.connect(app.config['dsn']) as connection:
         cursor = connection.cursor()
 
-    query = """CREATE TABLE TEAMS
-    (
-    ID INTEGER PRIMARY KEY,
-    NAME VARCHAR(50) NOT NULL,
-    YEAR INTEGER NOT NULL,
-    STANDING INTEGER,
-    AVGFAN FLOAT
-     )"""
+    query = """select ID from TEAMS"""
+    cursor.execute(query)
+    tempid = cursor.fetchone()[0]
 
+    if tempid is None:
+        query = """CREATE TABLE TEAMS
+        (
+        ID INTEGER PRIMARY KEY,
+        NAME VARCHAR(50) NOT NULL,
+        YEAR INTEGER NOT NULL,
+        STANDING INTEGER,
+        AVGFAN FLOAT
+        )"""
+        cursor.execute(query)
+
+        query = """ INSERT INTO TEAMS (ID, NAME, YEAR, STANDING, AVGFAN) VALUES (1, 'FENERBAHCE', 1907, 1, 52000)"""
+        cursor.execute(query)
+
+        connection.commit()
+
+    query = """ select NAME from TEAMS """
     cursor.execute(query)
 
-    query = """INSERT INTO TEAMS (ID, NAME, YEAR, STANDING, AVGFAN)
-    VALUES (1, 'FENERBAHCE', 1907, 1, 52000.0)"""
-
-    cursor.execute(query)
-    connection.commit()
+    name = cursor.fetchone()[0]
+    return "Sampiyon %s." % name
 
 
 @app.route('/count')
