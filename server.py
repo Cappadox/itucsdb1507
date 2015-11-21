@@ -55,6 +55,16 @@ def create_tables():
     with dbapi2.connect(app.config['dsn']) as connection:
         cursor = connection.cursor()
 
+        query = """CREATE TABLE IF NOT EXISTS TEAMS
+        (
+        ID INTEGER PRIMARY KEY,
+        NAME VARCHAR(50) NOT NULL,
+        YEAR INTEGER NOT NULL,
+        STANDING INTEGER,
+        AVGFAN FLOAT
+        )"""
+        cursor.execute(query)
+
         query = """CREATE TABLE IF NOT EXISTS PLAYERS
         (
         ID INTEGER PRIMARY KEY,
@@ -65,15 +75,6 @@ def create_tables():
         ) """
         cursor.execute(query)
 
-        query = """CREATE TABLE IF NOT EXISTS TEAMS
-        (
-        ID INTEGER PRIMARY KEY,
-        NAME VARCHAR(50) NOT NULL,
-        YEAR INTEGER NOT NULL,
-        STANDING INTEGER,
-        AVGFAN FLOAT
-        )"""
-        cursor.execute(query)
         connection.commit()
 
     return redirect(url_for('home_page'))
