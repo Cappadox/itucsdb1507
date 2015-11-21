@@ -46,6 +46,11 @@ def players():
     now = datetime.datetime.now()
     return render_template('players.html', current_time=now.ctime())
 
+@app.route('/coaches')
+def coaches():
+    now = datetime.datetime.now()
+    return render_template('coaches.html', current_time=now.ctime())
+
 @app.route('/layout')
 def layout():
     return render_template('layout.html')
@@ -72,6 +77,14 @@ def create_tables():
         TEAMID INTEGER REFERENCES TEAMS(ID),
         AGE INTEGER NOT NULL,
         KITNO INTEGER
+        ) """
+        cursor.execute(query)
+
+        query = """CREATE TABLE IF NOT EXISTS COACHES
+        (
+        ID INTEGER PRIMARY KEY,
+        NAME VARCHAR(50) NOT NULL,
+        BIRTHDAY INTEGER NOT NULL
         ) """
         cursor.execute(query)
 
@@ -111,7 +124,7 @@ if __name__ == '__main__':
     if VCAP_SERVICES is not None:
         app.config['dsn'] = get_elephantsql_dsn(VCAP_SERVICES)
     else:
-        app.config['dsn'] = """user='vagrant' password='vagrant'
-                               host='localhost' port=54321 dbname='itucsdb'"""
+         app.config['dsn'] = """user='postgres' password='12345678'
+                               host='localhost' port=5432 dbname='postgres'"""
 
     app.run(host='0.0.0.0', port=port, debug=debug)
