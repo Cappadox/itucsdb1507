@@ -2,11 +2,20 @@
 {% extends "layout.html" %}
 {% block title %}Coaches{% endblock %}
 {% block content %}
-<form  action="/cgi-bin/server.py" method="get">
+<form  action ={{url_for('add_coach')}} method="post">
   Name:<br>
   <input type="text" name="coachName"><br><br>
   BirthYear:<br>
   <input type="text" name="coachBirthday"><br><br>
   <input type="submit" value="Add" name="Add">
 </form>
+
+<table>
+{% for id, name,birthday in result %}
+<tr>
+<td> {{ id }} {{ name }} {{ birthday }} </td>
+</tr>
+{% endfor %}
+</table>
+
 {% endblock %}

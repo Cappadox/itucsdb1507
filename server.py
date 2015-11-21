@@ -49,7 +49,12 @@ def players():
 @app.route('/coaches')
 def coaches():
     now = datetime.datetime.now()
-    return render_template('coaches.html', current_time=now.ctime())
+    with dbapi2.connect(app.config['dsn']) as connection:
+        cursor = connection.cursor()
+        query = """ SELECT * FROM COACHES"""
+        cursor.execute(query)
+        result = cursor.fetchall()
+    return render_template('coaches.html', current_time=now.ctime(), result = result)
 
 @app.route('/layout')
 def layout():
@@ -82,7 +87,7 @@ def create_tables():
 
         query = """CREATE TABLE IF NOT EXISTS COACHES
         (
-        ID INTEGER PRIMARY KEY,
+        ID SERIAL PRIMARY KEY,
         NAME VARCHAR(50) NOT NULL,
         BIRTHDAY INTEGER NOT NULL
         ) """
@@ -111,7 +116,20 @@ def add_team():
 
         return redirect(url_for('teams'))
 
+@app.route('/addcoach', methods = ['GET', 'POST'])
+def add_coach():
+        name = request.form.get("coachName")
+        birthday = request.form.get("coachBirthday")
 
+
+        with dbapi2.connect(app.config['dsn']) as connection:
+            cursor = connection.cursor()
+
+            query = """ INSERT INTO COACHES (NAME, BIRTHDAY) VALUES (%s, %s)"""
+            cursor.execute(query, (name, birthday))
+            connection.commit()
+
+        return redirect(url_for('coaches'))
 
 if __name__ == '__main__':
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')
@@ -124,7 +142,7 @@ if __name__ == '__main__':
     if VCAP_SERVICES is not None:
         app.config['dsn'] = get_elephantsql_dsn(VCAP_SERVICES)
     else:
-         app.config['dsn'] = """user='vagrant' password='vagrant'
+          app.config['dsn'] = """user='vagrant' password='vagrant'
                                host='localhost' port=54321 dbname='itucsdb'"""
 
     app.run(host='0.0.0.0', port=port, debug=debug)
