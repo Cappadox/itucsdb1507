@@ -7,7 +7,9 @@ import re
 from flask import Flask
 from flask import redirect
 from flask import render_template
+from flask import request
 from flask.helpers import url_for
+from team import Team
 
 
 app = Flask(__name__)
@@ -32,7 +34,12 @@ def home_page():
 @app.route('/teams')
 def teams():
     now = datetime.datetime.now()
-    return render_template('teams.html', current_time=now.ctime())
+    with dbapi2.connect(app.config['dsn']) as connection:
+        cursor = connection.cursor()
+        query = """ SELECT * FROM TEAMS"""
+        cursor.execute(query)
+        result = cursor.fetchall()
+    return render_template('teams.html', current_time=now.ctime(), result = result)
 
 @app.route('/players')
 def players():
@@ -42,9 +49,6 @@ def players():
 @app.route('/layout')
 def layout():
     return render_template('layout.html')
-
-
-
 
 @app.route('/initdb')
 def create_tables():
@@ -74,23 +78,25 @@ def create_tables():
 
     return redirect(url_for('home_page'))
 
-@app.route('/createTeams')
+@app.route('/addteam', methods = ['GET', 'POST'])
+def add_team():
+        id = request.form.get("id")
+        name = request.form.get("name")
+        year = request.form.get("year")
+        standing = request.form.get("standing")
+        avgfan = request.form.get("avgfan")
 
+        team = Team(id,name,year,standing,avgfan)
 
+        with dbapi2.connect(app.config['dsn']) as connection:
+            cursor = connection.cursor()
 
-@app.route('/count')
-def counter_page():
-    with dbapi2.connect(app.config['dsn']) as connection:
-        cursor = connection.cursor()
+            query = """ INSERT INTO TEAMS (ID, NAME, YEAR, STANDING, AVGFAN) VALUES (%s, %s, %s, %s, %s)"""
+            cursor.execute(query, (id, name, year, standing, avgfan))
+            connection.commit()
 
-        query = "UPDATE COUNTER SET N = N + 1"
-        cursor.execute(query)
-        connection.commit()
+        return redirect(url_for('teams'))
 
-        query = "SELECT N FROM COUNTER"
-        cursor.execute(query)
-        count = cursor.fetchone()[0]
-    return "This page was accessed %d times." % count
 
 
 if __name__ == '__main__':
