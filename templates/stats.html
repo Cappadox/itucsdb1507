@@ -18,11 +18,20 @@
   <input type="text" name="receivingyards"><br><br>
   <input type="submit" value="Add" name="Add">
 </form>
-
-<table>
+<br>
+<table border = "1">
+<tr>
+    <th>Season</th>
+    <th>Player Name </th>
+    <th>Receptions </th>
+    <th>Receiving Yards</th>
+ </tr>
 {% for season, playerName, receptions, receivingyards in result %}
 <tr>
-<td> {{ season }} {{ playerName }} {{ receptions }} {{ receivingyards }} </td>
+	<td> {{ season }} </td>
+	<td> {{ playerName }} </td>
+	<td> {{ receptions }} </td>
+	<td> {{ receivingyards }} </td>
 </tr>
 {% endfor %}
 </table>

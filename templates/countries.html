@@ -11,4 +11,18 @@
 	{% endfor %}
 </table>
 
+
+<table class="table table-bordered table-striped">
+	<tr><td>
+	<form action="#" method="post">
+	<select name="Item_1">
+		{% for key, country in countries %}
+	        <option value="{{ country.name }}">{{ country.name }}</option>
+	    {% endfor %}
+	    </select>
+
+	</tr></td>
+	<tr><button type="submit">Compare!</button></tr>
+	</form>
+</table>
 {% endblock %}

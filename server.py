@@ -30,10 +30,7 @@ def get_elephantsql_dsn(vcap_services):
 
 @app.route('/')
 def home_page():
-
-    countries.add_country('Turkey2', 'trc')
-    now = datetime.datetime.now()
-    return render_template('home.html', current_time=now.ctime())
+    return render_template('home.html')
 
 @app.route('/teams')
 def teams():
@@ -136,7 +133,9 @@ def create_tables():
 
         connection.commit()
 
-        countries.initialize_tables()
+        app.countries.initialize_tables()
+
+
     return redirect(url_for('home_page'))
 
 
