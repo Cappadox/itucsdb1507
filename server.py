@@ -17,6 +17,7 @@ from teams import Team, Teams
 from officials import Officials, Official
 from players import Player, Players
 from statistics import Statistic, Statistics
+from flask.templating import render_template_string
 
 
 app = Flask(__name__)
@@ -33,7 +34,7 @@ def get_elephantsql_dsn(vcap_services):
     return dsn
 
 '''Home Page'''
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home_page():
     return render_template('home.html')
 
@@ -80,6 +81,34 @@ def countries():
 def countries_edit():
      return render_template('country_edit.html')
 
+@app.route('/officials', methods=['GET', 'POST'])
+def officials():
+    if request.method == 'GET':
+        return render_template('officials.html', officials = app.officials.get_officials())
+    else:
+        name = request.form['name']
+        age = request.form['age']
+        app.officials.add_official(name, age)
+        return redirect(url_for('officials'))
+
+@app.route('/officials/add', methods=['GET', 'POST'])
+def official_add():
+     return render_template('official_edit.html')
+
+@app.route('/officials/delete', methods=['GET', 'POST'])
+def official_delete():
+    if request.method == 'GET':
+        return render_template_string("""You need to click delete button at the end of the desired official.
+                                            Return to the list of officials.
+                                            <form action="{{ url_for('officials') }}" method="get" role="form">
+                                            <div class="form-group">
+                                            <input value="Return" name="Return" type="submit" /><br><br>
+                                            </div> <!-- End of form-group -->
+                                            </form>""")
+    else:
+        id = request.form['id']
+        app.officials.delete_official(id)
+        return redirect(url_for('officials'))
 
 '''Leagues Pages'''
 @app.route('/leagues', methods=['GET', 'POST'])
