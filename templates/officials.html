@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title %}Officials{% endblock %}
+{% block content %}
+
+<table class="table table-bordered table-striped">
+	<td> Name </td>
+	<td> Age </td>
+	{% for key, official in officials %}
+		<tr>
+			<td> {{ official.name }} </td>
+			<td> {{ official.age }} </td>
+		</tr>
+	{% endfor %}
+</table>
+<form action="{{ url_for('official_add') }}" method="post" role="form">
+	<div class="form-group">
+		<input value="Add New Official" name="Add" type="submit" /><br><br>
+	</div> <!-- End of form-group -->
+</form>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+ {% extends "layout.html" %}
+ {% block title %}Edit Official{% endblock %}
+ {% block content %}
+	 <form action="{{ url_for('officials') }}" method="post" role="form">
+		 <div class="form-group">
+		 	<div class="row">
+			  	<label class="control-label col-sm-2" for="name">Name:</label>
+			  	<div class="col-sm-10">
+					<input type="text" name="name" required autofocus />
+				</div>
+				<label class="control-label col-sm-2" for="name">Age:</label>
+				<div class="col-sm-10">
+					<input type="text" name="age" required autofocus />
+				</div>
+			</div>
+			</div> <!-- End of form-group -->
+			<div class="form-group">
+			 <input value="Save" name="save" type="submit" /><br><br>
+
+		 </div> <!-- End of form-group -->
+	  </form>
+ {% endblock %}

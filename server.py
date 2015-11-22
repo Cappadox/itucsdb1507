@@ -79,6 +79,19 @@ def countries():
 def country_edit_page():
      return render_template('country_edit.html')
 
+@app.route('/officials', methods=['GET', 'POST'])
+def officials():
+    if request.method == 'GET':
+        return render_template('officials.html', officials = app.officials.get_officials())
+    else:
+        name = request.form['name']
+        age = request.form['age']
+        app.officials.add_official(name, age)
+        return redirect(url_for('officials'))
+
+@app.route('/officials/add', methods=['GET', 'POST'])
+def official_add():
+     return render_template('official_edit.html')
 
 '''Player Pages'''
 @app.route('/players', methods=['GET', 'POST'])
