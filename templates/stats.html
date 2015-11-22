@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block title %}Coaches{% endblock %}
+{% block content %}
+
+
+<h1>Stats Page</h1>
+<small>Add a stat for a player<br><br></small>
+
+
+<form  action ={{url_for('add_stat')}} method="post">
+  Season:<br>
+  <input type="text" name="season"><br><br>
+  Player Name:<br>
+  <input type="text" name="playerName"><br><br>
+  Receptions:<br>
+  <input type="text" name="receptions"><br><br>
+  Receiving Yards:<br>
+  <input type="text" name="receivingyards"><br><br>
+  <input type="submit" value="Add" name="Add">
+</form>
+
+<table>
+{% for season, playerName, receptions, receivingyards in result %}
+<tr>
+<td> {{ season }} {{ playerName }} {{ receptions }} {{ receivingyards }} </td>
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}
