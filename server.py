@@ -13,8 +13,8 @@ from flask.helpers import url_for
 from officials import Officials, Official
 from countries import Countries, Country
 from matches import Matches, Match
-from team import Team
-from player import Player
+from teams import Team, Teams
+from players import Player, Players
 
 
 app = Flask(__name__)
@@ -38,22 +38,22 @@ def home_page():
 @app.route('/teams', methods=['GET', 'POST'])
 def teams():
     if request.method == 'GET':
-        return render_template('teams.html', result = app.team.select_teams())
+        return render_template('teams.html', result = app.teams.select_teams())
     else:
         name = request.form['name']
         league_id = request.form['league_id']
-        app.team.add_team(name,league_id)
+        app.teams.add_team(name,league_id)
     return redirect(url_for('teams'))
 
 @app.route('/players', methods=['GET', 'POST'])
 def players():
     if request.method == 'GET':
-        return render_template('players.html', result = app.player.select_players())
+        return render_template('players.html', result = app.players.select_players())
     else:
         name = request.form['name']
         birthday = request.form['birthday']
         position = request.form['position']
-        app.player.add_player(name, birthday, position)
+        app.players.add_player(name, birthday, position)
     return redirect(url_for('players'))
 
 
@@ -96,12 +96,11 @@ def create_tables():
 
         connection.commit()
 
-        app.team.initialize_table()
-        app.player.initialize_table()
+        app.teams.initialize_tables()
+        app.players.initialize_tables()
         app.countries.initialize_tables()
         app.officials.initialize_tables()
         app.matches.initialize_tables()
-
 
     return redirect(url_for('home_page'))
 
@@ -121,8 +120,8 @@ def add_coach():
         return redirect(url_for('coaches'))
 
 if __name__ == '__main__':
-    app.team = Team(app)
-    app.player = Player(app)
+    app.teams = Teams(app)
+    app.players = Players(app)
     app.countries = Countries(app)
     app.officials = Officials(app)
     app.matches = Matches(app)

@@ -1,14 +1,20 @@
 import psycopg2 as dbapi2
 
 class Team:
+    def __init__(self, team_id, name, league_id):
+        self.team_id = team_id
+        self.name = name
+        self.league_id = league_id
+
+class Teams:
     def __init__(self, app):
         self.app = app
 
-    def initialize_table(self):
+    def initialize_tables(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
                 cursor.execute("""
-                    CREATE TABLE TEAMS
+                    CREATE TABLE IF NOT EXISTS TEAMS
                     (
                     TEAM_ID serial NOT NULL PRIMARY KEY,
                     NAME varchar(100) NOT NULL,
