@@ -1,13 +1,25 @@
 {% extends "layout.html" %}
 {% block title %}Team{% endblock %}
 {% block content %}
-<form action="get">
+<form action ={{url_for('add_team')}} method="post">
+  Team Id: <br>
+  <input type = "number" name="id"> <br>
   Team name:<br>
-  <input type="text" name="teamname">
-  <br>
-  ben
+  <input type="text" name="name"> <br>
   Year:<br>
-  <input type="text" name="teamyear">
+  <input type="text" name="year"> <br>
+  Standing:<br>
+  <input type="text" name="standing"> <br>
+  Average Fan:<br>
+  <input type="text" name="avgfan"> <br>
   <input type="submit" value="YOLLA" name="yolla">
 </form>
+
+<table>
+{% for id, name, year, standing, avgfan in result %}
+<tr>
+<td> {{ id }} {{ name }} {{ year }} {{ standing }} {{ avgfan }} </td>
+</tr>
+{% endfor %}
+</table>
 {% endblock %}

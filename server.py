@@ -7,12 +7,16 @@ import re
 from flask import Flask
 from flask import redirect
 from flask import render_template
+from flask import request
 from flask.helpers import url_for
+from team import Team
+from user import User
+from flask_sqlalchemy import SQLAlchemy
+from flask_user import login_required, UserManager, UserMixin, SQLAlchemyAdapter
+from warnings import catch_warnings
 
 
 app = Flask(__name__)
-
-
 def get_elephantsql_dsn(vcap_services):
     """Returns the data source name for ElephantSQL."""
     parsed = json.loads(vcap_services)
@@ -32,9 +36,15 @@ def home_page():
 @app.route('/teams')
 def teams():
     now = datetime.datetime.now()
-    return render_template('teams.html', current_time=now.ctime())
+    with dbapi2.connect(app.config['dsn']) as connection:
+        cursor = connection.cursor()
+        query = """ SELECT * FROM TEAMS"""
+        cursor.execute(query)
+        result = cursor.fetchall()
+    return render_template('teams.html', current_time=now.ctime(), result = result)
 
 @app.route('/players')
+@login_required
 def players():
     now = datetime.datetime.now()
     return render_template('players.html', current_time=now.ctime())
@@ -43,37 +53,12 @@ def players():
 def layout():
     return render_template('layout.html')
 
-
-
-
 @app.route('/initdb')
-def initialize_database():
+def create_tables():
     with dbapi2.connect(app.config['dsn']) as connection:
         cursor = connection.cursor()
 
-        query = """DROP TABLE IF EXISTS COUNTER"""
-        cursor.execute(query)
-
-        query = """CREATE TABLE COUNTER (N INTEGER)"""
-        cursor.execute(query)
-
-        query = """INSERT INTO COUNTER (N) VALUES (0)"""
-        cursor.execute(query)
-
-        connection.commit()
-    return redirect(url_for('home_page'))
-
-@app.route('/createTeams')
-def create_teams():
-    with dbapi2.connect(app.config['dsn']) as connection:
-        cursor = connection.cursor()
-
-    query = """select ID from TEAMS"""
-    cursor.execute(query)
-    tempid = cursor.fetchone()[0]
-
-    if tempid is None:
-        query = """CREATE TABLE TEAMS
+        query = """CREATE TABLE IF NOT EXISTS TEAMS
         (
         ID INTEGER PRIMARY KEY,
         NAME VARCHAR(50) NOT NULL,
@@ -83,31 +68,52 @@ def create_teams():
         )"""
         cursor.execute(query)
 
-        query = """ INSERT INTO TEAMS (ID, NAME, YEAR, STANDING, AVGFAN) VALUES (1, 'FENERBAHCE', 1907, 1, 52000)"""
+        query = """CREATE TABLE IF NOT EXISTS PLAYERS
+        (
+        ID INTEGER PRIMARY KEY,
+        NAME VARCHAR(50) NOT NULL,
+        TEAMID INTEGER REFERENCES TEAMS(ID),
+        AGE INTEGER NOT NULL,
+        KITNO INTEGER
+        ) """
+
+        cursor.execute(query)
+        query = """CREATE TABLE IF NOT EXISTS USERS
+        (
+        ID SERIAL PRIMARY KEY,
+        USER_NAME VARCHAR(50) NOT NULL UNIQUE,
+        USER_PASSWORD VARCHAR(50) NOT NULL,
+        USER_TYPE VARCHAR(30) NOT NULL
+        )"""
         cursor.execute(query)
 
+        query = """INSERT INTO USERS
+        (ID, USER_NAME, USER_PASSWORD)
+        VALUES (1, 'alparslan', 'alpi94')"""
+        cursor.execute(query)
         connection.commit()
 
-    query = """ select NAME from TEAMS """
-    cursor.execute(query)
+    return redirect(url_for('home_page'))
 
-    name = cursor.fetchone()[0]
-    return "Sampiyon %s." % name
+@app.route('/addteam', methods = ['GET', 'POST'])
+def add_team():
+        id = request.form.get("id")
+        name = request.form.get("name")
+        year = request.form.get("year")
+        standing = request.form.get("standing")
+        avgfan = request.form.get("avgfan")
 
+        team = Team(id,name,year,standing,avgfan)
 
-@app.route('/count')
-def counter_page():
-    with dbapi2.connect(app.config['dsn']) as connection:
-        cursor = connection.cursor()
+        with dbapi2.connect(app.config['dsn']) as connection:
+            cursor = connection.cursor()
 
-        query = "UPDATE COUNTER SET N = N + 1"
-        cursor.execute(query)
-        connection.commit()
+            query = """ INSERT INTO TEAMS (ID, NAME, YEAR, STANDING, AVGFAN) VALUES (%s, %s, %s, %s, %s)"""
+            cursor.execute(query, (id, name, year, standing, avgfan))
+            connection.commit()
 
-        query = "SELECT N FROM COUNTER"
-        cursor.execute(query)
-        count = cursor.fetchone()[0]
-    return "This page was accessed %d times." % count
+        return redirect(url_for('teams'))
+
 
 
 if __name__ == '__main__':
