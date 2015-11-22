@@ -89,10 +89,10 @@ def create_tables():
 
         connection.commit()
 
+        app.team.initialize_tables()
         app.countries.initialize_tables()
         app.officials.initialize_tables()
         app.matches.initialize_tables()
-        app.team.initialize_tables()
 
 
     return redirect(url_for('home_page'))
@@ -133,10 +133,10 @@ def add_coach():
         return redirect(url_for('coaches'))
 
 if __name__ == '__main__':
+    app.team = Team(app)
     app.countries = Countries(app)
     app.officials = Officials(app)
     app.matches = Matches(app)
-    app.team = Team(app)
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')
     if VCAP_APP_PORT is not None:
         port, debug = int(VCAP_APP_PORT), False
