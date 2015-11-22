@@ -25,7 +25,6 @@ def get_elephantsql_dsn(vcap_services):
              dbname='{}'""".format(user, password, host, port, dbname)
     return dsn
 
-
 @app.route('/')
 def home_page():
     now = datetime.datetime.now()
@@ -55,6 +54,16 @@ def coaches():
         cursor.execute(query)
         result = cursor.fetchall()
     return render_template('coaches.html', current_time=now.ctime(), result = result)
+
+@app.route('/stats')
+def stats():
+    now = datetime.datetime.now()
+    with dbapi2.connect(app.config['dsn']) as connection:
+        cursor = connection.cursor()
+        query = """ SELECT * FROM STATS"""
+        cursor.execute(query)
+        result = cursor.fetchall()
+    return render_template('stats.html', current_time=now.ctime(), result = result)
 
 @app.route('/layout')
 def layout():
@@ -90,6 +99,15 @@ def create_tables():
         ID SERIAL PRIMARY KEY,
         NAME VARCHAR(50) NOT NULL,
         BIRTHDAY INTEGER NOT NULL
+        ) """
+        cursor.execute(query)
+
+        query = """CREATE TABLE IF NOT EXISTS STATS
+        (
+        SEASON INTEGER NOT NULL,
+        PLAYERNAME VARCHAR(50) NOT NULL,
+        RECEPTIONS INTEGER NOT NULL,
+        RECEIVINGYARDS INTEGER NOT NULL
         ) """
         cursor.execute(query)
 
@@ -130,6 +148,23 @@ def add_coach():
             connection.commit()
 
         return redirect(url_for('coaches'))
+
+@app.route('/addstat', methods = ['GET', 'POST'])
+def add_stat():
+        season = request.form.get("season")
+        playerName = request.form.get("playerName")
+        receptions = request.form.get("receptions")
+        receivingyards = request.form.get("receivingyards")
+
+
+        with dbapi2.connect(app.config['dsn']) as connection:
+            cursor = connection.cursor()
+
+            query = """ INSERT INTO STATS (SEASON, PLAYERNAME, RECEPTIONS, RECEIVINGYARDS) VALUES (%s, %s, %s, %s)"""
+            cursor.execute(query, (season, playerName, receptions, receivingyards))
+            connection.commit()
+
+        return redirect(url_for('stats'))
 
 if __name__ == '__main__':
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')
