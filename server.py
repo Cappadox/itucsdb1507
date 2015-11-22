@@ -10,8 +10,9 @@ from flask import render_template
 from flask import request
 from flask.helpers import url_for
 
+from officials import Officials, Official
 from countries import Countries, Country
-'''from country import Country'''
+from matches import Matches, Match
 from team import Team
 
 
@@ -79,7 +80,7 @@ def create_tables():
 
         query = """CREATE TABLE IF NOT EXISTS TEAMS
         (
-        ID INTEGER PRIMARY KEY,
+        TEAM_ID INTEGER PRIMARY KEY,
         NAME VARCHAR(50) NOT NULL,
         YEAR INTEGER NOT NULL,
         STANDING INTEGER,
@@ -89,9 +90,9 @@ def create_tables():
 
         query = """CREATE TABLE IF NOT EXISTS PLAYERS
         (
-        ID INTEGER PRIMARY KEY,
+        PLAYER_ID INTEGER PRIMARY KEY,
         NAME VARCHAR(50) NOT NULL,
-        TEAMID INTEGER REFERENCES TEAMS(ID),
+        TEAMID INTEGER REFERENCES TEAMS(TEAM_ID),
         AGE INTEGER NOT NULL,
         KITNO INTEGER
         ) """
@@ -99,7 +100,7 @@ def create_tables():
 
         query = """CREATE TABLE IF NOT EXISTS COACHES
         (
-        ID SERIAL PRIMARY KEY,
+        COACH_ID SERIAL PRIMARY KEY,
         NAME VARCHAR(50) NOT NULL,
         BIRTHDAY INTEGER NOT NULL
         ) """
@@ -108,6 +109,9 @@ def create_tables():
         connection.commit()
 
         app.countries.initialize_tables()
+        app.officials.initialize_tables()
+        app.matches.initialize_tables()
+
 
     return redirect(url_for('home_page'))
 
@@ -148,6 +152,8 @@ def add_coach():
 
 if __name__ == '__main__':
     app.countries = Countries(app)
+    app.officials = Officials(app)
+    app.matches = Matches(app)
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')
     if VCAP_APP_PORT is not None:
         port, debug = int(VCAP_APP_PORT), False
