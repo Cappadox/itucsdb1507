@@ -139,7 +139,7 @@ def create_tables():
     return redirect(url_for('home_page'))
 
 
-@app.route('/addteam', methods = ['GET', 'POST'])
+@app.route('/teams/add', methods = ['GET', 'POST'])
 def add_team():
         id = request.form.get("id")
         name = request.form.get("name")
