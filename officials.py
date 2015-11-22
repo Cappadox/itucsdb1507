@@ -30,6 +30,14 @@ class Officials:
                     (name, age))
                 connection.commit()
 
+    def delete_official(self, id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                cursor.execute("""
+                    DELETE FROM OFFICIALS
+                    WHERE OFFICIAL_ID = %s""",
+                    (id))
+                connection.commit()
 
     def get_officials(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:

@@ -9,6 +9,13 @@
 		<tr>
 			<td> {{ official.name }} </td>
 			<td> {{ official.age }} </td>
+			<td><form action="{{ url_for('official_delete') }}" method="post" role="form">
+					<div class="form-group">
+						<input value="{{key}}" name="id" type="hidden" />
+						<input value="Delete Official" name="delete" type="submit" />
+					</div> <!-- End of form-group -->
+				
+				</form></td>
 		</tr>
 	{% endfor %}
 </table>
