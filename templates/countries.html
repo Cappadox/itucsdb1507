@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block title %}Countries{% endblock %}
+{% block content %}
+
+<table class="table table-bordered table-striped">
+	{% for key, country in countries %}
+		<tr>
+			<td> {{ country.name }} </td>
+			<td> {{ country.abbreviation }} </td>
+		</tr>
+	{% endfor %}
+</table>
+
+{% endblock %}

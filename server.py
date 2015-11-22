@@ -9,6 +9,9 @@ from flask import redirect
 from flask import render_template
 from flask import request
 from flask.helpers import url_for
+
+from countries import Countries
+from country import Country
 from team import Team
 
 
@@ -28,6 +31,8 @@ def get_elephantsql_dsn(vcap_services):
 
 @app.route('/')
 def home_page():
+
+    countries.add_country('Turkey2', 'trc')
     now = datetime.datetime.now()
     return render_template('home.html', current_time=now.ctime())
 
@@ -55,6 +60,22 @@ def coaches():
         cursor.execute(query)
         result = cursor.fetchall()
     return render_template('coaches.html', current_time=now.ctime(), result = result)
+
+@app.route('/countries', methods=['GET', 'POST'])
+def countries_page():
+    if request.method == 'GET':
+        return render_template('countries.html', countries = app.countries.get_countries())
+    else:
+        name = request.form['name']
+        abbreviation = request.form['abbreviation']
+        country = Country(name, abbreviation)
+        app.countries.add_country(name, abbreviation)
+        return redirect(url_for('countries_page'))
+
+@app.route('/countries/add')
+def country_edit_page():
+
+     return render_template('country_edit.html')
 
 @app.route('/layout')
 def layout():
@@ -95,7 +116,9 @@ def create_tables():
 
         connection.commit()
 
+        countries.initialize_tables()
     return redirect(url_for('home_page'))
+
 
 @app.route('/addteam', methods = ['GET', 'POST'])
 def add_team():
@@ -132,6 +155,7 @@ def add_coach():
         return redirect(url_for('coaches'))
 
 if __name__ == '__main__':
+    app.countries = Countries(app)
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')
     if VCAP_APP_PORT is not None:
         port, debug = int(VCAP_APP_PORT), False

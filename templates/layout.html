@@ -13,18 +13,17 @@
 </head>
 <body>
 	<header>
-		<nav class="navbar navbar-default">
-			<div class="container-fluid">
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container">
 				<div class="navbar-header">
-					<a class="navbar-brand" href="/">Ana Sayfa</a>
+					<a class="navbar-brand" href="/">AMERICAN</a>
 				</div>
 
 					<ul class="nav navbar-nav">
 						<li><a href="{{ url_for('teams') }}">Link</a></li>
 						<li><a href="{{ url_for('coaches') }}">Coaches</a></li>
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button" aria-haspopup="true"
-							aria-expanded="false">Players<span class="caret"></span></a>
+							data-toggle="dropdown" role="button">Players<span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="#">Add Player</a></li>
 								<li><a href="#">Show Players</a></li>
@@ -33,15 +32,28 @@
 								<li><a href="#">Separated link</a></li>
 								<li role="separator" class="divider"></li>
 								<li><a href="#">One more separated link</a></li>
-							</ul></li>
+							</ul>
+						</li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown" role="button" >Countries<span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="{{ url_for('countries_page') }}">List Countries</a></li>
+								<li><a href="#">Show Players</a></li>
+								<li><a href="#">Something else here</a></li>
+								<li role="separator" class="divider"></li>
+								<li><a href="#">Separated link</a></li>
+								<li role="separator" class="divider"></li>
+								<li><a href="#">One more separated link</a></li>
+							</ul>
+						</li>
 					</ul>
-				<div class="collapse navbar-collapse"id="navigation"></div>
-				<!-- /.navbar-collapse -->
 			</div>
 			<!-- /.container-fluid -->
 		</nav>
 	</header>
-	{% block content %}{% endblock %}
+	<div class="container">
+		{% block content %}{% endblock %}
+	</div>
 	<footer> </footer>
 </body>
 </html>

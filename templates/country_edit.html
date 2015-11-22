@@ -1,0 +1,21 @@
+ {% extends "layout.html" %}
+ {% block title %}Edit Country{% endblock %}
+ {% block content %}
+	 <form action="{{ url_for('countries_page') }}" method="post">
+		 <table class="table table-bordered">
+			 <tr>
+				 <th>Name:</th>
+				 <td>
+				 	<input type="text" name="name" required autofocus />
+				 </td>
+			 </tr>
+			 <tr>
+				 <th>Abbreviation:</th>
+				 <td>
+				 	<input type="text" name="abbreviation" size="4" />
+				 </td>
+			 </tr>
+		 </table>
+		 <input value="Save" name="save" type="submit" />
+	 </form>
+ {% endblock %}
