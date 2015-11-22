@@ -22,13 +22,13 @@ class Countries:
 
                 connection.commit()
 
-    def add_country(self, name, abbreviation):
+    def add_country(self, country):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
                 cursor.execute("""
                     INSERT INTO COUNTRIES (NAME, ABBREVIATION)
                     VALUES (%s, %s) """,
-                    (name, abbreviation))
+                    (country.name,country. abbreviation))
                 connection.commit()
 
 

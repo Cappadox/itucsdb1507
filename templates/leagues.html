@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block title %}Leagues{% endblock %}
+{% block content %}
+
+<table class="table table-bordered table-striped">
+	{% for key, league in leagues %}
+		<tr>
+			<td> {{ league.name }} </td>
+			<td> {{ league.countryID }} </td>
+		</tr>
+	{% endfor %}
+</table>
+
+{% endblock %}

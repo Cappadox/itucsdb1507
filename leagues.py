@@ -1,9 +1,10 @@
 import psycopg2 as dbapi2
 
 class League:
-    def __init__(self, name, country):
+    def __init__(self, name,abbreviation, countryID):
         self.name = name
-        self.country = country
+        self.abbreviation = abbreviation
+        self.countryID = countryID
 
 class Leagues:
     def __init__(self, app):
@@ -16,6 +17,7 @@ class Leagues:
                     CREATE TABLE IF NOT EXISTS LEAGUES(
                         LEAGUE_ID serial  NOT NULL,
                         NAME varchar(100)  NOT NULL,
+                        ABBREVIATION varchar(10),
                         COUNTRY_ID int  NOT NULL,
                         CONSTRAINT LEAGUES_pk PRIMARY KEY (LEAGUE_ID),
                         CONSTRAINT LEAGUES_COUNTRIES
@@ -26,24 +28,24 @@ class Leagues:
 
                 connection.commit()
 
-    def add_League(self, name, abbreviation):
+    def add_league(self, league):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
                 cursor.execute("""
-                    INSERT INTO COUNTRIES (NAME, COUNTRY_ID)
-                    VALUES (%s, %s) """,
-                    (name, country_id))
+                    INSERT INTO LEAGUES (NAME, ABBREVIATION, COUNTRY_ID)
+                    VALUES (%s, %s, %s) """,
+                    (league.name, league.abbreviation, league.countryID))
                 connection.commit()
 
 
-    def get_LEAGUES(self):
+    def get_leagues(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
             query="""SELECT * FROM LEAGUES"""
             cursor.execute(query)
             connection.commit()
 
-            countries = [(key, League(name, country_name))
-                        for key, name, abbreviation in cursor]
+            leagues = [(key, League(name, abbreviation, countryID))
+                        for key, name, abbreviation, countryID in cursor]
 
-            return countries
+            return leagues

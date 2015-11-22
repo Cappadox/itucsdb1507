@@ -10,13 +10,14 @@ from flask import render_template
 from flask import request
 from flask.helpers import url_for
 
-
 from countries import Countries, Country
+from leagues import Leagues, League
 from matches import Matches, Match
 from teams import Team, Teams
 from officials import Officials, Official
 from players import Player, Players
 from statistics import Statistic, Statistics
+
 
 app = Flask(__name__)
 
@@ -72,12 +73,29 @@ def countries():
     else:
         name = request.form['name']
         abbreviation = request.form['abbreviation']
-        app.countries.add_country(name, abbreviation)
+        app.countries.add_country(Country(name, abbreviation))
         return redirect(url_for('countries'))
 
 @app.route('/countries/add')
-def country_edit_page():
+def countries_edit():
      return render_template('country_edit.html')
+
+
+'''Leagues Pages'''
+@app.route('/leagues', methods=['GET', 'POST'])
+def leagues():
+    if request.method == 'GET':
+        return render_template('leagues.html', leagues = app.leagues.get_leagues())
+    else:
+        name = request.form['name']
+        abbreviation =request.form['abbreviation']
+        countryID = request.form['countryID']
+        app.leagues.add_league(League(name, abbreviation, countryID))
+        return redirect(url_for('leagues'))
+
+@app.route('/leagues/add')
+def leagues_edit():
+    return render_template('league_edit.html', countries = app.countries.get_countries())
 
 
 '''Player Pages'''
@@ -139,9 +157,10 @@ def create_tables():
     '''TODO,END'''
 
     '''Reference order in DB should be preserved'''
+    app.countries.initialize_tables()
+    app.leagues.initialize_tables()
     app.teams.initialize_tables()
     app.players.initialize_tables()
-    app.countries.initialize_tables()
     app.officials.initialize_tables()
     app.matches.initialize_tables()
     app.statistics.initialize_tables()
@@ -155,6 +174,7 @@ if __name__ == '__main__':
     app.teams = Teams(app)
     app.players = Players(app)
     app.countries = Countries(app)
+    app.leagues = Leagues(app)
     app.officials = Officials(app)
     app.matches = Matches(app)
     app.statistics = Statistics(app)

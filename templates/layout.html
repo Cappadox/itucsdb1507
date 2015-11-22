@@ -20,17 +20,25 @@
 				</div>
 
 					<ul class="nav navbar-nav">
-
+						<!-- Coaches menu-->
 						<li><a href="{{ url_for('coaches') }}">Coaches</a></li>
+						<!-- Countries menu-->
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown" role="button" >Countries<span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="{{ url_for('countries') }}">List Countries</a></li>
-								<li><a href="{{ url_for('country_edit_page') }}">Add Country</a></li>
-								<li role="separator" class="divider"></li>
-
+								<li><a href="{{ url_for('countries_edit') }}">Add Country</a></li>
 							</ul>
 						</li>
+						<!-- Leagues menu-->
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown" role="button" >Leagues<span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="{{ url_for('leagues') }}">List Leagues</a></li>
+								<li><a href="{{ url_for('leagues_edit') }}">Add League</a></li>
+							</ul>
+						</li>
+						<!-- Players -->
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown" role="button">Players<span class="caret"></span></a>
 							<ul class="dropdown-menu">
@@ -38,7 +46,9 @@
 								<li><a href="{{ url_for('players') }}">Show Players</a></li>
 							</ul>
 						</li>
+						<!-- Statistics menu -->
 						<li><a href="{{ url_for('statistics') }}">Statistics</a></li>
+						<!-- Teams menu -->
 						<li><a href="{{ url_for('teams') }}">Teams</a></li>
 
 
