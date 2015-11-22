@@ -15,6 +15,7 @@ from countries import Countries, Country
 from matches import Matches, Match
 from teams import Team, Teams
 from players import Player, Players
+from statistics import Statistic, Statistics
 
 
 app = Flask(__name__)
@@ -56,6 +57,18 @@ def players():
         app.players.add_player(name, birthday, position)
     return redirect(url_for('players'))
 
+@app.route('/statistics', methods = ['GET', 'POST'])
+def statistics():
+    if request.method == 'GET':
+        return render_template('statistics.html', result = app.statistics.get_statistics())
+    else:
+        season = request.form['season']
+        playerName = request.form['playerName']
+        receptions = request.form['receptions']
+        receivingyards = request.form['receivingyards']
+        app.statistics.add_statistic(season, playerName, receptions, receivingyards)
+    return redirect(url_for('statistics'))
+
 
 @app.route('/coaches')
 def coaches():
@@ -66,6 +79,7 @@ def coaches():
         cursor.execute(query)
         result = cursor.fetchall()
     return render_template('coaches.html', current_time=now.ctime(), result = result)
+
 
 @app.route('/countries', methods=['GET', 'POST'])
 def countries_page():
@@ -101,6 +115,7 @@ def create_tables():
         app.countries.initialize_tables()
         app.officials.initialize_tables()
         app.matches.initialize_tables()
+        app.statistics.initialize_tables()
 
     return redirect(url_for('home_page'))
 
@@ -125,6 +140,7 @@ if __name__ == '__main__':
     app.countries = Countries(app)
     app.officials = Officials(app)
     app.matches = Matches(app)
+    app.statistics = Statistics(app)
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')
     if VCAP_APP_PORT is not None:
         port, debug = int(VCAP_APP_PORT), False
