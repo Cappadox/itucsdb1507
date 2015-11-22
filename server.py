@@ -17,6 +17,7 @@ from matches import Matches, Match
 from teams import Team, Teams
 from officials import Officials, Official
 from players import Player, Players
+from seasons import Seasons, Seasons2
 from statistics import Statistic, Statistics
 from flask.templating import render_template_string
 
@@ -133,6 +134,24 @@ def players():
     return redirect(url_for('players'))
 
 
+'''Seasons Pages'''
+@app.route('/seasons', methods=['GET', 'POST'])
+def seasons():
+    if request.method == 'GET':
+        return render_template('seasons.html', result = app.seasons.select_seasons())
+    else:
+        if 'Add' in request.form:
+            year = request.form['seasonYear']
+            app.seasons.add_season(year)
+            return redirect(url_for('seasons'))
+        elif 'Delete' in request.form:
+            id = request.form['id']
+            app.seasons.delete_season(id)
+            return redirect(url_for('seasons'))
+        else:
+            return render_template('seasons.html', result = app.seasons.select_seasons())
+
+
 '''Statistics Pages'''
 @app.route('/statistics', methods = ['GET', 'POST'])
 def statistics():
@@ -170,6 +189,7 @@ def create_tables():
     app.players.initialize_tables()
     app.officials.initialize_tables()
     app.matches.initialize_tables()
+    app.seasons.initialize_tables()
     app.statistics.initialize_tables()
 
     return redirect(url_for('home_page'))
@@ -178,6 +198,7 @@ def create_tables():
 if __name__ == '__main__':
 
     '''Container objects'''
+
     app.coaches = Coaches2(app)
     app.teams = Teams(app)
     app.players = Players(app)
@@ -185,6 +206,7 @@ if __name__ == '__main__':
     app.leagues = Leagues(app)
     app.officials = Officials(app)
     app.matches = Matches(app)
+    app.seasons = Seasons2(app)
     app.statistics = Statistics(app)
 
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')

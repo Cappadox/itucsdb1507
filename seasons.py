@@ -1,44 +1,42 @@
 import psycopg2 as dbapi2
 
-class Coaches:
+class Seasons:
     def __init__(self, id, name,birthday):
         self.id = id
-        self.name = name
-        self.birthday = birthday
+        self.year = year
 
-class Coaches2:
+class Seasons2:
     def __init__(self, app):
         self.app = app
 
     def initialize_tables(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
-                cursor.execute("""CREATE TABLE IF NOT EXISTS COACHES
+                cursor.execute("""CREATE TABLE IF NOT EXISTS SEASONS
                 (
-                COACH_ID SERIAL PRIMARY KEY,
-                NAME VARCHAR(50) NOT NULL,
-                BIRTHDAY INTEGER NOT NULL
+                SEASON_ID SERIAL PRIMARY KEY,
+                YEAR INTEGER NOT NULL
                 ) """)
                 connection.commit()
 
-    def select_coaches(self):
+    def select_seasons(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
              cursor = connection.cursor()
-             query = """ SELECT * FROM COACHES"""
+             query = """ SELECT * FROM SEASONS"""
              cursor.execute(query)
              result = cursor.fetchall()
              return result
 
-    def add_coach(self, name, birthday):
+    def add_season(self, year):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
-                query = """ INSERT INTO COACHES (NAME, BIRTHDAY) VALUES (%s, %s) """
-                cursor.execute(query, (name, birthday))
+                query = """ INSERT INTO SEASONS (year) VALUES (%s) """
+                cursor.execute(query, [year])
                 connection.commit()
 
-    def delete_coach(self, id):
+    def delete_season(self, id):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
-                query = """ DELETE FROM COACHES WHERE COACH_ID =%s """
+                query = """ DELETE FROM SEASONS WHERE SEASON_ID =%s """
                 cursor.execute(query, [id])
                 connection.commit()
