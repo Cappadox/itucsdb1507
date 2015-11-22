@@ -1,5 +1,9 @@
 import psycopg2 as dbapi2
-from country import Country
+
+class Country:
+    def __init__(self, name, abbreviation):
+        self.name = name
+        self.abbreviation = abbreviation
 
 class Countries:
     def __init__(self, app):

@@ -1,7 +1,7 @@
+import psycopg2 as dbapi2
 import datetime
 import json
 import os
-import psycopg2 as dbapi2
 import re
 
 from flask import Flask
@@ -10,8 +10,8 @@ from flask import render_template
 from flask import request
 from flask.helpers import url_for
 
-from countries import Countries
-from country import Country
+from countries import Countries, Country
+'''from country import Country'''
 from team import Team
 
 
@@ -31,10 +31,7 @@ def get_elephantsql_dsn(vcap_services):
 
 @app.route('/')
 def home_page():
-
-    countries.add_country('Turkey2', 'trc')
-    now = datetime.datetime.now()
-    return render_template('home.html', current_time=now.ctime())
+    return render_template('home.html')
 
 @app.route('/teams')
 def teams():
@@ -68,18 +65,12 @@ def countries_page():
     else:
         name = request.form['name']
         abbreviation = request.form['abbreviation']
-        country = Country(name, abbreviation)
         app.countries.add_country(name, abbreviation)
         return redirect(url_for('countries_page'))
 
 @app.route('/countries/add')
 def country_edit_page():
-
      return render_template('country_edit.html')
-
-@app.route('/layout')
-def layout():
-    return render_template('layout.html')
 
 @app.route('/initdb')
 def create_tables():
@@ -116,7 +107,8 @@ def create_tables():
 
         connection.commit()
 
-        countries.initialize_tables()
+        app.countries.initialize_tables()
+
     return redirect(url_for('home_page'))
 
 
