@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<title>itucsdb1507 - {% block title %}{% endblock %}</title>
+	<title>AMERICAN - {% block title %}{% endblock %}</title>
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
@@ -20,30 +20,28 @@
 				</div>
 
 					<ul class="nav navbar-nav">
-						<li><a href="{{ url_for('teams') }}">Teams</a></li>
+
 						<li><a href="{{ url_for('coaches') }}">Coaches</a></li>
-						<li><a href="{{ url_for('statistics') }}">Statistics</a></li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button">Players<span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="#">Add Player</a></li>
-								<li><a href="{{ url_for('players') }}">Show Players</a></li>
-								<li><a href="#">Something else here</a></li>
-								<li role="separator" class="divider"></li>
-								<li><a href="#">Separated link</a></li>
-								<li role="separator" class="divider"></li>
-								<li><a href="#">One more separated link</a></li>
-							</ul>
-						</li>
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown" role="button" >Countries<span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a href="{{ url_for('countries_page') }}">List Countries</a></li>
+								<li><a href="{{ url_for('countries') }}">List Countries</a></li>
 								<li><a href="{{ url_for('country_edit_page') }}">Add Country</a></li>
 								<li role="separator" class="divider"></li>
 
 							</ul>
 						</li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown" role="button">Players<span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">Add Player</a></li>
+								<li><a href="{{ url_for('players') }}">Show Players</a></li>
+							</ul>
+						</li>
+						<li><a href="{{ url_for('statistics') }}">Statistics</a></li>
+						<li><a href="{{ url_for('teams') }}">Teams</a></li>
+
+
 					</ul>
 			</div>
 			<!-- /.container-fluid -->
