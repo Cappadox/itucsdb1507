@@ -20,13 +20,14 @@
 				</div>
 
 					<ul class="nav navbar-nav">
-						<li><a href="{{ url_for('teams') }}">Link</a></li>
+						<li><a href="{{ url_for('teams') }}">Teams</a></li>
 						<li><a href="{{ url_for('coaches') }}">Coaches</a></li>
+						<li><a href="{{ url_for('statistics') }}">Statistics</a></li>
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown" role="button">Players<span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="#">Add Player</a></li>
-								<li><a href="#">Show Players</a></li>
+								<li><a href="{{ url_for('players') }}">Show Players</a></li>
 								<li><a href="#">Something else here</a></li>
 								<li role="separator" class="divider"></li>
 								<li><a href="#">Separated link</a></li>
