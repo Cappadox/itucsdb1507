@@ -2,19 +2,17 @@
 {% block title %}Team{% endblock %}
 {% block content %}
 <form action ={{url_for('teams')}} method="post">
-  Team Id: <br>
-  <input type = "number" name="id"> <br>
   Team name:<br>
   <input type="text" name="name"> <br>
   League Id:<br>
   <input type="number" name="league_id"> <br>
-  <input type="submit" value="YOLLA" name="yolla">
+  <input type="submit" value="ADD TEAM" name="add">
 </form>
 
 <table>
-{% for id, name, league_id in result %}
+{% for team_id, name, league_id in result %}
 <tr>
-<td> {{ id }} {{ name }} {{ league_id }} </td>
+<td> {{ team_id }} {{ name }} {{ league_id }} </td>
 </tr>
 {% endfor %}
 </table>

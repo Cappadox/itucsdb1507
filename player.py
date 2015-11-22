@@ -1,20 +1,34 @@
+import psycopg2 as dbapi2
+
 class Player:
-    def __init__(self, id, name, teamid, age, kitno):
-        self.id = id
-        self.name = name
-        self.teamid = teamid
-        self.age = age
-        self.kitno = kitno
+    def __init__(self, app):
+        self.app = app
 
-'''
-    tablo sql kodu
+    def initialize_table(self):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                cursor.execute("""
+                    CREATE TABLE PLAYERS
+                    ( PLAYER_ID serial NOT NULL PRIMARY KEY,
+                      NAME varchar(100) NOT NULL,
+                      BIRTHDAY date NULL,
+                      POSITION varchar(100) NULL
+                    )
+                    """)
+                connection.commit()
 
-    CREATE TABLE PLAYERS
-    (
-    ID INTEGER PRIMARY KEY,
-    NAME VARCHAR(50) NOT NULL,
-    TEAMID INTEGER REFERENCES TEAMS(ID),
-    AGE INTEGER NOT NULL,
-    KITNO INTEGER
-    )
-'''
+    def select_players(self):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+             cursor = connection.cursor()
+             query = """ SELECT * FROM PLAYERS"""
+             cursor.execute(query)
+             result = cursor.fetchall()
+             return result
+
+    def add_player(self, name, birthday, position):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ INSERT INTO PLAYERS (NAME, BIRTHDAY, POSITION) VALUES (%s, %s, %s) """
+                cursor.execute(query, (name, birthday, position))
+                connection.commit()
+

@@ -14,6 +14,7 @@ from officials import Officials, Official
 from countries import Countries, Country
 from matches import Matches, Match
 from team import Team
+from player import Player
 
 
 app = Flask(__name__)
@@ -39,16 +40,22 @@ def teams():
     if request.method == 'GET':
         return render_template('teams.html', result = app.team.select_teams())
     else:
-        team_id = request.form['id']
         name = request.form['name']
         league_id = request.form['league_id']
-        app.team.add_team(team_id,name,league_id)
+        app.team.add_team(name,league_id)
     return redirect(url_for('teams'))
 
-@app.route('/players')
+@app.route('/players', methods=['GET', 'POST'])
 def players():
-    now = datetime.datetime.now()
-    return render_template('players.html', current_time=now.ctime())
+    if request.method == 'GET':
+        return render_template('players.html', result = app.player.select_players())
+    else:
+        name = request.form['name']
+        birthday = request.form['birthday']
+        position = request.form['position']
+        app.player.add_player(name, birthday, position)
+    return redirect(url_for('players'))
+
 
 @app.route('/coaches')
 def coaches():
@@ -89,33 +96,14 @@ def create_tables():
 
         connection.commit()
 
-        app.team.initialize_tables()
+        app.team.initialize_table()
+        app.player.initialize_table()
         app.countries.initialize_tables()
         app.officials.initialize_tables()
         app.matches.initialize_tables()
 
 
     return redirect(url_for('home_page'))
-
-
-@app.route('/addteam', methods = ['GET', 'POST'])
-def add_team():
-        id = request.form.get("id")
-        name = request.form.get("name")
-        year = request.form.get("year")
-        standing = request.form.get("standing")
-        avgfan = request.form.get("avgfan")
-
-        team = Team(id,name,year,standing,avgfan)
-
-        with dbapi2.connect(app.config['dsn']) as connection:
-            cursor = connection.cursor()
-
-            query = """ INSERT INTO TEAMS (ID, NAME, YEAR, STANDING, AVGFAN) VALUES (%s, %s, %s, %s, %s)"""
-            cursor.execute(query, (id, name, year, standing, avgfan))
-            connection.commit()
-
-        return redirect(url_for('teams'))
 
 @app.route('/addcoach', methods = ['GET', 'POST'])
 def add_coach():
@@ -134,6 +122,7 @@ def add_coach():
 
 if __name__ == '__main__':
     app.team = Team(app)
+    app.player = Player(app)
     app.countries = Countries(app)
     app.officials = Officials(app)
     app.matches = Matches(app)

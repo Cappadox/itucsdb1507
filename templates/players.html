@@ -1,18 +1,21 @@
 {% extends "layout.html" %}
-{% block title %}Player{% endblock %}
+{% block title %}Team{% endblock %}
 {% block content %}
-<form action="get">
-  Player name:<br>
-  <input type="text" name="playername">
-  <br>
-  Team:<br>
-  <input type="text" name="playerteam">
-  <br>
-  Age:<br>
-  <input type="number" name="playerage">
-  <br>
-  Kit Number:<br>
-  <input type="number" name="playerno">
-  <input type="submit" text="YOLLA" name="yolla">
+<form action ={{url_for('players')}} method="post">
+  Player Name: <br>
+  <input type = "text" name="name"> <br>
+  Birthday:<br>
+  <input type="date" name="birthday"> <br>
+  Position:<br>
+  <input type="text" name="position"> <br>
+  <input type="submit" value="ADD PLAYER" name="add">
 </form>
+
+<table>
+{% for player_id, name, birthday, position in result %}
+<tr>
+<td> {{player_id}} {{ name }} {{ birthday }} {{ position }} </td>
+</tr>
+{% endfor %}
+</table>
 {% endblock %}
