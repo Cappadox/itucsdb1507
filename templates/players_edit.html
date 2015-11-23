@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}Players{% endblock %}
+{% block content %}
+{% for player_id, name, birthday, position in player %}
+<form action = "" method="post">
+<table>
+<tr>
+<td>Player name:<br></td>
+<td><input type="text" name="name" value="{{ name }}" required autofocus/> </td>
+</tr>
+<tr>
+<td>Birthday:<br></td>
+<td><input type="date" name="birthday" value="{{ birthday }}" required autofocus /> </td>
+</tr>
+<td>Position:<br></td>
+<td><input type="text" name="position" value="{{ position }}" required autofocus /> </td>
+</tr>
+{% endfor %}
+</table>
+<input value="Update" name="update" type="submit" />
+</form>
+{% endblock %}

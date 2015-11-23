@@ -165,6 +165,10 @@ def players():
         app.players.add_player(name, birthday, position)
     return redirect(url_for('players'))
 
+@app.route('/players/add', methods=['GET', 'POST'])
+def add_players():
+    return render_template('players_add.html')
+
 @app.route('/players/update/<player_id>', methods=['GET', 'POST'])
 def update_players(player_id):
     if request.method == 'GET':
@@ -229,6 +233,10 @@ def teams():
         league_id = request.form['league_id']
         app.teams.add_team(name,league_id)
     return redirect(url_for('teams'))
+
+@app.route('/teams/add', methods=['GET', 'POST'])
+def add_teams():
+    return render_template('teams_add.html')
 
 @app.route('/teams/update/<team_id>', methods=['GET', 'POST'])
 def update_teams(team_id):
