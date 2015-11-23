@@ -165,6 +165,27 @@ def players():
         app.players.add_player(name, birthday, position)
     return redirect(url_for('players'))
 
+@app.route('/players/update/<player_id>', methods=['GET', 'POST'])
+def update_players(player_id):
+    if request.method == 'GET':
+        return render_template('players_edit.html', player = app.players.get_player(player_id))
+    else:
+        name = request.form['name']
+        birthday = request.form['birthday']
+        position = request.form['position']
+        app.players.update_player(player_id, name, birthday, position)
+        return redirect(url_for('players'))
+
+@app.route('/players/delete', methods=['GET', 'POST'])
+def delete_players():
+    if request.method == 'GET':
+        return redirect(url_for('teams'))
+    elif 'checkbox' in request.form:
+        ids = request.form.getlist('checkbox')
+        for id in ids:
+            app.players.delete_player(id)
+        return redirect(url_for('players'))
+
 
 '''Seasons Pages'''
 @app.route('/seasons', methods=['GET', 'POST'])
@@ -218,6 +239,17 @@ def update_teams(team_id):
         league_id = request.form['league_id']
         app.teams.update_team(team_id, name, league_id)
         return redirect(url_for('teams'))
+
+@app.route('/teams/delete', methods=['GET', 'POST'])
+def delete_teams():
+    if request.method == 'GET':
+        return redirect(url_for('teams'))
+    elif 'checkbox' in request.form:
+        ids = request.form.getlist('checkbox')
+        for id in ids:
+            app.teams.delete_team(id)
+        return redirect(url_for('teams'))
+
 
 '''Database initialization'''
 @app.route('/initdb')

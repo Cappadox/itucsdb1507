@@ -11,14 +11,17 @@
 </form>
 
 <br>
-<form action = {{url_for('teams')}} method="post">
+<form action = {{url_for('delete_teams')}} method="post">
 <table>
 {% for team_id, name, league_id in teams %}
 <tr>
 <td><input type="checkbox" name="checkbox" value="{{ team_id }}" /></td>
-<td><a href="teams/update/{{ team_id }}" >{{ team_id }} {{ name }} {{ league_id }}</a> </td>
+<td> <a href="teams/update/{{ team_id }}" > {{ team_id }} {{ name }} {{ league_id }} </a> </td>
 </tr>
 {% endfor %}
+<tr>
+<td><input type="submit" value="DELETE" name ="delete"></td>
+</tr>
 </table>
 </form>
 {% endblock %}
