@@ -20,6 +20,7 @@ from officials import Officials, Official
 from players import Player, Players
 from seasons import Seasons, Seasons2
 from statistics import Statistic, Statistics
+from fixtures import Fixture, Fixtures
 from flask.templating import render_template_string
 
 
@@ -91,6 +92,21 @@ def countries():
 def countries_edit():
      return render_template('country_edit.html')
 
+
+'''Fixtures Pages'''
+@app.route('/fixtures', methods = ['GET', 'POST'])
+def fixtures():
+    if request.method == 'GET':
+        return render_template('fixtures.html', result = app.fixtures.get_fixtures())
+    else:
+        season = request.form['season']
+        team = request.form['team']
+        points = request.form['points']
+        app.fixtures.add_fixture(season, team, points)
+    return redirect(url_for('fixtures'))
+
+
+'''Officials Pages'''
 @app.route('/officials', methods=['GET', 'POST'])
 def officials():
     if request.method == 'GET':
@@ -210,7 +226,7 @@ def create_tables():
     app.matches.initialize_tables()
 
     app.statistics.initialize_tables()
-
+    app.fixtures.initialize_tables()
 
     return redirect(url_for('home_page'))
 
@@ -229,6 +245,7 @@ if __name__ == '__main__':
     app.matches = Matches(app)
     app.seasons = Seasons2(app)
     app.statistics = Statistics(app)
+    app.fixtures = Fixtures(app)
 
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')
     if VCAP_APP_PORT is not None:

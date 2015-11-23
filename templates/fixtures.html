@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block title %}Fixtures{% endblock %}
+{% block content %}
+
+<h1>Fixtures Page</h1>
+
+<form  action ={{url_for('fixtures')}} method="post">
+  Season:<br>
+  <input type="text" name="season"><br><br>
+  Team:<br>
+  <input type="text" name="team"><br><br>
+  Points:<br>
+  <input type="text" name="points"><br><br>
+  <input type="submit" value="Add" name="Add">
+</form>
+<br>
+<table class="table table-bordered table-striped">
+<tr>
+    <th>Season</th>
+    <th>Team</th>
+    <th>Points</th>
+ </tr>
+{% for season, team, points in result %}
+<tr>
+	<td> {{ season }} </td>
+	<td> {{ team }} </td>
+	<td> {{ points }} </td>
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}
