@@ -11,6 +11,7 @@ from flask import request
 from flask.helpers import url_for
 
 from coaches import Coaches, Coaches2
+from coaching import Coaching,Coaching2
 from countries import Countries, Country
 from leagues import Leagues, League
 from matches import Matches, Match
@@ -58,6 +59,21 @@ def coaches():
             return redirect(url_for('coaches'))
         else:
             return render_template('coaches.html', result = app.coaches.select_coaches())
+
+'''Coaching Pages'''
+@app.route('/coaching', methods=['GET', 'POST'])
+def coaching():
+    if request.method == 'GET':
+        return render_template('coaching.html', result = app.coaching.select_coaching())
+    else:
+        if 'Add' in request.form:
+
+            return redirect(url_for('coaching'))
+        elif 'Delete' in request.form:
+
+            return redirect(url_for('coaching'))
+        else:
+            return render_template('coaching.html', result = app.coaching.select_coaching())
 
 
 '''Countries Pages'''
@@ -183,14 +199,18 @@ def create_tables():
 
     '''Reference order in DB should be preserved'''
     app.coaches.initialize_tables()
+    app.seasons.initialize_tables()
     app.countries.initialize_tables()
+    app.players.initialize_tables()
     app.leagues.initialize_tables()
     app.teams.initialize_tables()
-    app.players.initialize_tables()
+    app.coaching.initialize_tables()
+
     app.officials.initialize_tables()
     app.matches.initialize_tables()
-    app.seasons.initialize_tables()
+
     app.statistics.initialize_tables()
+
 
     return redirect(url_for('home_page'))
 
@@ -200,6 +220,7 @@ if __name__ == '__main__':
     '''Container objects'''
 
     app.coaches = Coaches2(app)
+    app.coaching = Coaching2(app)
     app.teams = Teams(app)
     app.players = Players(app)
     app.countries = Countries(app)
@@ -219,7 +240,7 @@ if __name__ == '__main__':
     if VCAP_SERVICES is not None:
         app.config['dsn'] = get_elephantsql_dsn(VCAP_SERVICES)
     else:
-          app.config['dsn'] = """user='vagrant' password='vagrant'
-                               host='localhost' port=54321 dbname='itucsdb'"""
+          app.config['dsn'] = """user='postgres' password='12345678'
+                               host='localhost' port=5432 dbname='postgres'"""
 
     app.run(host='0.0.0.0', port=port, debug=debug)
