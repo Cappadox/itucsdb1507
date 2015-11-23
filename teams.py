@@ -18,7 +18,7 @@ class Teams:
                     (
                     TEAM_ID serial NOT NULL PRIMARY KEY,
                     NAME varchar(100) NOT NULL,
-                    LEAGUE_ID int NOT NULL
+                    LEAGUE_ID int NOT NULL REFERENCES LEAGUES(LEAGUE_ID)
                     )
                     """)
                 connection.commit()
@@ -26,10 +26,20 @@ class Teams:
     def select_teams(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
              cursor = connection.cursor()
-             query = """ SELECT * FROM TEAMS"""
+             query = """ SELECT * FROM TEAMS ORDER BY TEAM_ID """
              cursor.execute(query)
-             result = cursor.fetchall()
-             return result
+             connection.commit()
+
+             teams = cursor.fetchall()
+             return teams
+
+    def get_team(self, team_id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+             cursor = connection.cursor()
+             query = """ SELECT * FROM TEAMS WHERE TEAM_ID = %s"""
+             cursor.execute(query, team_id)
+             team = cursor.fetchall()
+             return team
 
     def add_team(self, name, league_id):
         with dbapi2.connect(self.app.config['dsn']) as connection:
@@ -38,3 +48,13 @@ class Teams:
                 cursor.execute(query, (name, league_id))
                 connection.commit()
 
+    def update_team(self, team_id, name, league_id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ UPDATE TEAMS
+                        SET NAME = %s,
+                        LEAGUE_ID = %s
+                        WHERE
+                        TEAM_ID = %s """
+                cursor.execute(query, (name, league_id, team_id))
+                connection.commit()

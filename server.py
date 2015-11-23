@@ -202,12 +202,22 @@ def statistics():
 @app.route('/teams', methods=['GET', 'POST'])
 def teams():
     if request.method == 'GET':
-        return render_template('teams.html', result = app.teams.select_teams())
+        return render_template('teams.html', teams = app.teams.select_teams())
     else:
         name = request.form['name']
         league_id = request.form['league_id']
         app.teams.add_team(name,league_id)
     return redirect(url_for('teams'))
+
+@app.route('/teams/update/<team_id>', methods=['GET', 'POST'])
+def update_teams(team_id):
+    if request.method == 'GET':
+        return render_template('teams_edit.html', team = app.teams.get_team(team_id))
+    else:
+        name = request.form['name']
+        league_id = request.form['league_id']
+        app.teams.update_team(team_id, name, league_id)
+        return redirect(url_for('teams'))
 
 '''Database initialization'''
 @app.route('/initdb')

@@ -1,19 +1,24 @@
 {% extends "layout.html" %}
 {% block title %}Team{% endblock %}
 {% block content %}
+
 <form action ={{url_for('teams')}} method="post">
   Team name:<br>
-  <input type="text" name="name"> <br>
+  <input type="text" name="name" required autofocus> <br>
   League Id:<br>
-  <input type="number" name="league_id"> <br>
+  <input type="number" name="league_id" required autofocus> <br>
   <input type="submit" value="ADD TEAM" name="add">
 </form>
 
+<br>
+<form action = {{url_for('teams')}} method="post">
 <table>
-{% for team_id, name, league_id in result %}
+{% for team_id, name, league_id in teams %}
 <tr>
-<td> {{ team_id }} {{ name }} {{ league_id }} </td>
+<td><input type="checkbox" name="checkbox" value="{{ team_id }}" /></td>
+<td><a href="teams/update/{{ team_id }}" >{{ team_id }} {{ name }} {{ league_id }}</a> </td>
 </tr>
 {% endfor %}
 </table>
+</form>
 {% endblock %}
