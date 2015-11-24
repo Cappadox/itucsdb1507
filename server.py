@@ -452,6 +452,14 @@ def teams():
         app.teams.add_team(name,league_id)
     return redirect(url_for('teams'))
 
+@app.route('/teams/search', methods = ['GET', 'POST'])
+def search_teams():
+    if request.method == 'GET':
+        return redirect(url_for('teams_search.html'))
+    else:
+        searchname = request.form['nametosearch']
+        return render_template('teams_search.html', teams = app.teams.search_team(searchname))
+
 @app.route('/teams/add', methods=['GET', 'POST'])
 def add_teams():
     return render_template('teams_add.html')

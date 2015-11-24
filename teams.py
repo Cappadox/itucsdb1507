@@ -76,3 +76,11 @@ class Teams:
                 cursor.execute(query, (team_id))
                 connection.commit()
 
+    def search_team(self, name):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ SELECT * FROM TEAMS WHERE NAME = %s """
+                cursor.execute(query, [name])
+                teams = cursor.fetchall()
+                return teams
+
