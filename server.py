@@ -126,6 +126,18 @@ def delete_fixture():
         app.fixtures.delete_fixture(id)
     return redirect(url_for('add_fixture'))
 
+@app.route('/fixtures/update', methods = ['GET', 'POST'])
+def update_fixture():
+    if request.method == 'GET':
+        return render_template('fixture_update.html', team=app.teams.select_teams(), season=app.seasons.select_seasons(), result = app.fixtures.get_fixtures())
+    else:
+        fixture_id = request.form['fixture_id']
+        season = request.form['season_id']
+        team = request.form['team_id']
+        points = request.form['points']
+        app.fixtures.update_fixture(fixture_id, season, team, points)
+    return redirect(url_for('update_fixture'))
+
 '''*******************************************************************************************************'''
 
 '''Matches Pages'''
@@ -371,6 +383,19 @@ def delete_statistic():
         id = request.form['id']
         app.statistics.delete_statistic(id)
     return redirect(url_for('add_statistic'))
+
+@app.route('/statistics/update', methods = ['GET', 'POST'])
+def update_statistic():
+    if request.method == 'GET':
+        return render_template('statistic_update.html', team=app.teams.select_teams(), season=app.seasons.select_seasons(), result = app.statistics.get_statistics())
+    else:
+        statistic_id = request.form['statistic_id']
+        season = request.form['season_id']
+        team = request.form['team_id']
+        touchdowns = request.form['touchdowns']
+        rushingYards = request.form['rushingYards']
+        app.statistics.update_statistic(statistic_id, season, team, touchdowns, rushingYards)
+    return redirect(url_for('update_statistic'))
 
 
 '''Team pages'''

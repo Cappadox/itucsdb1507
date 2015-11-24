@@ -48,3 +48,14 @@ class Fixtures:
                     WHERE FIXTURE_ID = %s""",
                     id)
                 connection.commit()
+
+    def update_fixture(self, fixture_id, season_id, team_id, points):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ UPDATE FIXTURES
+                        SET SEASON_ID = %s,
+                        TEAM_ID = %s,
+                        POINTS = %s
+                        WHERE FIXTURE_ID = %s"""
+                cursor.execute(query, (fixture_id, season_id, team_id, points))
+                connection.commit()

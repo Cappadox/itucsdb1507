@@ -50,3 +50,15 @@ class Statistics:
                     WHERE STATISTIC_ID = %s""",
                     id)
                 connection.commit()
+
+    def update_statistic(self, statistic_id, season_id, team_id, touchdowns, rushingYards):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ UPDATE STATISTICS
+                        SET SEASON_ID = %s,
+                        TEAM_ID = %s,
+                        TOUCHDOWNS = %s,
+                        RUSHINGYARDS = %s
+                        WHERE STATISTIC_ID = %s"""
+                cursor.execute(query, (season_id, team_id, touchdowns, rushingYards, statistic_id))
+                connection.commit()

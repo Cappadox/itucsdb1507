@@ -2,55 +2,56 @@
  {% block title %}Statistics{% endblock %}
  {% block content %}
 
-	 <form action="{{ url_for('add_statistic') }}" method="post" role="form">
-		<div class="form-group">
-			<div class="row">
-				<label class="control-label col-sm-2" for="season">Season:</label>
-			  	<div class="col-sm-2">
-					<select name="season_id" class="form-control"">
-						{% for season_id, year in season %}
-					        <option value="{{season_id}}">{{ year }}</option>
-						{% endfor %}
-				    </select>
-				</div>
+<form action="{{ url_for('add_statistic') }}" method="post" role="form">
+	<div class="form-group">
+		<div class="row">
+			<label class="control-label col-sm-2" for="season">Season:</label>
+			<div class="col-sm-2">
+				<select name="season_id" class="form-control"">
+					{% for season_id, year in season %}
+						<option value="{{season_id}}">{{ year }}</option>
+					{% endfor %}
+				</select>
 			</div>
-		</div><!-- endSEASON -->
-		<div class="form-group">
-			<div class="row">
-				<label class="control-label col-sm-2" for="team">Team:</label>
-			  	<div class="col-sm-2">
-					<select name="team_id" class="form-control"">
-						{% for team_id, name, league_id in team %}
-					        <option value="{{team_id}}">{{ name }}</option>
-						{% endfor %}
-				    </select>
-				</div>
+		</div>
+	</div><!-- endSEASON -->
+	<div class="form-group">
+		<div class="row">
+			<label class="control-label col-sm-2" for="team">Team:</label>
+			<div class="col-sm-2">
+				<select name="team_id" class="form-control"">
+					{% for team_id, name, league_id in team %}
+						<option value="{{team_id}}">{{ name }}</option>
+					{% endfor %}
+				</select>
 			</div>
-		</div><!-- endTEAM -->
-		<div class="form-group">
-			<div class="row">
-				<label class="control-label col-sm-2" for="touchdowns">Touchdowns:</label>
-			  	<div class="col-sm-2">
-					<input type="number" name="touchdowns" class="form-control" required autofocus>
-				</div>
+		</div>
+	</div><!-- endTEAM -->
+	<div class="form-group">
+		<div class="row">
+			<label class="control-label col-sm-2" for="touchdowns">Touchdowns:</label>
+			<div class="col-sm-2">
+				<input type="number" name="touchdowns" class="form-control" required autofocus>
 			</div>
-		</div><!-- endTOUCHDOWNS -->
-		<div class="form-group">
-			<div class="row">
-				<label class="control-label col-sm-2" for="rushingYards">Rushing Yards:</label>
-			  	<div class="col-sm-2">
-					<input type="number" name="rushingYards" class="form-control" required autofocus>
-				</div>
+		</div>
+	</div><!-- endTOUCHDOWNS -->
+	<div class="form-group">
+		<div class="row">
+			<label class="control-label col-sm-2" for="rushingYards">Rushing Yards:</label>
+			<div class="col-sm-2">
+				<input type="number" name="rushingYards" class="form-control" required autofocus>
 			</div>
-		</div><!-- endRUSHING -->
-		<div class="form-group col-sm-8">
-		    <div class="pull-right">
-		      	<input value="Save" name="submit" type="submit" />
-		    </div>
-		 </div> <!-- endSUBMIT -->
+		</div>
+	</div><!-- endRUSHING -->
+	<div class="form-group col-sm-8">
+		<div class="pull-left">
+			<input value="Add" name="submit" type="submit" />
+		</div>
+	</div> <!-- endSUBMIT -->
 </form>
 
 <br>
+
 <form  action ={{url_for('delete_statistic')}} method="post" type="form">
 	<table class="table table-bordered table-striped">
 		<tr>
@@ -72,8 +73,19 @@
 	</table>
 	<div class="col-sm-10">
 		<input type="submit" value="Delete" name ="submit">
-		<input type="submit" value="Update" name ="submit">
 	</div>
 </form>
+
+<br>
+<br>
+
+<form action="{{ url_for('update_statistic') }}" method="get" role="form">
+	<div class="form-group col-sm-10">
+		<div class="pull-left">
+			<input value="Update Page" name="submit" type="submit" />
+		</div>
+	</div>
+</form>
+
 
 {% endblock %}
