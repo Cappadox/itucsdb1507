@@ -325,7 +325,7 @@ def search_players():
     if request.method == 'GET':
         return redirect(url_for('players_search.html'))
     else:
-        searchname = request.form['searchname']
+        searchname = request.form['nametosearch']
         return render_template('players_search.html', players = app.players.search_player(searchname))
 
 @app.route('/players/add', methods=['GET', 'POST'])

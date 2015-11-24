@@ -6,16 +6,17 @@
 
 <form action = {{url_for('delete_players') }} method="post">
 <table class="table table-bordered table-striped">
+<tr>
+<th></th> <th> PLAYER ID </th> <th> NAME </th> <th> BIRTHDAY </th> <th> POSITION </th> <th> </th>
+</tr>
 {% for player_id, name, birthday, position in players %}
 <tr>
-<th></th> <th> PLAYER ID </th> <th> NAME </th> <th> BIRTHDAY </th> <th> POSITION </th>
-</tr>
-<tr>
 <td><input type="checkbox" name="checkbox" value="{{ player_id }}" /></td>
-<td> <a href="players/update/{{ player_id }}" > {{player_id}} </a></td>
-<td> <a href="players/update/{{ player_id }}" > {{ name }} </a></td>
-<td> <a href="players/update/{{ player_id }}" > {{ birthday }} </a> </td>
-<td> <a href="players/update/{{ player_id }}" > {{ position }} </td>
+<td> {{player_id}}</td>
+<td> {{ name }} </td>
+<td> {{ birthday }} </td>
+<td> {{ position }} </td>
+<td> <a href="update/{{ player_id }}" class="btn btn-info" role="button"> UPDATE </a> </td>
 </tr>
 {% endfor %}
 </table>
