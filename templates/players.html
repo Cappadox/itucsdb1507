@@ -3,8 +3,8 @@
 {% block content %}
 
 <form action = {{url_for('search_players') }} method="post">
-<input type = "text" name = "nametosearch">
-<input type = "submit" name = "searchbyname">
+<input type = "text" name = "nametosearch" placeholder="Enter the player name to search">
+<input type = "submit" name = "searchbyname" value ="Search">
 </form>
 <br>
 
