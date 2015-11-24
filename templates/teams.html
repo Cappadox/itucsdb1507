@@ -1,19 +1,26 @@
 {% extends "layout.html" %}
 {% block title %}Team{% endblock %}
 {% block content %}
-<form action ={{url_for('teams')}} method="post">
-  Team name:<br>
-  <input type="text" name="name"> <br>
-  League Id:<br>
-  <input type="number" name="league_id"> <br>
-  <input type="submit" value="ADD TEAM" name="add">
-</form>
 
-<table>
-{% for team_id, name, league_id in result %}
+
+<p> Click on values to update </p>
+<form action = {{url_for('delete_teams')}} method="post">
+<table class="table table-bordered table-striped">
 <tr>
-<td> {{ team_id }} {{ name }} {{ league_id }} </td>
+<TH></TH><th> TEAM ID </th> <th> NAME </th> <th> LEAGUE ID </th>
+</tr>
+{% for team_id, name, league_id in teams %}
+<tr>
+<td><input type="checkbox" name="checkbox" value="{{ team_id }}" /></td>
+<td> <a href="teams/update/{{ team_id }}" > {{ team_id }}</a> </td>
+<td> <a href="teams/update/{{ team_id }}" > {{ name }} </a></td>
+<td> <a href="teams/update/{{ team_id }}" > {{ league_id }} </a></td>
 </tr>
 {% endfor %}
+<br>
+<tr>
+</tr>
 </table>
+<input type="submit" value="DELETE" name ="delete">
+</form>
 {% endblock %}

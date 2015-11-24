@@ -2,27 +2,28 @@
 {% block title %}Officials{% endblock %}
 {% block content %}
 
-<table class="table table-bordered table-striped">
-	<td> Name </td>
-	<td> Age </td>
-	{% for key, official in officials %}
-		<tr>
-			<td> {{ official.name }} </td>
-			<td> {{ official.age }} </td>
-			<td><form action="{{ url_for('official_delete') }}" method="post" role="form">
-					<div class="form-group">
-						<input value="{{key}}" name="id" type="hidden" />
-						<input value="Delete Official" name="delete" type="submit" />
-					</div> <!-- End of form-group -->
-				
-				</form></td>
-		</tr>
-	{% endfor %}
-</table>
 <form action="{{ url_for('official_add') }}" method="post" role="form">
 	<div class="form-group">
 		<input value="Add New Official" name="Add" type="submit" /><br><br>
 	</div> <!-- End of form-group -->
+</form>
+<form action="{{ url_for('official_determine') }}" method="post" role="form">
+<table class="table table-bordered table-striped">
+	<td> Name </td>
+	<td> Age </td>
+	<td> Check to Update/Delete </td>
+	{% for key, official in officials %}
+		<tr>
+			<td> {{ official.name }} </td>
+			<td> {{ official.age }} </td>
+			<td><input type="checkbox" name="id" value="{{ key }}" /></td>
+		</tr>
+	{% endfor %}
+</table>
+	<div class="col-sm-10">
+		<input type="submit" value="Delete" name ="submit">
+		<input type="submit" value="Update" name ="submit">
+	</div>
 </form>
 
 {% endblock %}

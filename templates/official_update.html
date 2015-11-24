@@ -1,5 +1,5 @@
  {% extends "layout.html" %}
- {% block title %}Edit Official{% endblock %}
+ {% block title %}Update Official{% endblock %}
  {% block content %}
 	 <form action="{{ url_for('officials') }}" method="post" role="form">
 		 <div class="form-group">
@@ -7,9 +7,10 @@
 			  	<label class="control-label col-sm-2" for="name">Name</label>
 				<label class="control-label col-sm-2" for="name">Age</label>
 			  	<div class="col-sm-10">
+			  		<input type="hidden" name="id" value="{{id}}"/>
 					<input type="text" name="name" required autofocus />
 					<input type="text" name="age" required autofocus />	
-			 		<input value="Save" name="submit" type="submit" /><br><br>
+			 		<input value="Update" name="submit" type="submit" /><br><br>
 				</div>
 			</div>
 			</div> <!-- End of form-group -->

@@ -1,21 +1,24 @@
 {% extends "layout.html" %}
-{% block title %}Team{% endblock %}
+{% block title %}Players{% endblock %}
 {% block content %}
-<form action ={{url_for('players')}} method="post">
-  Player Name: <br>
-  <input type = "text" name="name"> <br>
-  Birthday:<br>
-  <input type="date" name="birthday"> <br>
-  Position:<br>
-  <input type="text" name="position"> <br>
-  <input type="submit" value="ADD PLAYER" name="add">
-</form>
 
-<table>
+
+<p> Click on values to update </p>
+<form action = {{url_for('delete_players') }} method="post">
+<table class="table table-bordered table-striped">
 {% for player_id, name, birthday, position in result %}
 <tr>
-<td> {{player_id}} {{ name }} {{ birthday }} {{ position }} </td>
+<th></th> <th> PLAYER ID </th> <th> NAME </th> <th> BIRTHDAY </th> <th> POSITION </th>
+</tr>
+<tr>
+<td><input type="checkbox" name="checkbox" value="{{ player_id }}" /></td>
+<td> <a href="players/update/{{ player_id }}" > {{player_id}} </a></td>
+<td> <a href="players/update/{{ player_id }}" > {{ name }} </a></td>
+<td> <a href="players/update/{{ player_id }}" > {{ birthday }} </a> </td>
+<td> <a href="players/update/{{ player_id }}" > {{ position }} </td>
 </tr>
 {% endfor %}
 </table>
+<input type="submit" value="DELETE" name ="delete">
+</form>
 {% endblock %}

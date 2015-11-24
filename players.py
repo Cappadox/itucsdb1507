@@ -29,13 +29,41 @@ class Players:
              cursor = connection.cursor()
              query = """ SELECT * FROM PLAYERS"""
              cursor.execute(query)
-             result = cursor.fetchall()
-             return result
+             players = cursor.fetchall()
+             return players
+
+    def get_player(self, player_id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+             cursor = connection.cursor()
+             query = """ SELECT * FROM PLAYERS WHERE PLAYER_ID = %s"""
+             cursor.execute(query, player_id)
+             player = cursor.fetchall()
+             return player
 
     def add_player(self, name, birthday, position):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
                 query = """ INSERT INTO PLAYERS (NAME, BIRTHDAY, POSITION) VALUES (%s, %s, %s) """
                 cursor.execute(query, (name, birthday, position))
+                connection.commit()
+
+    def update_player(self, player_id, name, birthday, position):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ UPDATE PLAYERS
+                        SET NAME = %s,
+                        BIRTHDAY = %s,
+                        POSITION = %s
+                        WHERE
+                        PLAYER_ID = %s """
+                cursor.execute(query, (name, birthday, position, player_id))
+                connection.commit()
+
+    def delete_player(self, player_id):
+         with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ DELETE FROM PLAYERS
+                        WHERE PLAYER_ID = %s """
+                cursor.execute(query, (player_id))
                 connection.commit()
 

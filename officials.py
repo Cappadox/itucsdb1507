@@ -36,8 +36,25 @@ class Officials:
                 cursor.execute("""
                     DELETE FROM OFFICIALS
                     WHERE OFFICIAL_ID = %s""",
-                    (id))
+                    id)
                 connection.commit()
+
+    def update_official(self, id, official):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ UPDATE OFFICIALS
+                        SET NAME = %s, AGE = %s
+                        WHERE OFFICIAL_ID = %s """
+                cursor.execute(query, (official.name, official.age, id))
+                connection.commit()
+
+    def get_official(self, id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query="""SELECT * FROM OFFICIALS WHERE OFFICIAL_ID = %s"""
+                cursor.execute(query, [id])
+                key,name,age = cursor.fetchone();
+                return name
 
     def get_officials(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
