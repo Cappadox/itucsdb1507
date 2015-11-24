@@ -1,7 +1,8 @@
 import psycopg2 as dbapi2
 
 class Fixture:
-    def __init__(self, season, team, points):
+    def __init__(self, fixture_id, season, team, points):
+        self.fixture_id = fixture_id
         self.season = season
         self.team = team
         self.points = points
@@ -16,8 +17,9 @@ class Fixtures:
                 cursor.execute("""
                     CREATE TABLE IF NOT EXISTS FIXTURES
                     (
-                    SEASON INTEGER NOT NULL,
-                    TEAM VARCHAR(50) NOT NULL,
+                    FIXTURE_ID SERIAL NOT NULL PRIMARY KEY,
+                    SEASON_ID INTEGER NOT NULL REFERENCES SEASONS(SEASON_ID),
+                    TEAM_ID INTEGER NOT NULL REFERENCES TEAMS(TEAM_ID),
                     POINTS INTEGER NOT NULL
                     )
                     """)
@@ -31,9 +33,18 @@ class Fixtures:
             result = cursor.fetchall()
             return result
 
-    def add_fixture(self, season, team, points):
+    def add_fixture(self, season_id, team_id, points):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
-                query = """ INSERT INTO FIXTURES (SEASON, TEAM, POINTS) VALUES (%s, %s, %s) """
-                cursor.execute(query, (season, team, points))
+                query = """ INSERT INTO FIXTURES (SEASON_ID, TEAM_ID, POINTS) VALUES (%s, %s, %s) """
+                cursor.execute(query, (season_id, team_id, points))
+                connection.commit()
+
+    def delete_fixture(self, id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                cursor.execute("""
+                    DELETE FROM FIXTURES
+                    WHERE FIXTURE_ID = %s""",
+                    id)
                 connection.commit()
