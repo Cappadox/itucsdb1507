@@ -59,6 +59,18 @@ class Matches:
                     id)
                 connection.commit()
 
+    def update_match(self, id, match):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ UPDATE MATCHES
+                        SET SEASON_ID = %s, HOME_ID = %s,
+                        VISITOR_ID = %s, OFFICIAL_ID = %s,
+                        RESULT = %s
+                        WHERE MATCH_ID = %s """
+                cursor.execute(query, (match.season_id, match.home_id,
+                                       match.away_id, match.official_id,
+                                       match.result, id))
+                connection.commit()
 
     def get_matches(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:

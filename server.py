@@ -111,13 +111,37 @@ def matches():
     if request.method == 'GET':
         return render_template('matches.html', matches = app.matches.get_matches())
     else:
-        season_id = request.form['seasonID']
-        home_id = request.form['homeID']
-        away_id = request.form['awayID']
-        official_id = request.form['officialID']
-        result = request.form['result']
-        match=Match(season_id,official_id,home_id,away_id,result)
-        app.matches.add_match(match)
+        if request.form['submit']=="Save":
+            season_id = request.form['seasonID']
+            home_id = request.form['homeID']
+            away_id = request.form['awayID']
+            official_id = request.form['officialID']
+            result = request.form['result']
+            match=Match(season_id,official_id,home_id,away_id,result)
+            app.matches.add_match(match)
+        else:
+            id = request.form['id']
+            season_id = request.form['seasonID']
+            home_id = request.form['homeID']
+            away_id = request.form['awayID']
+            official_id = request.form['officialID']
+            result = request.form['result']
+            match=Match(season_id,official_id,home_id,away_id,result)
+            app.matches.update_match(id,match)
+
+        return redirect(url_for('matches'))
+
+@app.route('/matches/', methods=['GET', 'POST'])
+def match_determine():
+    if request.form['submit'] == "Delete":
+        id = request.form['id']
+        form = request.form
+        form_data={id: form['id']}
+        return redirect(url_for('match_delete'), code=307 )
+    elif request.form['submit'] == "Update":
+        return render_template('match_update.html', id = request.form['id'], teams=app.teams.select_teams(),
+                             season=app.seasons.select_seasons(),officials=app.officials.get_officials() )
+    else:
         return redirect(url_for('matches'))
 
 @app.route('/matches/add', methods=['GET', 'POST'])
@@ -128,7 +152,7 @@ def match_add():
 @app.route('/matches/delete', methods=['GET', 'POST'])
 def match_delete():
     if request.method == 'GET':
-        return render_template_string("""You need to click delete button at the end of the desired official.
+        return render_template_string("""You need to click delete button at the end of the desired match.
                                             Return to the list of matches.
                                             <form action="{{ url_for('match') }}" method="get" role="form">
                                             <div class="form-group">
@@ -140,20 +164,50 @@ def match_delete():
         app.matches.delete_match(id)
         return redirect(url_for('matches'))
 
+@app.route('/matches/update', methods=['GET', 'POST'])
+def match_update():
+    if request.method == 'GET':
+        return render_template('matches.html', matches = app.matches.get_matches())
+    else:
+        return render_template('official_update.html', id = request.form['id'])
+
 '''Officials Pages'''
 @app.route('/officials', methods=['GET', 'POST'])
 def officials():
     if request.method == 'GET':
         return render_template('officials.html', officials = app.officials.get_officials())
     else:
-        name = request.form['name']
-        age = request.form['age']
-        app.officials.add_official(name, age)
+        if request.form['submit']=="Save":
+            name = request.form['name']
+            age = request.form['age']
+            app.officials.add_official(name, age)
+        else:
+            id = request.form['id']
+            name = request.form['name']
+            age = request.form['age']
+            official = Official(name,age)
+            app.officials.update_official(id, official)
+
         return redirect(url_for('officials'))
 
 @app.route('/officials/add', methods=['GET', 'POST'])
 def official_add():
      return render_template('official_edit.html')
+
+@app.route('/officials/', methods=['GET', 'POST'])
+def official_determine():
+    if request.form['submit'] == "Delete":
+        id = request.form['id']
+        form = request.form
+        form_data={id: form['id']}
+        return redirect(url_for('official_delete'), code=307 )
+    elif request.form['submit'] == "Update":
+        id = request.form['id']
+        form = request.form
+        form_data={id: form['id']}
+        return redirect(url_for('official_update'), code=307 )
+    else:
+        return redirect(url_for('officials'))
 
 @app.route('/officials/delete', methods=['GET', 'POST'])
 def official_delete():
@@ -169,6 +223,13 @@ def official_delete():
         id = request.form['id']
         app.officials.delete_official(id)
         return redirect(url_for('officials'))
+
+@app.route('/officials/update', methods=['GET', 'POST'])
+def update_official():
+    if request.method == 'GET':
+        return render_template('officials.html', officials = app.officials.get_officials())
+    else:
+        return render_template('official_update.html', id = request.form['id'])
 
 '''Leagues Pages'''
 @app.route('/leagues', methods=['GET', 'POST'])

@@ -1,5 +1,5 @@
  {% extends "layout.html" %}
- {% block title %}Edit Matches{% endblock %}
+ {% block title %}Update Matches{% endblock %}
  {% block content %}
 	 <form action="{{ url_for('matches') }}" method="post" role="form">
 		<div class="form-group">
@@ -64,8 +64,9 @@
 		</div><!-- End of form-group -->
 		<div class="form-group col-sm-8">
 		    <div class="pull-right">
-		      	<input value="Save" name="submit" type="submit" />
+		      	<input value="Update" name="submit" type="submit" />
 		    </div>
 		 </div> <!-- End of form-group -->
+		 <input type="hidden" name="id" value="{{id}}"/>
 	  </form>
  {% endblock %}
