@@ -320,6 +320,13 @@ def players():
         app.players.add_player(name, birthday, position)
     return redirect(url_for('players'))
 
+@app.route('/players/search', methods = ['GET', 'POST'])
+def search_players():
+    if request.method == 'GET':
+        return redirect(url_for('players_search.html'))
+    else:
+        searchname = request.form['searchname']
+        return render_template('players_search.html', players = app.players.search_player(searchname))
 
 @app.route('/players/add', methods=['GET', 'POST'])
 def add_players():
@@ -493,7 +500,7 @@ if __name__ == '__main__':
     if VCAP_SERVICES is not None:
         app.config['dsn'] = get_elephantsql_dsn(VCAP_SERVICES)
     else:
-          app.config['dsn'] = """user='postgres' password='12345678'
-                               host='localhost' port=5432 dbname='postgres'"""
+          app.config['dsn'] = """user='vagrant' password='vagrant'
+-                               host='localhost' port=54321 dbname='itucsdb'"""
 
     app.run(host='0.0.0.0', port=port, debug=debug)
