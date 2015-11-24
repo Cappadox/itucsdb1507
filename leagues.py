@@ -52,7 +52,20 @@ class Leagues:
             cursor.execute(query)
             connection.commit()
 
-            leagues = [(key, League(name, abbreviation, countryID))
-                        for key, name, abbreviation, countryID in cursor]
+            leagues = [(key, League(name, abbreviation, country_id))
+                        for key, name, abbreviation, country_id in cursor]
 
             return leagues
+
+    def search_leagues(self, search_terms):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+            cursor = connection.cursor()
+            query="""SELECT * FROM LEAGUES WHERE NAME LIKE '%s' ORDER BY NAME""" % (('%'+search_terms+'%'))
+            cursor.execute(query)
+            connection.commit()
+            leagues = [(key, League(name, abbreviation, country_id))
+                        for key, name, abbreviation, country_id in cursor]
+
+            return leagues
+
+

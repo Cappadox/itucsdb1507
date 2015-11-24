@@ -96,6 +96,9 @@ def countries():
             id = request.form['id']
             app.countries.delete_country(id)
             return render_template('countries.html', countries = app.countries.get_countries())
+        elif 'Search' in request.form:
+            search_terms = request.form['search_terms']
+            return render_template('countries.html', countries = app.countries.search_countries(search_terms))
 
 
 @app.route('/countries/add')
@@ -301,6 +304,10 @@ def leagues():
             id = request.form['id']
             app.leagues.delete_league(id)
             return render_template('leagues.html', leagues = app.leagues.get_leagues())
+        elif 'Search' in request.form:
+            search_terms = request.form['search_terms']
+            return render_template('leagues.html', leagues = app.leagues.search_leagues(search_terms))
+
 
 
 @app.route('/leagues/add')
@@ -492,7 +499,7 @@ if __name__ == '__main__':
     if VCAP_SERVICES is not None:
         app.config['dsn'] = get_elephantsql_dsn(VCAP_SERVICES)
     else:
-          app.config['dsn'] = """user='postgres' password='12345678'
-                               host='localhost' port=5432 dbname='postgres'"""
+        app.config['dsn'] = """user='vagrant' password='vagrant'
+        host='localhost' port=54321 dbname='itucsdb'"""
 
     app.run(host='0.0.0.0', port=port, debug=debug)
