@@ -320,11 +320,33 @@ def statistics():
     if request.method == 'GET':
         return render_template('statistics.html', result = app.statistics.get_statistics())
     else:
-        season = request.form['season']
-        playerName = request.form['playerName']
-        receptions = request.form['receptions']
-        receivingyards = request.form['receivingyards']
-        app.statistics.add_statistic(season, playerName, receptions, receivingyards)
+        season = request.form['season_id']
+        team = request.form['team_id']
+        touchdowns = request.form['touchdowns']
+        rushingYards = request.form['rushingYards']
+        app.statistics.add_statistic(season, team, touchdowns, rushingYards)
+    return render_template('statistics.html', result = app.statistics.get_statistics())
+
+
+@app.route('/statistics/add', methods = ['GET', 'POST'])
+def add_statistic():
+    if request.method == 'GET':
+        return render_template('statistic_add.html', team=app.teams.select_teams(), season=app.seasons.select_seasons(), result = app.statistics.get_statistics())
+    else:
+        season = request.form['season_id']
+        team = request.form['team_id']
+        touchdowns = request.form['touchdowns']
+        rushingYards = request.form['rushingYards']
+        app.statistics.add_statistic(season, team, touchdowns, rushingYards)
+    return redirect(url_for('add_statistic'))
+
+@app.route('/statistics/delete', methods = ['GET', 'POST'])
+def delete_statistic():
+    if request.method == 'GET':
+        return render_template('statistics.html', result = app.statistics.get_statistics())
+    else:
+        id = request.form['id']
+        app.statistics.delete_statistic(id)
     return redirect(url_for('statistics'))
 
 
