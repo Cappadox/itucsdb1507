@@ -6,7 +6,11 @@
   Team name:<br>
   <input type="text" name="name" required autofocus> <br>
   League Id:<br>
-  <input type="number" name="league_id" required autofocus> <br>
+  <select name = "league_id">
+  {% for key, league in leagues %}
+  <option value = "{{key}}">{{key}} - {{ league.name }} </option>
+  {% endfor %}
+  </select> <br>
   <br>
   <input type="submit" value="ADD TEAM" name="add">
 </form>

@@ -470,7 +470,7 @@ def search_teams():
 
 @app.route('/teams/add', methods=['GET', 'POST'])
 def add_teams():
-    return render_template('teams_add.html')
+    return render_template('teams_add.html', leagues = app.leagues.get_leagues())
 
 @app.route('/teams/update/<team_id>', methods=['GET', 'POST'])
 def update_teams(team_id):
