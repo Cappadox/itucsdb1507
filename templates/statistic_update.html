@@ -2,8 +2,19 @@
  {% block title %}Statistics{% endblock %}
  {% block content %}
 
+<form action="{{ url_for('add_statistic') }}" method="get" role="form">
+	<div class="form-group col-sm-14">
+		<div class="pull-left">
+			<input value="Back to Edit Statistics" name="submit" type="submit" />
+		</div>
+	</div>
+</form>
+
+<br><br>
+
 <h2>Update</h2>
 
+<br>
 <br>
 
 <form  action ={{url_for('update_statistic')}} method="post" type="form">
@@ -51,7 +62,7 @@
 	<form action="{{ url_for('update_statistic') }}" method="get" role="form">
 			<div class="form-group col-sm-14">
 				<div class="pull-left">
-					<input value="Update Statistics Page" name="submit" type="submit" />
+					<input value="Update" name="submit" type="submit" />
 				</div>
 			</div>
 	</form>
