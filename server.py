@@ -219,7 +219,9 @@ def official_add():
 
 @app.route('/officials/', methods=['GET', 'POST'])
 def official_determine():
-    if request.form['submit'] == "Delete":
+    if request.form['submit'] == "Search":
+        return redirect(url_for('search_official'))
+    elif request.form['submit'] == "Delete":
         id = request.form['id']
         form = request.form
         form_data={id: form['id']}
@@ -246,6 +248,14 @@ def official_delete():
         id = request.form['id']
         app.officials.delete_official(id)
         return redirect(url_for('officials'))
+
+@app.route('/officials/search', methods=['GET', 'POST'])
+def search_official():
+    if request.method == 'GET':
+        return render_template('official_search.html')
+    else:
+        name = request.form['name']
+        return render_template('official_search.html',result=app.officials.search_officials(name))
 
 @app.route('/officials/update', methods=['GET', 'POST'])
 def update_official():
