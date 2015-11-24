@@ -1,0 +1,72 @@
+ {% extends "layout.html" %}
+ {% block title %}Update Matches{% endblock %}
+ {% block content %}
+	 <form action="{{ url_for('matches') }}" method="post" role="form">
+		<div class="form-group">
+			<div class="row">
+				<label class="control-label col-sm-2" for="abbreviation">Home Team:</label>
+			  	<div class="col-sm-6">
+					<select name="homeID" class="form-control"">
+						{% for team_id, name, league_id in teams %}
+					        <option value="{{team_id}}">{{ name }}</option>
+						{% endfor %}
+				    </select>
+				</div>
+			</div>
+		</div><!-- End of form-group -->
+		<div class="form-group">
+			<div class="row">
+				<label class="control-label col-sm-2" for="abbreviation">Away Team:</label>
+			  	<div class="col-sm-6">
+					<select name="awayID" class="form-control"">
+						{% for team_id, name, league_id in teams %}
+					        <option value="{{team_id}}">{{ name }}</option>
+						{% endfor %}
+				    </select>
+				</div>
+			</div>
+		</div><!-- End of form-group -->
+		<div class="form-group">
+			<div class="row">
+				<label class="control-label col-sm-2" for="abbreviation">Season:</label>
+			  	<div class="col-sm-6">
+					<select name="seasonID" class="form-control"">
+						{% for season_id, year in season %}
+					        <option value="{{season_id}}">{{ year }}</option>
+						{% endfor %}
+				    </select>
+				</div>
+			</div>
+		</div><!-- End of form-group -->
+		<div class="form-group">
+			<div class="row">
+				<label class="control-label col-sm-2" for="abbreviation">Official:</label>
+			  	<div class="col-sm-6">
+					<select name="officialID" class="form-control"">
+						{% for key, official in officials %}
+					        <option value="{{key}}">{{ official.name }}</option>
+						{% endfor %}
+				    </select>
+				</div>
+			</div>
+		</div><!-- End of form-group -->
+		<div class="form-group">
+			<div class="row">
+				<label class="control-label col-sm-2" for="abbreviation">Result:</label>
+			  	<div class="col-sm-6">
+					<select name="result" class="form-control"">
+					        <option value="Draw">Draw</option>
+					        <option value="Home Win">Home Win</option>
+					        <option value="Away Win">Away Win</option>
+				    </select>
+				</div>
+			</div>
+		</div><!-- End of form-group -->
+		<div class="form-group col-sm-8">
+		    <div class="pull-right">
+		      	<input value="Update" name="submit" type="submit" />
+		    </div>
+		 </div> <!-- End of form-group -->
+		 <input type="hidden" name="id" value="{{id}}"/>
+	  </form>
+ {% endblock %}

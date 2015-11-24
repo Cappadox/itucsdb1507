@@ -40,6 +40,22 @@
 								<li><a href="{{ url_for('leagues_edit') }}">Add League</a></li>
 							</ul>
 						</li>
+						<!-- Matches -->
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown" role="button">Matches<span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="{{ url_for('matches')}}">Show Matches</a></li>
+								<li><a href="{{ url_for('match_add') }}">Add Matches</a></li>
+							</ul>
+						</li>
+						<!-- Officials -->
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown" role="button">Officials<span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="{{ url_for('officials')}}">Show Officials</a></li>
+								<li><a href="{{ url_for('official_add') }}">Add Official</a></li>
+							</ul>
+						</li>
 						<!-- Players -->
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown" role="button">Players<span class="caret"></span></a>
@@ -67,6 +83,7 @@
 			<!-- /.container-fluid -->
 		</nav>
 	</header>
+	<br><br>
 	<div class="container">
 		{% block content %}{% endblock %}
 	</div>
