@@ -96,6 +96,9 @@ def countries():
             id = request.form['id']
             app.countries.delete_country(id)
             return render_template('countries.html', countries = app.countries.get_countries())
+        elif 'Search' in request.form:
+            search_terms = request.form['search_terms']
+            return render_template('countries.html', countries = app.countries.search_countries(search_terms))
 
 
 @app.route('/countries/add')
@@ -288,7 +291,8 @@ def search_official():
         return render_template('official_search.html')
     else:
         name = request.form['name']
-        return render_template('official_search.html',result=app.officials.search_officials(name))
+        id = request.form['id']
+        return render_template('official_search.html',result=app.officials.search_officials(name, id))
 
 @app.route('/officials/update', methods=['GET', 'POST'])
 def update_official():
@@ -313,6 +317,10 @@ def leagues():
             id = request.form['id']
             app.leagues.delete_league(id)
             return render_template('leagues.html', leagues = app.leagues.get_leagues())
+        elif 'Search' in request.form:
+            search_terms = request.form['search_terms']
+            return render_template('leagues.html', leagues = app.leagues.search_leagues(search_terms))
+
 
 
 @app.route('/leagues/add')
@@ -451,6 +459,14 @@ def teams():
         league_id = request.form['league_id']
         app.teams.add_team(name,league_id)
     return redirect(url_for('teams'))
+
+@app.route('/teams/search', methods = ['GET', 'POST'])
+def search_teams():
+    if request.method == 'GET':
+        return redirect(url_for('teams_search.html'))
+    else:
+        searchname = request.form['nametosearch']
+        return render_template('teams_search.html', teams = app.teams.search_team(searchname))
 
 @app.route('/teams/add', methods=['GET', 'POST'])
 def add_teams():

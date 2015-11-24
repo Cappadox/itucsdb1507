@@ -67,3 +67,13 @@ class Countries:
                         for key, name, abbreviation in cursor]
 
             return countries
+
+    def search_countries(self, search_terms):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+            cursor = connection.cursor()
+            query="""SELECT * FROM COUNTRIES WHERE NAME LIKE '%s' ORDER BY NAME""" % (('%'+search_terms+'%'))
+            cursor.execute(query)
+            connection.commit()
+            countries = [(key, Country(name, abbreviation))
+                        for key, name, abbreviation in cursor]
+            return countries

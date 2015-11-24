@@ -1,11 +1,21 @@
 {% extends "layout.html" %}
 {% block title %}Leagues{% endblock %}
 {% block content %}
-
+<div class="page-header">
+  		<h1>Leagues <small>List of all leagues</small></h1>
+</div>
 <table class="table table-bordered table-striped">
+		<tr>
+			<th>Name</th>
+			<th>Abbreviation</th>
+			<th>Country ID</th>
+			<th>Delete</th>
+			<th>Update</th>
+		</tr>
 	{% for key, league in leagues %}
 		<tr>
 			<td> {{ league.name }} </td>
+			<td> {{ league.abbreviation }}</td>
 			<td> {{ league.countryID }}</td>
 			<td class="col-sm-1">
 				<form action="{{ url_for('leagues') }}" method="post" role="form">
@@ -16,5 +26,10 @@
 		</tr>
 	{% endfor %}
 </table>
-
+<form action="{{ url_for('leagues') }}" method="post" class="form-inline pull-right">
+	<div class="form-group">
+	    <input type="text" name="search_terms" class="form-control" placeholder="Enter search terms">
+	</div>
+	<input value="Search" name="Search" type="submit" />
+</form>
 {% endblock %}

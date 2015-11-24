@@ -11,12 +11,12 @@
 </tr>
 {% for player_id, name, birthday, position in players %}
 <tr>
-<td><input type="checkbox" name="checkbox" value="{{ player_id }}" /></td>
+<td><input type="checkbox" name="checkbox" /></td>
 <td> {{player_id}}</td>
 <td> {{ name }} </td>
 <td> {{ birthday }} </td>
 <td> {{ position }} </td>
-<td> <a href="update/{{ player_id }}" class="btn btn-info" role="button"> UPDATE </a> </td>
+<td> <a href="update/{{ player_id }}" style="text-decoration:none;" class="btn btn-danger" role="button"> UPDATE </a> </td>
 </tr>
 {% endfor %}
 </table>
