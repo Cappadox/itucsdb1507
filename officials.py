@@ -72,7 +72,7 @@ class Officials:
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
             query="""SELECT * FROM OFFICIALS
-                    WHERE NAME LIKE '%s'""" % ((name+'%'))
+                    WHERE NAME LIKE '%s'""" % (('%'+name+'%'))
             cursor.execute(query)
             connection.commit()
             print(name)

@@ -196,7 +196,9 @@ def official_add():
 
 @app.route('/officials/', methods=['GET', 'POST'])
 def official_determine():
-    if request.form['submit'] == "Delete":
+    if request.form['submit'] == "Search":
+        return redirect(url_for('search_official'))
+    elif request.form['submit'] == "Delete":
         id = request.form['id']
         form = request.form
         form_data={id: form['id']}
