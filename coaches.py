@@ -42,3 +42,10 @@ class Coaches2:
                 query = """ DELETE FROM COACHES WHERE COACH_ID =%s """
                 cursor.execute(query, [id])
                 connection.commit()
+
+    def update_coach(self, coach_id, name, birthday):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ UPDATE COACHES SET NAME = %s, BIRTHDAY= %s WHERE COACH_ID = %s """
+                cursor.execute(query, (name,birthday,coach_id))
+                connection.commit()

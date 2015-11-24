@@ -58,6 +58,12 @@ def coaches():
             id = request.form['id']
             app.coaches.delete_coach(id)
             return redirect(url_for('coaches'))
+        elif 'Update' in request.form:
+            id = request.form['id']
+            name = request.form['coachNUpdate']
+            birthday = request.form['coachBUpdate']
+            app.coaches.update_coach(id,name,birthday )
+            return redirect(url_for('coaches'))
         else:
             return render_template('coaches.html', result = app.coaches.select_coaches())
 
@@ -68,10 +74,8 @@ def coaching():
         return render_template('coaching.html', result = app.coaching.select_coaching())
     else:
         if 'Add' in request.form:
-
             return redirect(url_for('coaching'))
         elif 'Delete' in request.form:
-
             return redirect(url_for('coaching'))
         else:
             return render_template('coaching.html', result = app.coaching.select_coaching())
@@ -290,7 +294,7 @@ def delete_players():
 @app.route('/seasons', methods=['GET', 'POST'])
 def seasons():
     if request.method == 'GET':
-        return render_template('seasons.html', result = app.seasons.select_seasons())
+           return render_template('seasons.html', result = app.seasons.select_seasons())
     else:
         if 'Add' in request.form:
             year = request.form['seasonYear']
@@ -300,6 +304,14 @@ def seasons():
             id = request.form['id']
             app.seasons.delete_season(id)
             return redirect(url_for('seasons'))
+        elif 'Update' in request.form:
+            id = request.form['id']
+            year = request.form['seasonUpdate']
+            app.seasons.update_season(id,year)
+            return redirect(url_for('seasons'))
+        elif 'Search' in request.form:
+            year = request.form['seasonSearch']
+            return render_template('seasons.html', result = app.seasons.search_season(year))
         else:
             return render_template('seasons.html', result = app.seasons.select_seasons())
 
