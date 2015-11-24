@@ -291,7 +291,8 @@ def search_official():
         return render_template('official_search.html')
     else:
         name = request.form['name']
-        return render_template('official_search.html',result=app.officials.search_officials(name))
+        id = request.form['id']
+        return render_template('official_search.html',result=app.officials.search_officials(name, id))
 
 @app.route('/officials/update', methods=['GET', 'POST'])
 def update_official():
