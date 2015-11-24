@@ -72,6 +72,5 @@ class Players:
                 cursor = connection.cursor()
                 query = """ SELECT * FROM PLAYERS WHERE NAME = %s """
                 cursor.execute(query, (name))
-
                 players = cursor.fetchall()
                 return players
