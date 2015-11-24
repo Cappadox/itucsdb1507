@@ -1,14 +1,30 @@
 {% extends "layout.html" %}
 {% block title %}Countries{% endblock %}
 {% block content %}
-
-<table class="table table-bordered table-striped">
+<div class="page-header">
+  		<h1>Countries <small>List of all countries</small></h1>
+	</div>
+<div class=col-sm-6">
+<table class="table table-bordered table-striped table-hover 8">
+	 <tr>
+	   <th>Name</th>
+	   <th>Abbreviation</th>
+	 </tr>
 	{% for key, country in countries %}
-		<tr>
-			<td> {{ country.name }} </td>
-			<td> {{ country.abbreviation }} </td>
+		<tr >
+			<td class="col-sm-7"> {{ country.name }} </td>
+			<td class="col-sm-3"> {{ country.abbreviation }} </td>
+			<td class="col-sm-1">
+				<form action="{{ url_for('countries') }}" method="post" role="form">
+					<input value="{{key}}" name="id" type="hidden" />
+					<input value="Delete" name="Delete" type="submit" />
+				</form>
+			</td>
+			<td class="col-sm-1">
+				<a href="{{url_for('country_edit', country_id=key )}}"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span</a>
+			</td>
 		</tr>
 	{% endfor %}
 </table>
-
+</div>
 {% endblock %}

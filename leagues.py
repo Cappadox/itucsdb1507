@@ -23,6 +23,7 @@ class Leagues:
                         CONSTRAINT LEAGUES_COUNTRIES
                             FOREIGN KEY (COUNTRY_ID)
                             REFERENCES COUNTRIES (COUNTRY_ID)
+                            ON DELETE RESTRICT
                     );
                     """)
 
@@ -37,6 +38,12 @@ class Leagues:
                     (league.name, league.abbreviation, league.countryID))
                 connection.commit()
 
+    def delete_league(self, id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ DELETE FROM LEAGUES WHERE LEAGUE_ID =%s """
+                cursor.execute(query, [id])
+                connection.commit()
 
     def get_leagues(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
