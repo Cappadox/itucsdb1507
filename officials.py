@@ -44,7 +44,7 @@ class Officials:
                 cursor = connection.cursor()
                 query = """ UPDATE OFFICIALS
                         SET NAME = %s, AGE = %s
-                        WHERE OFFICIAL_ID = %s """
+                        WHERE OFFICIAL_ID = %s"""
                 cursor.execute(query, (official.name, official.age, id))
                 connection.commit()
 
@@ -59,7 +59,8 @@ class Officials:
     def get_officials(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
-            query="""SELECT * FROM OFFICIALS"""
+            query="""SELECT * FROM OFFICIALS
+                        ORDER BY OFFICIAL_ID ASC"""
             cursor.execute(query)
             connection.commit()
 
@@ -72,7 +73,8 @@ class Officials:
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
             query="""SELECT * FROM OFFICIALS
-                    WHERE NAME LIKE '%s'""" % (('%'+name+'%'))
+                    WHERE NAME LIKE '%s'
+                    ORDER BY OFFICIAL_ID ASC""" % (('%'+name+'%'))
             cursor.execute(query)
             connection.commit()
             print(name)
