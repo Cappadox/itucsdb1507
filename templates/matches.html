@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block title %}Matches{% endblock %}
+{% block content %}
+
+<form action="{{ url_for('match_add') }}" method="post" role="form">
+	<div class="form-group">
+		<input value="Add New Match" name="Add" type="submit" /><br><br>
+	</div> <!-- End of form-group -->
+</form>
+<form action = {{url_for('match_delete')}} method="post">
+<table class="table table-bordered table-striped">
+	<tr>
+		<td> Home Team </td>
+		<td> Away Team </td>
+		<td> Result </td>
+		<td> Season </td>
+		<td> Official </td>
+		<td> Check to Delete </td>
+	</tr>
+	{% for key, match in matches %}
+		<tr>
+			<td> {{ match.home_team }} </td>
+			<td> {{ match.away_team }} </td>
+			<td> {{ match.result }} </td>
+			<td> {{ match.season }} </td>
+			<td> {{ match.official_name }} </td>
+			<td><input type="checkbox" name="id" value="{{ key }}" /></td>
+		</tr>
+	{% endfor %}
+</table>
+<input type="submit" value="DELETE" name ="delete">
+</form>
+
+{% endblock %}

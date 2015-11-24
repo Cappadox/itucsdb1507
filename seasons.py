@@ -19,6 +19,15 @@ class Seasons2:
                 ) """)
                 connection.commit()
 
+    def get_season(self, id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+             cursor = connection.cursor()
+             query = """ SELECT * FROM SEASONS
+                         WHERE SEASON_ID = %s"""
+             cursor.execute(query,[id])
+             season_id,year = cursor.fetchone()
+             return year
+
     def select_seasons(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
              cursor = connection.cursor()

@@ -105,6 +105,40 @@ def fixtures():
         app.fixtures.add_fixture(season, team, points)
     return redirect(url_for('fixtures'))
 
+'''Matches Pages'''
+@app.route('/matches', methods=['GET', 'POST'])
+def matches():
+    if request.method == 'GET':
+        return render_template('matches.html', matches = app.matches.get_matches())
+    else:
+        season_id = request.form['seasonID']
+        home_id = request.form['homeID']
+        away_id = request.form['awayID']
+        official_id = request.form['officialID']
+        result = request.form['result']
+        match=Match(season_id,official_id,home_id,away_id,result)
+        app.matches.add_match(match)
+        return redirect(url_for('matches'))
+
+@app.route('/matches/add', methods=['GET', 'POST'])
+def match_add():
+     return render_template('matches_edit.html', teams=app.teams.select_teams(),
+                             season=app.seasons.select_seasons(),officials=app.officials.get_officials())
+
+@app.route('/matches/delete', methods=['GET', 'POST'])
+def match_delete():
+    if request.method == 'GET':
+        return render_template_string("""You need to click delete button at the end of the desired official.
+                                            Return to the list of matches.
+                                            <form action="{{ url_for('match') }}" method="get" role="form">
+                                            <div class="form-group">
+                                            <input value="Return" name="Return" type="submit" /><br><br>
+                                            </div> <!-- End of form-group -->
+                                            </form>""")
+    else:
+        id = request.form['id']
+        app.matches.delete_match(id)
+        return redirect(url_for('matches'))
 
 '''Officials Pages'''
 @app.route('/officials', methods=['GET', 'POST'])
@@ -292,8 +326,8 @@ if __name__ == '__main__':
     app.countries = Countries(app)
     app.leagues = Leagues(app)
     app.officials = Officials(app)
-    app.matches = Matches(app)
     app.seasons = Seasons2(app)
+    app.matches = Matches(app)
     app.statistics = Statistics(app)
     app.fixtures = Fixtures(app)
 

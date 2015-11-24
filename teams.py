@@ -38,8 +38,17 @@ class Teams:
              cursor = connection.cursor()
              query = """ SELECT * FROM TEAMS WHERE TEAM_ID = %s"""
              cursor.execute(query, team_id)
+             connection.commit()
              team = cursor.fetchall()
              return team
+
+    def get_team_name(self, team_id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+             cursor = connection.cursor()
+             query = """ SELECT * FROM TEAMS WHERE TEAM_ID = %s"""
+             cursor.execute(query, [team_id])
+             key,name,league = cursor.fetchone()
+             return name
 
     def add_team(self, name, league_id):
         with dbapi2.connect(self.app.config['dsn']) as connection:
