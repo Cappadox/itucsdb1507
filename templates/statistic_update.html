@@ -1,0 +1,72 @@
+ {% extends "layout.html" %}
+ {% block title %}Statistics{% endblock %}
+ {% block content %}
+
+<form action="{{ url_for('add_statistic') }}" method="get" role="form">
+	<div class="form-group col-sm-14">
+		<div class="pull-left">
+			<input value="Back to Edit Statistics" name="submit" type="submit" />
+		</div>
+	</div>
+</form>
+
+<br><br>
+
+<h2>Update</h2>
+
+<br>
+<br>
+
+<form  action ={{url_for('update_statistic')}} method="post" type="form">
+	<table class="table table-bordered table-striped">
+		<tr>
+		    <th></th>
+		    <th>Season</th>
+		    <th>Team </th>
+		    <th>Touchdowns </th>
+		    <th>Receiving Yards</th>
+		 </tr>
+		{% for statistic_id, season, team, touchdowns, rushingYards in result %}
+		<tr>
+			<td><input type="checkbox" name="statistic_id" value="{{ statistic_id }}" /></td>
+			<td> {{ season }} </td>
+			<td> {{ team }} </td>
+			<td> {{ touchdowns }} </td>
+			<td> {{ rushingYards }} </td>
+		</tr>
+		{% endfor %}
+		<tr>
+			<td></td>
+			<td>
+				<select name="season_id" class="form-control"">
+					{% for season_id, year in season %}
+						<option value="{{season_id}}">{{ year }}</option>
+					{% endfor %}
+				</select>
+			</td>
+			<td>
+				<select name="team_id" class="form-control"">
+					{% for team_id, name, league_id in team %}
+						<option value="{{team_id}}">{{ name }}</option>
+					{% endfor %}
+				</select>
+			</td>
+			<td>
+				<input type="number" name="touchdowns" class="form-control" required autofocus>
+			</td>
+			<td>
+				<input type="number" name="rushingYards" class="form-control" required autofocus>
+			</td>
+		</tr>
+	</table>
+	<form action="{{ url_for('update_statistic') }}" method="get" role="form">
+			<div class="form-group col-sm-14">
+				<div class="pull-left">
+					<input value="Update" name="submit" type="submit" />
+				</div>
+			</div>
+	</form>
+</form>
+
+
+{% endblock %}

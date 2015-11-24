@@ -75,7 +75,8 @@ class Matches:
     def get_matches(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
-            query="""SELECT * FROM MATCHES"""
+            query="""SELECT * FROM MATCHES
+                    ORDER BY MATCH_ID ASC"""
             cursor.execute(query)
             connection.commit()
 

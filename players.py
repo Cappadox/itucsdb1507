@@ -67,3 +67,10 @@ class Players:
                 cursor.execute(query, (player_id))
                 connection.commit()
 
+    def search_player(self, name):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ SELECT * FROM PLAYERS WHERE NAME = %s """
+                cursor.execute(query, [name])
+                players = cursor.fetchall()
+                return players

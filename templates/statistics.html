@@ -3,17 +3,18 @@
 {% block content %}
 
 <form action="{{ url_for('add_statistic') }}" method="get" role="form">
-	<div class="form-group col-sm-8">
+	<div class="form-group col-sm-14">
 		<div class="pull-right">
-			<input value="Edit" name="submit" type="submit" />
+			<input value="Edit Statistics" name="submit" type="submit" />
 		</div>
 	</div>
 </form>
-
+<br>
+<br>
 <table class="table table-bordered table-striped">
 		<tr>
 		    <th>Season</th>
-		    <th>Player Name </th>
+		    <th>Team </th>
 		    <th>Touchdowns </th>
 		    <th>Receiving Yards</th>
 		 </tr>

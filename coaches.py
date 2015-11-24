@@ -24,7 +24,7 @@ class Coaches2:
     def select_coaches(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
              cursor = connection.cursor()
-             query = """ SELECT * FROM COACHES ORDER BY SEASON_ID ASC"""
+             query = """ SELECT * FROM COACHES ORDER BY COACH_ID ASC"""
              cursor.execute(query)
              result = cursor.fetchall()
              return result
