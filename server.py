@@ -92,18 +92,41 @@ def countries():
 def countries_edit():
      return render_template('country_edit.html')
 
-
+'''*******************************************************************************************************'''
 '''Fixtures Pages'''
 @app.route('/fixtures', methods = ['GET', 'POST'])
 def fixtures():
     if request.method == 'GET':
         return render_template('fixtures.html', result = app.fixtures.get_fixtures())
     else:
-        season = request.form['season']
-        team = request.form['team']
+        season = request.form['season_id']
+        team = request.form['team_id']
         points = request.form['points']
         app.fixtures.add_fixture(season, team, points)
-    return redirect(url_for('fixtures'))
+    return render_template('fixtures.html', result = app.fixtures.get_fixtures())
+
+
+@app.route('/fixtures/edit', methods = ['GET', 'POST'])
+def add_fixture():
+    if request.method == 'GET':
+        return render_template('fixture_add.html', team=app.teams.select_teams(), season=app.seasons.select_seasons(), result = app.fixtures.get_fixtures())
+    else:
+        season = request.form['season_id']
+        team = request.form['team_id']
+        points = request.form['points']
+        app.fixtures.add_fixture(season, team, points)
+    return redirect(url_for('add_fixture'))
+
+@app.route('/fixtures/delete', methods = ['GET', 'POST'])
+def delete_fixture():
+    if request.method == 'GET':
+        return render_template('fixtures.html', result = app.fixtures.get_fixtures())
+    else:
+        id = request.form['id']
+        app.fixtures.delete_fixture(id)
+    return redirect(url_for('add_fixture'))
+
+'''*******************************************************************************************************'''
 
 '''Matches Pages'''
 @app.route('/matches', methods=['GET', 'POST'])
@@ -337,7 +360,7 @@ def delete_statistic():
     else:
         id = request.form['id']
         app.statistics.delete_statistic(id)
-    return redirect(url_for('statistics'))
+    return redirect(url_for('add_statistic'))
 
 
 '''Team pages'''

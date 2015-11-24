@@ -2,31 +2,28 @@
 {% block title %}Fixtures{% endblock %}
 {% block content %}
 
-<h1>Fixtures Page</h1>
-
-<form  action ={{url_for('fixtures')}} method="post">
-  Season:<br>
-  <input type="text" name="season"><br><br>
-  Team:<br>
-  <input type="text" name="team"><br><br>
-  Points:<br>
-  <input type="text" name="points"><br><br>
-  <input type="submit" value="Add" name="Add">
+<form action="{{ url_for('add_fixture') }}" method="get" role="form">
+	<div class="form-group col-sm-14">
+		<div class="pull-right">
+			<input value="Edit Fixtures" name="submit" type="submit" />
+		</div>
+	</div>
 </form>
 <br>
+<br>
 <table class="table table-bordered table-striped">
-<tr>
-    <th>Season</th>
-    <th>Team</th>
-    <th>Points</th>
- </tr>
-{% for season, team, points in result %}
-<tr>
-	<td> {{ season }} </td>
-	<td> {{ team }} </td>
-	<td> {{ points }} </td>
-</tr>
-{% endfor %}
-</table>
+		<tr>
+		    <th>Season</th>
+		    <th>Team </th>
+		    <th>Points</th>
+		 </tr>
+		{% for fixture_id, season, team, points in result %}
+		<tr>
+			<td> {{ season }} </td>
+			<td> {{ team }} </td>
+			<td> {{ points }} </td>
+		</tr>
+	{% endfor %}
+	</table>
 
 {% endblock %}
