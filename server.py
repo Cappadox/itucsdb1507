@@ -83,15 +83,31 @@ def countries():
     if request.method == 'GET':
         return render_template('countries.html', countries = app.countries.get_countries())
     else:
-        name = request.form['name']
-        abbreviation = request.form['abbreviation']
-        app.countries.add_country(Country(name, abbreviation))
-        return redirect(url_for('countries'))
+        if 'Add' in request.form:
+            name = request.form['name']
+            abbreviation = request.form['abbreviation']
+            app.countries.add_country(Country(name, abbreviation))
+            return render_template('countries.html', countries = app.countries.get_countries())
+        elif 'Delete' in request.form:
+            id = request.form['id']
+            app.countries.delete_country(id)
+            return render_template('countries.html', countries = app.countries.get_countries())
+
 
 @app.route('/countries/add')
-def countries_edit():
-     return render_template('country_edit.html')
+def countries_add():
+     return render_template('country_add.html')
 
+
+@app.route('/countries/edit/<country_id>', methods=['GET', 'POST'])
+def country_edit(country_id):
+    if request.method == 'GET':
+        return render_template('country_edit.html', key = country_id, country=app.countries.get_country(country_id))
+    else:
+        name = request.form['name']
+        abbreviation = request.form['abbreviation']
+        app.countries.update_country(country_id, Country(name, abbreviation))
+        return render_template('countries.html', countries = app.countries.get_countries())
 
 '''Fixtures Pages'''
 @app.route('/fixtures', methods = ['GET', 'POST'])
@@ -142,11 +158,17 @@ def leagues():
     if request.method == 'GET':
         return render_template('leagues.html', leagues = app.leagues.get_leagues())
     else:
-        name = request.form['name']
-        abbreviation =request.form['abbreviation']
-        countryID = request.form['countryID']
-        app.leagues.add_league(League(name, abbreviation, countryID))
-        return redirect(url_for('leagues'))
+        if 'Add' in request.form:
+            name = request.form['name']
+            abbreviation =request.form['abbreviation']
+            country_id = request.form['countryID']
+            app.leagues.add_league(League(name, abbreviation, country_id))
+            return redirect(url_for('leagues'))
+        elif 'Delete' in request.form:
+            id = request.form['id']
+            app.leagues.delete_league(id)
+            return render_template('leagues.html', leagues = app.leagues.get_leagues())
+
 
 @app.route('/leagues/add')
 def leagues_edit():
