@@ -2,14 +2,14 @@
  {% block title %}Edit Country{% endblock %}
  {% block content %}
 	<div class="page-header">
-  		<h1>Edit Country<small>Update country information for country</small></h1>
+  		<h1>Add Country<small>Enter fields for new country</small></h1>
 	</div>
-	 <form action="{{url_for('country_edit', country_id=key)}}" method="post" role="form">
+	 <form action="{{ url_for('countries') }}" method="post" role="form">
 		 <div class="form-group">
 		 	<div class="row">
 			  	<label class="control-label col-sm-2" for="name">Name:</label>
 			  	<div class="col-sm-10">
-					<input type="text" name="name" value="{{country.name}}"required autofocus />
+					<input type="text" name="name" required autofocus />
 				</div>
 			</div>
 			</div> <!-- End of form-group -->
@@ -17,10 +17,11 @@
 			<div class="row">
 				<label class="control-label col-sm-2" for="abbreviation">Abbreviation:</label>
 			  	<div class="col-sm-10">
-					<input type="text" name="abbreviation" value="{{country.abbreviation}}"/><br><br>
+					<input type="text" name="abbreviation" /><br><br>
 				</div>
 			</div>
-			 <input value="Update" name="Update" type="submit" /><br><br>
+			 <input value="Add" name="Add" type="submit" /><br><br>
+
 		 </div> <!-- End of form-group -->
 	  </form>
  {% endblock %}

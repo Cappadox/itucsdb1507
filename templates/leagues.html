@@ -6,7 +6,13 @@
 	{% for key, league in leagues %}
 		<tr>
 			<td> {{ league.name }} </td>
-			<td> {{ league.countryID }} </td>
+			<td> {{ league.countryID }}</td>
+			<td class="col-sm-1">
+				<form action="{{ url_for('leagues') }}" method="post" role="form">
+					<input value="{{key}}" name="id" type="hidden" />
+					<input value="Delete" name="Delete" type="submit" />
+				</form>
+			</td>
 		</tr>
 	{% endfor %}
 </table>

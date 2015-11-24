@@ -27,18 +27,42 @@ class Countries:
                 cursor = connection.cursor()
                 cursor.execute("""
                     INSERT INTO COUNTRIES (NAME, ABBREVIATION)
-                    VALUES (%s, %s) """,
-                    (country.name,country. abbreviation))
+                    VALUES (%s, %s) """, (country.name,country. abbreviation))
                 connection.commit()
 
+    def update_country(self, country_id, country):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ UPDATE COUNTRIES
+                                SET NAME = %s, ABBREVIATION = %s
+                            WHERE COUNTRY_ID = %s """
+                cursor.execute(query, (country.name,country. abbreviation,country_id ))
+                connection.commit()
+
+    def delete_country(self, id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ DELETE FROM COUNTRIES WHERE COUNTRY_ID =%s """
+                cursor.execute(query, [id])
+                connection.commit()
+
+    def get_country(self, id):
+         with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ SELECT * FROM COUNTRIES WHERE COUNTRY_ID =%s """
+                cursor.execute(query, [id])
+
+                connection.commit()
+                result = cursor.fetchone()
+                country = Country(result[1], result[2])
+                return country
 
     def get_countries(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
-            query="""SELECT * FROM COUNTRIES"""
+            query="""SELECT * FROM COUNTRIES ORDER BY NAME"""
             cursor.execute(query)
             connection.commit()
-
             countries = [(key, Country(name, abbreviation))
                         for key, name, abbreviation in cursor]
 

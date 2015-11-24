@@ -58,6 +58,12 @@ def coaches():
             id = request.form['id']
             app.coaches.delete_coach(id)
             return redirect(url_for('coaches'))
+        elif 'Update' in request.form:
+            id = request.form['id']
+            name = request.form['coachNUpdate']
+            birthday = request.form['coachBUpdate']
+            app.coaches.update_coach(id,name,birthday )
+            return redirect(url_for('coaches'))
         else:
             return render_template('coaches.html', result = app.coaches.select_coaches())
 
@@ -68,10 +74,8 @@ def coaching():
         return render_template('coaching.html', result = app.coaching.select_coaching())
     else:
         if 'Add' in request.form:
-
             return redirect(url_for('coaching'))
         elif 'Delete' in request.form:
-
             return redirect(url_for('coaching'))
         else:
             return render_template('coaching.html', result = app.coaching.select_coaching())
@@ -83,15 +87,32 @@ def countries():
     if request.method == 'GET':
         return render_template('countries.html', countries = app.countries.get_countries())
     else:
-        name = request.form['name']
-        abbreviation = request.form['abbreviation']
-        app.countries.add_country(Country(name, abbreviation))
-        return redirect(url_for('countries'))
+        if 'Add' in request.form:
+            name = request.form['name']
+            abbreviation = request.form['abbreviation']
+            app.countries.add_country(Country(name, abbreviation))
+            return render_template('countries.html', countries = app.countries.get_countries())
+        elif 'Delete' in request.form:
+            id = request.form['id']
+            app.countries.delete_country(id)
+            return render_template('countries.html', countries = app.countries.get_countries())
+
 
 @app.route('/countries/add')
-def countries_edit():
-     return render_template('country_edit.html')
+def countries_add():
+     return render_template('country_add.html')
 
+@app.route('/countries/edit/<country_id>', methods=['GET', 'POST'])
+def country_edit(country_id):
+    if request.method == 'GET':
+        return render_template('country_edit.html', key = country_id, country=app.countries.get_country(country_id))
+    else:
+        name = request.form['name']
+        abbreviation = request.form['abbreviation']
+        app.countries.update_country(country_id, Country(name, abbreviation))
+        return render_template('countries.html', countries = app.countries.get_countries())
+
+'''*******************************************************************************************************'''
 
 '''Fixtures Pages'''
 @app.route('/fixtures', methods = ['GET', 'POST'])
@@ -99,11 +120,34 @@ def fixtures():
     if request.method == 'GET':
         return render_template('fixtures.html', result = app.fixtures.get_fixtures())
     else:
-        season = request.form['season']
-        team = request.form['team']
+        season = request.form['season_id']
+        team = request.form['team_id']
         points = request.form['points']
         app.fixtures.add_fixture(season, team, points)
-    return redirect(url_for('fixtures'))
+    return render_template('fixtures.html', result = app.fixtures.get_fixtures())
+
+
+@app.route('/fixtures/edit', methods = ['GET', 'POST'])
+def add_fixture():
+    if request.method == 'GET':
+        return render_template('fixture_add.html', team=app.teams.select_teams(), season=app.seasons.select_seasons(), result = app.fixtures.get_fixtures())
+    else:
+        season = request.form['season_id']
+        team = request.form['team_id']
+        points = request.form['points']
+        app.fixtures.add_fixture(season, team, points)
+    return redirect(url_for('add_fixture'))
+
+@app.route('/fixtures/delete', methods = ['GET', 'POST'])
+def delete_fixture():
+    if request.method == 'GET':
+        return render_template('fixtures.html', result = app.fixtures.get_fixtures())
+    else:
+        id = request.form['id']
+        app.fixtures.delete_fixture(id)
+    return redirect(url_for('add_fixture'))
+
+'''*******************************************************************************************************'''
 
 '''Matches Pages'''
 @app.route('/matches', methods=['GET', 'POST'])
@@ -247,11 +291,17 @@ def leagues():
     if request.method == 'GET':
         return render_template('leagues.html', leagues = app.leagues.get_leagues())
     else:
-        name = request.form['name']
-        abbreviation =request.form['abbreviation']
-        countryID = request.form['countryID']
-        app.leagues.add_league(League(name, abbreviation, countryID))
-        return redirect(url_for('leagues'))
+        if 'Add' in request.form:
+            name = request.form['name']
+            abbreviation =request.form['abbreviation']
+            country_id = request.form['countryID']
+            app.leagues.add_league(League(name, abbreviation, country_id))
+            return redirect(url_for('leagues'))
+        elif 'Delete' in request.form:
+            id = request.form['id']
+            app.leagues.delete_league(id)
+            return render_template('leagues.html', leagues = app.leagues.get_leagues())
+
 
 @app.route('/leagues/add')
 def leagues_edit():
@@ -301,7 +351,7 @@ def delete_players():
 @app.route('/seasons', methods=['GET', 'POST'])
 def seasons():
     if request.method == 'GET':
-        return render_template('seasons.html', result = app.seasons.select_seasons())
+           return render_template('seasons.html', result = app.seasons.select_seasons())
     else:
         if 'Add' in request.form:
             year = request.form['seasonYear']
@@ -311,6 +361,14 @@ def seasons():
             id = request.form['id']
             app.seasons.delete_season(id)
             return redirect(url_for('seasons'))
+        elif 'Update' in request.form:
+            id = request.form['id']
+            year = request.form['seasonUpdate']
+            app.seasons.update_season(id,year)
+            return redirect(url_for('seasons'))
+        elif 'Search' in request.form:
+            year = request.form['seasonSearch']
+            return render_template('seasons.html', result = app.seasons.search_season(year))
         else:
             return render_template('seasons.html', result = app.seasons.select_seasons())
 
@@ -348,7 +406,7 @@ def delete_statistic():
     else:
         id = request.form['id']
         app.statistics.delete_statistic(id)
-    return redirect(url_for('statistics'))
+    return redirect(url_for('add_statistic'))
 
 
 '''Team pages'''
@@ -435,7 +493,7 @@ if __name__ == '__main__':
     if VCAP_SERVICES is not None:
         app.config['dsn'] = get_elephantsql_dsn(VCAP_SERVICES)
     else:
-          app.config['dsn'] = """user='vagrant' password='vagrant'
-                               host='localhost' port=54321 dbname='itucsdb'"""
+          app.config['dsn'] = """user='postgres' password='12345678'
+                               host='localhost' port=5432 dbname='postgres'"""
 
     app.run(host='0.0.0.0', port=port, debug=debug)

@@ -24,7 +24,7 @@ class Coaches2:
     def select_coaches(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
              cursor = connection.cursor()
-             query = """ SELECT * FROM COACHES"""
+             query = """ SELECT * FROM COACHES ORDER BY SEASON_ID ASC"""
              cursor.execute(query)
              result = cursor.fetchall()
              return result
@@ -41,4 +41,11 @@ class Coaches2:
                 cursor = connection.cursor()
                 query = """ DELETE FROM COACHES WHERE COACH_ID =%s """
                 cursor.execute(query, [id])
+                connection.commit()
+
+    def update_coach(self, coach_id, name, birthday):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ UPDATE COACHES SET NAME = %s, BIRTHDAY= %s WHERE COACH_ID = %s """
+                cursor.execute(query, (name,birthday,coach_id))
                 connection.commit()
