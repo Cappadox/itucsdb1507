@@ -224,6 +224,14 @@ def official_delete():
         app.officials.delete_official(id)
         return redirect(url_for('officials'))
 
+@app.route('/officials/search', methods=['GET', 'POST'])
+def search_official():
+    if request.method == 'GET':
+        return render_template('official_search.html')
+    else:
+        name = request.form['name']
+        return render_template('official_search.html',result=app.officials.search_officials(name))
+
 @app.route('/officials/update', methods=['GET', 'POST'])
 def update_official():
     if request.method == 'GET':

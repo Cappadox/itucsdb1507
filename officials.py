@@ -67,3 +67,17 @@ class Officials:
                         for key, name, age in cursor]
 
             return officials
+
+    def search_officials(self, name):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+            cursor = connection.cursor()
+            query="""SELECT * FROM OFFICIALS
+                    WHERE NAME LIKE '%s'""" % ((name+'%'))
+            cursor.execute(query)
+            connection.commit()
+            print(name)
+
+            officials = [(key, Official(name, age))
+                        for key, name, age in cursor]
+
+            return officials
