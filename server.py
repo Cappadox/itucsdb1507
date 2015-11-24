@@ -270,6 +270,7 @@ def players():
         app.players.add_player(name, birthday, position)
     return redirect(url_for('players'))
 
+
 @app.route('/players/add', methods=['GET', 'POST'])
 def add_players():
     return render_template('players_add.html')
