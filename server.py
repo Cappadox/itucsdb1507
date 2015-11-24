@@ -205,7 +205,7 @@ def official_determine():
         id = request.form['id']
         form = request.form
         form_data={id: form['id']}
-        return redirect(url_for('official_update'), code=307 )
+        return redirect(url_for('update_official'), code=307 )
     else:
         return redirect(url_for('officials'))
 
