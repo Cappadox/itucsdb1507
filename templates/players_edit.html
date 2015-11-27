@@ -2,21 +2,33 @@
 {% block title %}Players{% endblock %}
 {% block content %}
 {% for player_id, name, birthday, position in player %}
-<form action = "" method="post">
-<table>
-<tr>
-<td>Player name:<br></td>
-<td><input type="text" name="name" value="{{ name }}" required autofocus/> </td>
-</tr>
-<tr>
-<td>Birthday:<br></td>
-<td><input type="date" name="birthday" value="{{ birthday }}" required autofocus /> </td>
-</tr>
-<td>Position:<br></td>
-<td><input type="text" name="position" value="{{ position }}" required autofocus /> </td>
-</tr>
+<form class="form-horizontal" role="form" action = "" method="post">
+<div class="form-group">
+    <label class="control-label col-sm-2" for="name">Player Name:</label>
+    <div class="col-sm-6">
+		<input type="text" class="form-control" name="name" value="{{ name }}" />
+	</div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-sm-2" for="bithday">Birthday:</label>
+    <div class="col-sm-6">
+		<input type="date" class="form-control" name="birthday" value="{{ birthday }}" >
+	</div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-sm-2" for="position">Position:</label>
+    <div class="col-sm-6">
+		<input type="text" class="form-control" name="position" value="{{ position }}">
+	</div>
+</div>
+
 {% endfor %}
-</table>
-<input value="Update" name="update" type="submit" />
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-6">
+  	<button type="submit" class="btn btn-default">Update</button>
+  	</div>
+  </div>
 </form>
 {% endblock %}

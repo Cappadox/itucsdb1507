@@ -27,7 +27,7 @@ class Players:
     def select_players(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
              cursor = connection.cursor()
-             query = """ SELECT * FROM PLAYERS"""
+             query = """ SELECT * FROM PLAYERS ORDER BY PLAYER_ID"""
              cursor.execute(query)
              players = cursor.fetchall()
              return players
@@ -35,7 +35,7 @@ class Players:
     def get_player(self, player_id):
         with dbapi2.connect(self.app.config['dsn']) as connection:
              cursor = connection.cursor()
-             query = """ SELECT * FROM PLAYERS WHERE PLAYER_ID = %s"""
+             query = """ SELECT * FROM PLAYERS WHERE PLAYER_ID = %s """
              cursor.execute(query, player_id)
              player = cursor.fetchall()
              return player
@@ -64,13 +64,13 @@ class Players:
                 cursor = connection.cursor()
                 query = """ DELETE FROM PLAYERS
                         WHERE PLAYER_ID = %s """
-                cursor.execute(query, (player_id))
+                cursor.execute(query, player_id)
                 connection.commit()
 
     def search_player(self, name):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
-                query = """ SELECT * FROM PLAYERS WHERE NAME = %s """
-                cursor.execute(query, [name])
+                query = """ SELECT * FROM PLAYERS WHERE NAME LIKE %s ORDER BY PLAYER_ID """
+                cursor.execute(query, ['%'+name+'%'])
                 players = cursor.fetchall()
                 return players

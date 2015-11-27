@@ -2,14 +2,32 @@
 {% block title %}Team{% endblock %}
 {% block content %}
 
-<form action ={{url_for('players')}} method="post">
-  Player Name: <br>
-  <input type = "text" name="name"> <br>
-  Birthday:<br>
-  <input type="date" name="birthday"> <br>
-  Position:<br>
-  <input type="text" name="position"> <br>
-  <input type="submit" value="ADD PLAYER" name="add">
+<form class="form-horizontal" role="form" action ={{url_for('players')}} method="post">
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="name">Player Name:</label>
+    <div class="col-sm-6">
+  		<input type = "text" class="form-control" name="name" placeholder="Enter player name">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="bithday">Birthday:</label>
+    <div class="col-sm-6">
+  		<input type="date" class="form-control" name="birthday">
+  	</div>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="position">Position:</label>
+    <div class="col-sm-6">
+  		<input type="text" class="form-control" name="position" placeholder="Enter position">
+  	</div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-6">
+  	<button type="submit" class="btn btn-default">Add Player</button>
+  	</div>
+  </div>
 </form>
 
 {% endblock %}

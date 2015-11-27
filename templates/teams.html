@@ -7,24 +7,22 @@
 <input type = "submit" name = "searchbyname">
 </form>
 
-<form action = {{url_for('delete_teams')}} method="post">
 <table class="table table-bordered table-striped">
 <tr>
-<TH></TH><th> TEAM ID </th> <th> NAME </th> <th> LEAGUE ID </th> <th> </th>
+<th> TEAM ID </th> <th> NAME </th> <th> LEAGUE ID </th> <th>UPDATE/DELETE</th>
 </tr>
 {% for team_id, name, league_id in teams %}
 <tr>
-<td><input type="checkbox" name="checkbox" value="{{ team_id }}" /></td>
 <td> {{ team_id }}</td>
 <td> {{ name }}</td>
 <td> {{ league_id }} </td>
-<td> <a href="teams/update/{{ team_id }}" style="text-decoration:none;" class="btn btn-danger" role="button"> UPDATE </a> </td>
+<td> <a href="teams/update/{{ team_id }}" style="text-decoration:none;" class="btn btn-danger btn-sm" role="button"> UPDATE </a>
+	 <a href="teams/delete/{{ team_id }}" style="text-decoration:none;" class="btn btn-danger btn-sm" role="button"> DELETE </a>
+</td>
 </tr>
 {% endfor %}
 <br>
 <tr>
 </tr>
 </table>
-<input type="submit" value="DELETE" name ="delete">
-</form>
 {% endblock %}

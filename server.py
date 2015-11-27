@@ -363,14 +363,9 @@ def update_players(player_id):
         app.players.update_player(player_id, name, birthday, position)
         return redirect(url_for('players'))
 
-@app.route('/players/delete', methods=['GET', 'POST'])
-def delete_players():
-    if request.method == 'GET':
-        return redirect(url_for('teams'))
-    elif 'checkbox' in request.form:
-        ids = request.form.getlist('checkbox')
-        for id in ids:
-            app.players.delete_player(id)
+@app.route('/players/delete/<player_id>', methods=['GET', 'POST'])
+def delete_players(player_id):
+        app.players.delete_player(player_id)
         return redirect(url_for('players'))
 
 
@@ -482,14 +477,9 @@ def update_teams(team_id):
         app.teams.update_team(team_id, name, league_id)
         return redirect(url_for('teams'))
 
-@app.route('/teams/delete', methods=['GET', 'POST'])
-def delete_teams():
-    if request.method == 'GET':
-        return redirect(url_for('teams'))
-    elif 'checkbox' in request.form:
-        ids = request.form.getlist('checkbox')
-        for id in ids:
-            app.teams.delete_team(id)
+@app.route('/teams/delete/<team_id>', methods=['GET', 'POST'])
+def delete_teams(team_id):
+        app.teams.delete_team(team_id)
         return redirect(url_for('teams'))
 
 
