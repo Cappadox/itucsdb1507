@@ -65,7 +65,7 @@ class Teams:
                 cursor = connection.cursor()
                 query = """ DELETE FROM TEAMS
                         WHERE TEAM_ID = %s """
-                cursor.execute(query, team_id)
+                cursor.execute(query, [team_id])
                 connection.commit()
 
     def search_team(self, name):
