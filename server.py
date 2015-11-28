@@ -365,8 +365,8 @@ def update_players(player_id):
 
 @app.route('/players/delete/<player_id>', methods=['GET', 'POST'])
 def delete_players(player_id):
-        app.players.delete_player(player_id)
-        return redirect(url_for('players'))
+    app.players.delete_player(player_id)
+    return redirect(url_for('players'))
 
 
 '''Seasons Pages'''
@@ -479,8 +479,8 @@ def update_teams(team_id):
 
 @app.route('/teams/delete/<team_id>', methods=['GET', 'POST'])
 def delete_teams(team_id):
-        app.teams.delete_team(team_id)
-        return redirect(url_for('teams'))
+    app.teams.delete_team(team_id)
+    return redirect(url_for('teams'))
 
 
 '''Database initialization'''

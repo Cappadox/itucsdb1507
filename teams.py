@@ -42,6 +42,13 @@ class Teams:
              team = cursor.fetchall()
              return team
 
+    def delete_team(self, teamid):
+         with dbapi2.connect(self.app.config['dsn']) as connection:
+            cursor = connection.cursor()
+            query = """ DELETE FROM TEAMS WHERE TEAM_ID = %s """
+            cursor.execute(query, [teamid])
+            connection.commit()
+
     def add_team(self, name, league_id):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
@@ -58,14 +65,6 @@ class Teams:
                         WHERE
                         TEAM_ID = %s """
                 cursor.execute(query, (name, league_id, team_id))
-                connection.commit()
-
-    def delete_team(self, team_id):
-         with dbapi2.connect(self.app.config['dsn']) as connection:
-                cursor = connection.cursor()
-                query = """ DELETE FROM TEAMS
-                        WHERE TEAM_ID = %s """
-                cursor.execute(query, [team_id])
                 connection.commit()
 
     def search_team(self, name):
