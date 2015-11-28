@@ -332,7 +332,7 @@ def leagues_edit():
 @app.route('/players', methods=['GET', 'POST'])
 def players():
     if request.method == 'GET':
-        return render_template('players.html', result = app.players.select_players())
+        return render_template('players.html', players = app.players.select_players())
     else:
         name = request.form['name']
         birthday = request.form['birthday']
