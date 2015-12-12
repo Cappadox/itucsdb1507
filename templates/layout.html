@@ -67,7 +67,13 @@
 						<!-- Seasons menu -->
 						<li><a href="{{ url_for('seasons') }}">Seasons</a></li>
 						<!-- Statistics menu -->
-						<li><a href="{{ url_for('statistics') }}">Statistics</a></li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown" role="button">Statistics<span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="{{ url_for('statistics_player')}}">Player Statistics</a></li>
+								<li><a href="{{ url_for('statistics_team') }}">Team Statistics</a></li>
+							</ul>
+						</li>
 						<!-- Teams menu -->
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown" role="button">Teams<span class="caret"></span></a>

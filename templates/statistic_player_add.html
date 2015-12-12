@@ -1,0 +1,91 @@
+ {% extends "layout.html" %}
+ {% block title %}Player Statistics{% endblock %}
+ {% block content %}
+
+<form action="{{ url_for('update_statistic_player') }}" method="get" role="form">
+	<div class="form-group col-sm-2">
+		<div class="pull-left">
+			<input value="Go to Update Page" name="submit" type="submit" />
+		</div>
+	</div>
+</form>
+
+<br>
+<br>
+
+<form action="{{ url_for('add_statistic_player') }}" method="post" role="form">
+	<div class="form-group">
+		<div class="row">
+			<label class="control-label col-sm-2" for="season">Season:</label>
+			<div class="col-sm-2">
+				<select name="season_id" class="form-control"">
+					{% for season_id, year in season %}
+						<option value="{{season_id}}">{{ year }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+	</div><!-- endSEASON -->
+	<div class="form-group">
+		<div class="row">
+			<label class="control-label col-sm-2" for="player">Player:</label>
+			<div class="col-sm-2">
+				<select name="player_id" class="form-control"">
+					{% for player_id, name, birthday, position in player %}
+						<option value="{{player_id}}">{{ name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+	</div><!-- endPLAYER -->
+	<div class="form-group">
+		<div class="row">
+			<label class="control-label col-sm-2" for="tackles">Tackles:</label>
+			<div class="col-sm-2">
+				<input type="number" name="tackles" class="form-control" required autofocus>
+			</div>
+		</div>
+	</div><!-- endTACKLES -->
+	<div class="form-group">
+		<div class="row">
+			<label class="control-label col-sm-2" for="penalties">Penalties:</label>
+			<div class="col-sm-2">
+				<input type="number" name="penalties" class="form-control" required autofocus>
+			</div>
+		</div>
+	</div><!-- endPENALTIES -->
+	<div class="form-group col-sm-8">
+		<div class="pull-left">
+			<input value="Add" name="submit" type="submit" />
+		</div>
+	</div> <!-- endSUBMIT -->
+</form>
+
+<br>
+
+<form  action ={{url_for('delete_statistic_player')}} method="post" type="form">
+	<table class="table table-bordered table-striped">
+		<tr>
+		    <th></th>
+		    <th>Season</th>
+		    <th>Player Name </th>
+		    <th>Tackles </th>
+		    <th>Penalties</th>
+		 </tr>
+		{% for statistic_id, season, player, tackles, penalties in result %}
+		<tr>
+			<td><input type="checkbox" name="id" value="{{ statistic_id }}" /></td>
+			<td> {{ season }} </td>
+			<td> {{ player }} </td>
+			<td> {{ tackles }} </td>
+			<td> {{ penalties }} </td>
+		</tr>
+	{% endfor %}
+	</table>
+	<div class="col-sm-10">
+		<input type="submit" value="Delete" name ="submit">
+	</div>
+</form>
+
+
+{% endblock %}

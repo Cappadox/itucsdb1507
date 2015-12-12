@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
-{% block title %}Statistics{% endblock %}
+{% block title %}Team Statistics{% endblock %}
 {% block content %}
 
-<form action="{{ url_for('add_statistic') }}" method="get" role="form">
+<form action="{{ url_for('add_statistic_team') }}" method="get" role="form">
 	<div class="form-group col-sm-14">
 		<div class="pull-right">
-			<input value="Edit Statistics" name="submit" type="submit" />
+			<input value="Edit Team Statistics" name="submit" type="submit" />
 		</div>
 	</div>
 </form>
