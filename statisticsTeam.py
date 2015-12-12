@@ -62,3 +62,15 @@ class StatisticsT:
                         WHERE STATISTIC_ID = %s"""
                 cursor.execute(query, (season_id, team_id, touchdowns, rushingYards, statistic_id))
                 connection.commit()
+
+    def search_statistic_team(self, id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+            cursor = connection.cursor()
+            query="""SELECT * FROM STATISTICST
+                    WHERE CAST(TEAM_ID as VARCHAR(30)) LIKE '%s'
+                    ORDER BY STATISTIC_ID ASC""" % (('%'+id+'%'))
+            cursor.execute(query)
+            connection.commit()
+
+            result = cursor.fetchall()
+            return result

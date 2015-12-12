@@ -165,6 +165,15 @@ def update_fixture():
         app.fixtures.update_fixture(fixture_id, season, team, points)
     return redirect(url_for('update_fixture'))
 
+@app.route('/fixtures/search', methods=['GET', 'POST'])
+def search_fixture():
+    if request.method == 'GET':
+        return render_template('fixture_search.html')
+    else:
+        id = request.form['id']
+        return render_template('fixture_search.html',result=app.fixtures.search_fixture(id))
+
+
 '''*******************************************************************************************************'''
 
 '''Matches Pages'''
@@ -405,7 +414,7 @@ def seasons():
 @app.route('/squads', methods=['GET', 'POST'])
 def squads():
     if request.method == 'GET':
-        return render_template('squads.html', squads = app.squads.show_squads())
+        return render_template('squads.html', teams = app.squads.get_teams(), squads = app.squads.show_squads())
     else:
         team_id = request.form['team_id']
         player_id = request.form['player_id']
@@ -430,9 +439,16 @@ def update_squads(squad_id):
 
 @app.route('/squads/delete/<squad_id>', methods=['GET', 'POST'])
 def delete_squads(squad_id):
-    app.teams.delete_team(squad_id)
+    app.squads.delete_squad(squad_id)
     return redirect(url_for('squads'))
 
+@app.route('/squads/search', methods = ['GET', 'POST'])
+def search_squads():
+    if request.method == 'GET':
+        return redirect(url_for('squads_search.html'), teams = app.squads.get_teams())
+    else:
+        team_id = request.form['name']
+        return render_template('squads_search.html', teams = app.squads.get_teams(), squads = app.squads.search_squad(team_id))
 
 '''Statistics Pages'''
 @app.route('/statistics/teams', methods = ['GET', 'POST'])
@@ -495,6 +511,16 @@ def update_statistic_team():
         app.statisticsTeam.update_statistic_team(statistic_id, season, team, touchdowns, rushingYards)
     return redirect(url_for('update_statistic_team'))
 
+@app.route('/statistics/teams/search', methods=['GET', 'POST'])
+def search_statistic_team():
+    if request.method == 'GET':
+        return render_template('statistic_team_search.html')
+    else:
+        id = request.form['id']
+        return render_template('statistic_team_search.html',result=app.statisticsTeam.search_statistic_team(id))
+
+
+
     '''Players Statistics Pages'''
 
 @app.route('/statistics/players/add', methods = ['GET', 'POST'])
@@ -530,6 +556,14 @@ def update_statistic_player():
         penalties = request.form['penalties']
         app.statisticsPlayer.update_statistic_player(statistic_id, season, player, tackles, penalties)
     return redirect(url_for('update_statistic_player'))
+
+@app.route('/statistics/players/search', methods=['GET', 'POST'])
+def search_statistic_player():
+    if request.method == 'GET':
+        return render_template('statistic_player_search.html')
+    else:
+        id = request.form['id']
+        return render_template('statistic_player_search.html',result=app.statisticsPlayer.search_statistic_player(id))
 
 
 '''Team pages'''
