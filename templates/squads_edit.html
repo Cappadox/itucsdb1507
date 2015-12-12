@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% block title %}Squads{% endblock %}
+{% block content %}
+{% for squad_id, team_id, player_id, kit_no in squad %}
+<form class="form-horizontal" role="form" action = "" method="post">
+
+<div class="form-group">
+    <label class="control-label col-sm-2" for="team_id">Team ID:</label>
+    	<div class="col-sm-6">
+  			<select class="form-control" name = "team_id">
+			  {% for teamid, name, league_id in teams %}
+			  {% if team_id == teamid: %}
+			  <option value = "{{teamid}}" selected> {{teamid}} - {{ name }} </option>
+			  {% else: %}
+			  <option value = "{{teamid}}"> {{teamid}} - {{ name }} </option>
+			  {% endif %}
+			  {% endfor %}
+			  </select>
+    	</div>
+  </div>
+
+  <div class="form-group">
+	  <label class="control-label col-sm-2" for="player_id">Player ID:</label>
+		  <div class="col-sm-6">
+  			<select class="form-control" name = "player_id">
+			  {% for playerid, name, birthday, position in players %}
+			  {% if player_id == playerid: %}
+			  <option value = "{{playerid}}" selected> {{playerid}} - {{ name }} </option>
+			  {% else: %}
+			  <option value = "{{playerid}}"> {{playerid}} - {{ name }} </option>
+			  {% endif %}
+			  {% endfor %}
+			  </select>
+    	</div>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="kit_no">Kit Number:</label>
+    	<div class="col-sm-6">
+  			<input type = "number" class="form-control" name="kit_no" value="{{ kit_no }}" required autofocus />
+    	</div>
+  </div>
+
+{% endfor %}
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-6">
+  	<button type="submit" class="btn btn-default">Update</button>
+  	</div>
+  </div></form>
+{% endblock %}

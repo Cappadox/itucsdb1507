@@ -22,6 +22,7 @@ from seasons import Seasons, Seasons2
 from statisticsTeam import StatisticT, StatisticsT
 from statisticsPlayer import StatisticP, StatisticsP
 from fixtures import Fixture, Fixtures
+from squads import Squad, Squads
 from flask.templating import render_template_string
 
 
@@ -395,6 +396,38 @@ def seasons():
         else:
             return render_template('seasons.html', result = app.seasons.select_seasons())
 
+''' Squad Pages '''
+@app.route('/squads', methods=['GET', 'POST'])
+def squads():
+    if request.method == 'GET':
+        return render_template('squads.html', squads = app.squads.show_squads())
+    else:
+        team_id = request.form['team_id']
+        player_id = request.form['player_id']
+        kit_no = request.form['kit_no']
+        app.squads.add_squad(team_id, player_id, kit_no)
+    return redirect(url_for('squads'))
+
+@app.route('/squads/add', methods=['GET', 'POST'])
+def add_squads():
+    return render_template('squads_add.html', teams = app.teams.select_teams(), players = app.players.select_players())
+
+@app.route('/squads/update/<squad_id>', methods=['GET', 'POST'])
+def update_squads(squad_id):
+    if request.method == 'GET':
+        return render_template('squads_edit.html', squad = app.squads.get_squad(squad_id), teams = app.teams.select_teams(), players = app.players.select_players())
+    else:
+        team_id = request.form['team_id']
+        player_id = request.form['player_id']
+        kit_no = request.form['kit_no']
+        app.squads.update_squad(squad_id, team_id, player_id, kit_no)
+        return redirect(url_for('squads'))
+
+@app.route('/squads/delete/<squad_id>', methods=['GET', 'POST'])
+def delete_squads(squad_id):
+    app.teams.delete_team(squad_id)
+    return redirect(url_for('squads'))
+
 
 '''Statistics Pages'''
 @app.route('/statistics/teams', methods = ['GET', 'POST'])
@@ -520,7 +553,7 @@ def add_teams():
 @app.route('/teams/update/<team_id>', methods=['GET', 'POST'])
 def update_teams(team_id):
     if request.method == 'GET':
-        return render_template('teams_edit.html', team = app.teams.get_team(team_id))
+        return render_template('teams_edit.html', team = app.teams.get_team(team_id), leagues = app.leagues.get_leagues())
     else:
         name = request.form['name']
         league_id = request.form['league_id']
@@ -545,6 +578,7 @@ def create_tables():
     app.leagues.initialize_tables()
     app.teams.initialize_tables()
     app.coaching.initialize_tables()
+    app.squads.initialize_tables()
 
     app.officials.initialize_tables()
     app.matches.initialize_tables()
@@ -572,6 +606,7 @@ if __name__ == '__main__':
     app.statisticsTeam = StatisticsT(app)
     app.statisticsPlayer = StatisticsP(app)
     app.fixtures = Fixtures(app)
+    app.squads = Squads(app)
 
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')
     if VCAP_APP_PORT is not None:
