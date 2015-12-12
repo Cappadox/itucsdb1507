@@ -423,12 +423,6 @@ def update_squads(squad_id):
         app.squads.update_squad(squad_id, team_id, player_id, kit_no)
         return redirect(url_for('squads'))
 
-@app.route('/squads/delete/<squad_id>', methods=['GET', 'POST'])
-def delete_squads(squad_id):
-    app.teams.delete_team(squad_id)
-    return redirect(url_for('squads'))
-
-
 '''Statistics Pages'''
 @app.route('/statistics/teams', methods = ['GET', 'POST'])
 def statistics_team():

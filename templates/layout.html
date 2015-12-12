@@ -16,7 +16,7 @@
 		<nav class="navbar navbar-default navbar-fixed-top">
 			<div class="container">
 				<div class="navbar-header">
-					<a class="navbar-brand" href="/">American Football</a>
+					<a class="navbar-brand" href="/">Home</a>
 				</div>
 
 					<ul class="nav navbar-nav">
@@ -72,6 +72,14 @@
 							<ul class="dropdown-menu">
 								<li><a href="{{ url_for('statistics_player')}}">Player Statistics</a></li>
 								<li><a href="{{ url_for('statistics_team') }}">Team Statistics</a></li>
+							</ul>
+						</li>
+						<!--  Squads menu -->
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown" role="button">Squads<span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="{{url_for('add_squads')}}">Add Squad</a></li>
+								<li><a href="{{ url_for('squads') }}">Show Squads</a></li>
 							</ul>
 						</li>
 						<!-- Teams menu -->

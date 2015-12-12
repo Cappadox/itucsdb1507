@@ -82,3 +82,14 @@ class Teams:
              cursor.execute(query, [team_id])
              key,name,league = cursor.fetchone()
              return name
+
+    def select_team_names(self):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+             cursor = connection.cursor()
+             query = """ SELECT NAME FROM TEAMS ORDER BY TEAM_ID """
+             cursor.execute(query)
+             connection.commit()
+
+             names = cursor.fetchall()
+             return names
+

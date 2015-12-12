@@ -2,6 +2,19 @@
 {% block title %}Squad{% endblock %}
 {% block content %}
 
+<form class="form-inline pull-right" role="form" action ={{url_for('search_squads')}} method="post">
+  <div class="form-group">
+	  <label class="control-label" for="name">Team Name</label>
+			  <select class="form-control" name = "name">
+			  {% for team_id, name, league_id in teams %}
+			  <option value = "{{team_id}}">{{ name }} </option>
+			  {% endfor %}
+			  </select>
+  </div>
+ <div class="form-group">
+  	<button type="submit" class="btn btn-default">Show Squad</button>
+  </div>
+</form>
 
 <table class="table table-bordered table-striped">
 <tr>

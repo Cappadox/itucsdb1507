@@ -59,6 +59,21 @@ class Squads:
              squad = cursor.fetchall()
              return squad
 
+    def search_squad(self, team_id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+             cursor = connection.cursor()
+             query =  """ SELECT squad_id, teams.name, players.name, kit_no FROM SQUADS
+                     LEFT JOIN TEAMS
+                     ON SQUADS.TEAM_ID = TEAMS.TEAM_ID
+                     LEFT JOIN PLAYERS
+                     ON SQUADS.PLAYER_ID = PLAYERS.PLAYER_ID
+                     WHERE SQUADS.TEAM_ID = %s
+                     ORDER BY SQUADS.TEAM_ID """
+             cursor.execute(query, [team_id])
+             connection.commit()
+             squad = cursor.fetchall()
+             return squad
+
     def delete_squad(self, squad_id):
          with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
