@@ -75,3 +75,10 @@ class Teams:
                 teams = cursor.fetchall()
                 return teams
 
+    def get_team_name(self, team_id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+             cursor = connection.cursor()
+             query = """ SELECT * FROM TEAMS WHERE TEAM_ID = %s"""
+             cursor.execute(query, [team_id])
+             key,name,league = cursor.fetchone()
+             return name
