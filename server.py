@@ -23,6 +23,7 @@ from statisticsTeam import StatisticT, StatisticsT
 from statisticsPlayer import StatisticP, StatisticsP
 from fixtures import Fixture, Fixtures
 from squads import Squad, Squads
+from transfers import Transfer, Transfers
 from flask.templating import render_template_string
 
 
@@ -194,6 +195,10 @@ def matches():
 
 @app.route('/matches/', methods=['GET', 'POST'])
 def match_determine():
+    if request.method=='GET':
+        return redirect(url_for('matches'))
+    if request.form['id']=="0":
+        return redirect(url_for('matches'))
     if request.form['submit'] == "Delete":
         id = request.form['id']
         form = request.form
@@ -230,7 +235,7 @@ def match_update():
     if request.method == 'GET':
         return render_template('matches.html', matches = app.matches.get_matches())
     else:
-        return render_template('official_update.html', id = request.form['id'])
+        return render_template('match_update.html', id = request.form['id'])
 
 '''Officials Pages'''
 @app.route('/officials', methods=['GET', 'POST'])
@@ -566,6 +571,77 @@ def delete_teams(team_id):
     return redirect(url_for('teams'))
 
 
+
+@app.route('/transfers', methods=['GET', 'POST'])
+def transfers():
+    if request.method == 'GET':
+        return render_template('transfers.html', transfers = app.transfers.get_transfers())
+    else:
+        if request.form['submit']=="Save":
+            season_id = request.form['seasonID']
+            old_id = request.form['oldID']
+            new_id = request.form['newID']
+            player_id = request.form['playerID']
+            fee = request.form['fee']
+            transfer=Transfer(season_id,player_id,old_id,new_id,fee)
+            app.transfers.add_transfer(transfer)
+        else:
+            id = request.form['id']
+            season_id = request.form['seasonID']
+            old_id = request.form['oldID']
+            new_id = request.form['newID']
+            player_id = request.form['playerID']
+            fee = request.form['fee']
+            transfer=Transfer(season_id,player_id,old_id,new_id,fee)
+            app.transfers.update_transfer(id, transfer)
+
+        return redirect(url_for('transfers'))
+
+@app.route('/transfers/', methods=['GET', 'POST'])
+def transfer_determine():
+    if request.method=='GET':
+        return redirect(url_for('transfers'))
+    if request.form['id']=="0":
+        return redirect(url_for('transfers'))
+    if request.form['submit'] == "Delete":
+        id = request.form['id']
+        form = request.form
+        form_data={id: form['id']}
+        return redirect(url_for('transfer_delete'), code=307 )
+    elif request.form['submit'] == "Update":
+        return render_template('transfer_update.html', id = request.form['id'], teams=app.teams.select_teams(),
+                             season=app.seasons.select_seasons(),players=app.players.select_players())
+    else:
+        return redirect(url_for('transfers'))
+
+@app.route('/transfers/add', methods=['GET', 'POST'])
+def transfer_add():
+     return render_template('transfer_edit.html', teams=app.teams.select_teams(),
+                             season=app.seasons.select_seasons(),players=app.players.select_players())
+
+@app.route('/transfers/delete', methods=['GET', 'POST'])
+def transfer_delete():
+    if request.method == 'GET':
+        return render_template_string("""You need to click delete button at the end of the desired match.
+                                            Return to the list of matches.
+                                            <form action="{{ url_for('transfer') }}" method="get" role="form">
+                                            <div class="form-group">
+                                            <input value="Return" name="Return" type="submit" /><br><br>
+                                            </div> <!-- End of form-group -->
+                                            </form>""")
+    else:
+        id = request.form['id']
+        app.transfers.delete_transfer(id)
+        return redirect(url_for('transfers'))
+
+@app.route('/transfer/update', methods=['GET', 'POST'])
+def transfer_update():
+    if request.method == 'GET':
+        return render_template('transfers.html', transfers = app.transfers.get_transfers())
+    else:
+        return render_template('transfer_update.html', id = request.form['id'])
+
+
 '''Database initialization'''
 @app.route('/initdb')
 def create_tables():
@@ -582,6 +658,7 @@ def create_tables():
 
     app.officials.initialize_tables()
     app.matches.initialize_tables()
+    app.transfers.initialize_tables()
 
     app.statisticsTeam.initialize_tables()
     app.statisticsPlayer.initialize_tables()
@@ -607,6 +684,7 @@ if __name__ == '__main__':
     app.statisticsPlayer = StatisticsP(app)
     app.fixtures = Fixtures(app)
     app.squads = Squads(app)
+    app.transfers = Transfers(app)
 
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')
     if VCAP_APP_PORT is not None:

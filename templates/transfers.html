@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block title %}Transfers{% endblock %}
+{% block content %}
+
+<form action="{{ url_for('transfer_add') }}" method="post" role="form">
+	<div class="form-group">
+		<input value="Add New Transfer" name="Add" type="submit" /><br><br>
+	</div> <!-- End of form-group -->
+</form>
+<form action = "{{url_for('transfer_determine')}}" method="post">
+<table class="table table-bordered table-striped">
+	<tr>
+		<td> Player Name </td>
+		<td> Old Team </td>
+		<td> New Team </td>
+		<td> Season </td>
+		<td> Fee </td>
+		<td> Check to Update/Delete </td>
+	</tr>
+	{% for key, transfer in transfers %}
+		<tr>
+			<td> {{ transfer.player_name }} </td>
+			<td> {{ transfer.old_team }} </td>
+			<td> {{ transfer.new_team }} </td>
+			<td> {{ transfer.season }} </td>
+			<td> {{ transfer.fee }} </td>
+			<td><input type="checkbox" name="id" value="{{ key }}"/></td>
+		</tr>
+	{% endfor %}
+</table>
+	<input type="hidden" value="0" name="id">
+	<div class="col-sm-10">
+		<input type="submit" value="Delete" name ="submit">
+		<input type="submit" value="Update" name ="submit">
+	</div>
+</form>
+
+{% endblock %}

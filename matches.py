@@ -4,7 +4,7 @@ from officials import Official,Officials
 from seasons import Seasons,Seasons2
 
 class Match:
-    def __init__(self, season_id, official_id, home_id, away_id, result,
+    def __init__(self, season_id, official_id, home_id, away_id, fee,
                 season="123", official_name="Default Off.", home_team="Default Home",
                 away_team="Default Away"):
         self.season_id=season_id
