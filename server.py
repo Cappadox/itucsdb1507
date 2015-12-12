@@ -409,7 +409,7 @@ def seasons():
 @app.route('/squads', methods=['GET', 'POST'])
 def squads():
     if request.method == 'GET':
-        return render_template('squads.html', squads = app.squads.show_squads())
+        return render_template('squads.html', teams = app.squads.get_teams(), squads = app.squads.show_squads())
     else:
         team_id = request.form['team_id']
         player_id = request.form['player_id']
@@ -431,6 +431,19 @@ def update_squads(squad_id):
         kit_no = request.form['kit_no']
         app.squads.update_squad(squad_id, team_id, player_id, kit_no)
         return redirect(url_for('squads'))
+
+@app.route('/squads/delete/<squad_id>', methods=['GET', 'POST'])
+def delete_squads(squad_id):
+    app.squads.delete_squad(squad_id)
+    return redirect(url_for('squads'))
+
+@app.route('/squads/search', methods = ['GET', 'POST'])
+def search_squads():
+    if request.method == 'GET':
+        return redirect(url_for('squads_search.html'), teams = app.squads.get_teams())
+    else:
+        team_id = request.form['name']
+        return render_template('squads_search.html', teams = app.squads.get_teams(), squads = app.squads.search_squad(team_id))
 
 '''Statistics Pages'''
 @app.route('/statistics/teams', methods = ['GET', 'POST'])
