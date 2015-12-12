@@ -18,7 +18,7 @@ class Teams:
                     (
                     TEAM_ID serial NOT NULL PRIMARY KEY,
                     NAME varchar(100) NOT NULL,
-                    LEAGUE_ID int NOT NULL REFERENCES LEAGUES(LEAGUE_ID)
+                    LEAGUE_ID int NOT NULL REFERENCES LEAGUES(LEAGUE_ID) ON DELETE RESTRICT
                     )
                     """)
                 connection.commit()
