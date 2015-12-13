@@ -2,12 +2,13 @@
 {% block title %}Seasons{% endblock %}
 {% block content %}
 <form  action ={{url_for('seasons')}} method="post">
+ <br><br><br><br><br><br>
   <b>Season Year:</b><br>
   <input type="text" name="seasonYear">&nbsp
   <input type="submit" value="Add" name="Add">
 </form>
 <br><br>
-<form method="get">
+<form action ={{url_for('seasons')}} method="post">
   <b>Search Season:</b><br>
   <input type="text" name="seasonSearch">&nbsp
   <input type="submit" value="Search" name="Search">

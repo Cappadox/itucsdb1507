@@ -68,6 +68,9 @@ def coaches():
             birthday = request.form['coachBUpdate']
             app.coaches.update_coach(id,name,birthday )
             return redirect(url_for('coaches'))
+        elif 'Search' in request.form:
+            name = request.form['coachSearch']
+            return render_template('coaches.html', result = app.coaches.search_coach(name))
         else:
             return render_template('coaches.html', result = app.coaches.select_coaches())
 
@@ -94,6 +97,9 @@ def coaching():
             season_id = request.form['season_idU']
             app.coaching.update_coaching(coaching_id,team_id,coach_id,season_id)
             return redirect(url_for('coaching'))
+        elif 'Search' in request.form:
+            term = request.form['coachingSearch']
+            return render_template('coaching.html', coachlist = app.coaching.search_coaching(term))
         else:
             return render_template('coaching.html', result = app.coaching.select_coaching())
 

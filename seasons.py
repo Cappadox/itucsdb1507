@@ -50,13 +50,14 @@ class Seasons2:
                 cursor.execute(query, [id])
                 connection.commit()
 
-    def search_season(self, year):
+    def search_season(self, year1):
         with dbapi2.connect(self.app.config['dsn']) as connection:
              cursor = connection.cursor()
-             query = """ SELECT * FROM SEASONS
-                         WHERE YEAR = %s"""
-             cursor.execute(query,[year])
-             result = cursor.fetchall(year)
+             query="""SELECT * FROM SEASONS WHERE YEAR = %s"""
+             cursor.execute(query,[year1])
+             connection.commit()
+             result = [(key, year)
+                        for key, year in cursor]
              return result
 
     def update_season(self, season_id, year):

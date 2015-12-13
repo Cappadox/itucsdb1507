@@ -69,13 +69,18 @@ class Coaching2:
                 cursor.execute(query, [team_id, coach_id, season_id, coaching_id])
                 connection.commit()
 
-    def search_coaching(self, id):
+    def search_coaching(self, term):
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
-            query=""""""
-
+            query="""select coaching_id, teams.name, coaches.name, seasons.year
+                    from coaching
+                    inner join teams on teams.team_id=coaching.team_id
+                    inner join coaches on coaches.coach_id=coaching.coach_id
+                    inner join seasons on seasons.season_id=coaching.season_id
+                    WHERE coaches.name LIKE '%s' OR teams.name LIKE '%s'""" % (('%'+term+'%'),('%'+term+'%'))
             cursor.execute(query)
             connection.commit()
+            coachlist = [(key, team, name, year)
+                        for key, team, name, year in cursor]
 
-            result = cursor.fetchall()
-            return result
+            return coachlist
