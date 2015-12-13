@@ -9,6 +9,7 @@ from flask import redirect
 from flask import render_template
 from flask import request
 from flask.helpers import url_for
+from flask.templating import render_template_string
 
 from coaches import Coaches, Coaches2
 from coaching import Coaching,Coaching2
@@ -24,7 +25,6 @@ from statisticsPlayer import StatisticP, StatisticsP
 from fixtures import Fixture, Fixtures
 from squads import Squad, Squads
 from transfers import Transfer, Transfers
-from flask.templating import render_template_string
 
 
 app = Flask(__name__)
@@ -713,6 +713,18 @@ def create_tables():
 
     return redirect(url_for('home_page'))
 
+
+'''Database Drop All tables'''
+@app.route('/drop')
+def drop_tables():
+    with dbapi2.connect(app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                cursor.execute("""select 'drop table if exists "' || tablename || '" cascade;'
+                                from pg_tables
+                                where schemaname = 'public';""")
+
+                connection.commit()
+    return redirect(url_for('create_tables'))
 
 if __name__ == '__main__':
 
