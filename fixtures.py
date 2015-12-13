@@ -28,10 +28,17 @@ class Fixtures:
     def get_fixtures(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
-            query="""SELECT * FROM FIXTURES"""
+            query="""SELECT F.FIXTURE_ID, S.YEAR, T.NAME, F.POINTS
+                        FROM FIXTURES F
+                        LEFT JOIN SEASONS S ON (F.SEASON_ID = S.SEASON_ID)
+                        LEFT JOIN TEAMS T ON (F.TEAM_ID = T.TEAM_ID)
+                        ORDER BY S.YEAR ASC"""
             cursor.execute(query)
-            result = cursor.fetchall()
-            return result
+            connection.commit()
+
+            fixtures = [(key, season, team, points)
+                        for key, season, team, points in cursor]
+            return fixtures
 
     def add_fixture(self, season_id, team_id, points):
         with dbapi2.connect(self.app.config['dsn']) as connection:

@@ -64,7 +64,7 @@
 		    <th>Team</th>
 		    <th>Points</th>
 		 </tr>
-		{% for fixture_id, season, team, points in result %}
+		{% for key, season, team, points in fixtures %}
 		<tr>
 			<td><input type="checkbox" name="id" value="{{ fixture_id }}" /></td>
 			<td> {{ season }} </td>
