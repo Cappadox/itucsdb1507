@@ -2,6 +2,7 @@
 {% block title %}Squad{% endblock %}
 {% block content %}
 
+<br><br><br><br><br><br><br>
 <form class="form-horizontal" role="form" action ={{url_for('squads')}} method="post">
   <div class="form-group">
     <label class="control-label col-sm-2" for="team_id">Team ID:</label>
@@ -18,8 +19,8 @@
 	  <label class="control-label col-sm-2" for="player_id">Player ID:</label>
 		  <div class="col-sm-6">
 			  <select class="form-control" name = "player_id">
-			  {% for player_id, name, birthday, position in players %}
-			  <option value = "{{player_id}}">{{player_id}} - {{ name }} </option>
+			  {% for player_id, name in players %}
+			  <option value = "{{player_id}}" >{{player_id}} - {{ name }} </option>
 			  {% endfor %}
 			  </select>
 	  </div>

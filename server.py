@@ -472,7 +472,7 @@ def squads():
 
 @app.route('/squads/add', methods=['GET', 'POST'])
 def add_squads():
-    return render_template('squads_add.html', teams = app.teams.select_teams(), players = app.players.select_players())
+    return render_template('squads_add.html', teams = app.teams.select_teams(), players = app.squads.get_players())
 
 @app.route('/squads/update/<squad_id>', methods=['GET', 'POST'])
 def update_squads(squad_id):

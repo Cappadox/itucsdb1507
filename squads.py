@@ -85,6 +85,22 @@ class Squads:
              teams = cursor.fetchall()
              return teams
 
+    def get_players(self):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+             cursor = connection.cursor()
+             query = """ SELECT players.player_id, players.name FROM
+                    (
+                     (SELECT PLAYER_ID FROM PLAYERS)
+                     EXCEPT
+                     (SELECT PLAYER_ID FROM SQUADS)
+                    )
+                    AS UNEMPLOYEDPLAYERS
+                    LEFT JOIN PLAYERS
+                    ON PLAYERS.PLAYER_ID = UNEMPLOYEDPLAYERS.PLAYER_ID ORDER BY players.player_id """
+             cursor.execute(query)
+             players = cursor.fetchall()
+             return players
+
     def delete_squad(self, squad_id):
          with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
