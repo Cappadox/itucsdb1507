@@ -4,111 +4,114 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+
 	<!-- Bootstrap -->
     <link href="{{ url_for('static', filename='./css/bootstrap.min.css') }}" rel="stylesheet">
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{{ url_for('static', filename='./jquery.min.js') }}"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
+
+    <!-- Bootstrap default plugin -->
     <script src="{{ url_for('static', filename='./js/bootstrap.min.js') }}"></script>
 
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+
 	<title>American Football - {% block title %}{% endblock %}</title>
-	<link rel="stylesheet" href="../static/js/bootstrap.min.js)" />
 
 </head>
 <body>
 	<header>
 		<nav class="navbar navbar-default navbar-fixed-top">
-			<div class="container">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="/">Home</a>
-				</div>
-
-					<ul class="nav navbar-nav">
-						<!-- Coaches menu-->
-						<li><a href="{{ url_for('coaches') }}">Coaches</a></li>
-						<!-- Coaching menu-->
-						<li><a href="{{ url_for('coaching') }}">Coaching</a></li>
-						<!-- Countries menu-->
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button" >Countries<span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="{{ url_for('countries') }}">List Countries</a></li>
-								<li><a href="{{ url_for('countries_add') }}">Add Country</a></li>
-							</ul>
-						</li>
-						<!-- Fixtures menu-->
-						<li><a href="{{ url_for('fixtures') }}">Fixtures</a></li>
-						<!-- Leagues menu-->
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button" >Leagues<span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="{{ url_for('leagues') }}">List Leagues</a></li>
-								<li><a href="{{ url_for('leagues_edit') }}">Add League</a></li>
-							</ul>
-						</li>
-						<!-- Matches -->
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button">Matches<span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="{{ url_for('matches')}}">Show Matches</a></li>
-								<li><a href="{{ url_for('match_add') }}">Add Match</a></li>
-							</ul>
-						</li>
-						<!-- Officials -->
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button">Officials<span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="{{ url_for('officials')}}">Show Officials</a></li>
-								<li><a href="{{ url_for('official_add') }}">Add Official</a></li>
-							</ul>
-						</li>
-						<!-- Players -->
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button">Players<span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="{{ url_for('add_players')}}">Add Player</a></li>
-								<li><a href="{{ url_for('players') }}">Show Players</a></li>
-							</ul>
-						</li>
-						<!-- Seasons menu -->
-						<li><a href="{{ url_for('seasons') }}">Seasons</a></li>
-						<!-- Stadiums menu -->
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button" >Stadiums<span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="{{ url_for('stadiums') }}">List Stadiums</a></li>
-								<li><a href="{{ url_for('stadiums_add') }}">Add Stadium</a></li>
-							</ul>
-						</li>
-						<!-- Statistics menu -->
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button">Statistics<span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="{{ url_for('statistics_player')}}">Player Statistics</a></li>
-								<li><a href="{{ url_for('statistics_team') }}">Team Statistics</a></li>
-							</ul>
-						</li>
-						<!--  Squads menu -->
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button">Squads<span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="{{url_for('add_squads')}}">Add Squad</a></li>
-								<li><a href="{{ url_for('squads') }}">Show Squads</a></li>
-							</ul>
-						</li>
-						<!-- Teams menu -->
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button">Teams<span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="{{url_for('add_teams')}}">Add Team</a></li>
-								<li><a href="{{ url_for('teams') }}">Show Teams</a></li>
-							</ul>
-						</li>
-						<!-- Transfers menu -->
-						<li><a href="{{ url_for('transfers') }}">Transfers</a></li>
-
-					</ul>
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/">Home</a>
 			</div>
+
+			<ul class="nav navbar-nav">
+				<!-- Coaches menu-->
+				<li><a href="{{ url_for('coaches') }}">Coaches</a></li>
+				<!-- Coaching menu-->
+				<li><a href="{{ url_for('coaching') }}">Coaching</a></li>
+				<!-- Countries menu-->
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" role="button" >Countries<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="{{ url_for('countries') }}">List Countries</a></li>
+						<li><a href="{{ url_for('countries_add') }}">Add Country</a></li>
+					</ul>
+				</li>
+				<!-- Fixtures menu-->
+				<li><a href="{{ url_for('fixtures') }}">Fixtures</a></li>
+				<!-- Leagues menu-->
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" role="button" >Leagues<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="{{ url_for('leagues') }}">List Leagues</a></li>
+						<li><a href="{{ url_for('leagues_edit') }}">Add League</a></li>
+					</ul>
+				</li>
+				<!-- Matches -->
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" role="button">Matches<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="{{ url_for('matches')}}">Show Matches</a></li>
+						<li><a href="{{ url_for('match_add') }}">Add Match</a></li>
+					</ul>
+				</li>
+				<!-- Officials -->
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" role="button">Officials<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="{{ url_for('officials')}}">Show Officials</a></li>
+						<li><a href="{{ url_for('official_add') }}">Add Official</a></li>
+					</ul>
+				</li>
+				<!-- Players -->
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" role="button">Players<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="{{ url_for('add_players')}}">Add Player</a></li>
+						<li><a href="{{ url_for('players') }}">Show Players</a></li>
+					</ul>
+				</li>
+				<!-- Seasons menu -->
+				<li><a href="{{ url_for('seasons') }}">Seasons</a></li>
+				<!-- Stadiums menu -->
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" role="button" >Stadiums<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="{{ url_for('stadiums') }}">List Stadiums</a></li>
+						<li><a href="{{ url_for('stadiums_add') }}">Add Stadium</a></li>
+					</ul>
+				</li>
+				<!-- Statistics menu -->
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" role="button">Statistics<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="{{ url_for('statistics_player')}}">Player Statistics</a></li>
+						<li><a href="{{ url_for('statistics_team') }}">Team Statistics</a></li>
+					</ul>
+				</li>
+				<!--  Squads menu -->
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" role="button">Squads<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="{{url_for('add_squads')}}">Add Squad</a></li>
+						<li><a href="{{ url_for('squads') }}">Show Squads</a></li>
+					</ul>
+				</li>
+				<!-- Teams menu -->
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" role="button">Teams<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="{{url_for('add_teams')}}">Add Team</a></li>
+						<li><a href="{{ url_for('teams') }}">Show Teams</a></li>
+					</ul>
+				</li>
+				<!-- Transfers menu -->
+				<li><a href="{{ url_for('transfers') }}">Transfers</a></li>
+
+			</ul>
 			<!-- /.container-fluid -->
 		</nav>
 	</header>
