@@ -21,7 +21,7 @@
 		    <th>Tackles </th>
 		    <th>Penalties</th>
 		 </tr>
-		{% for statistic_id, season, player, tackles, penalties in result %}
+		{% for key, season, player, tackles, penalties in statisticsp %}
 		<tr>
 			<td> {{ season }} </td>
 			<td> {{ player }} </td>

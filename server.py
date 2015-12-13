@@ -519,14 +519,14 @@ def statistics_team():
 @app.route('/statistics/players', methods = ['GET', 'POST'])
 def statistics_player():
     if request.method == 'GET':
-        return render_template('statistics_player.html', result = app.statisticsPlayer.get_statistics_player())
+        return render_template('statistics_player.html', statisticsp = app.statisticsPlayer.get_statistics_player())
     else:
         season = request.form['season_id']
         player = request.form['player_id']
         tackles = request.form['tackles']
         penalties = request.form['penalties']
         app.statisticsPlayer.add_statistic_player(season, player, tackles, penalties)
-    return render_template('statistics_player.html', result = app.statisticsPlayer.get_statistics_player())
+    return render_template('statistics_player.html', statisticsp = app.statisticsPlayer.get_statistics_player())
 
 
 '''Team Statistics Pages'''
@@ -578,7 +578,7 @@ def search_statistic_team():
 @app.route('/statistics/players/add', methods = ['GET', 'POST'])
 def add_statistic_player():
     if request.method == 'GET':
-        return render_template('statistic_player_add.html', player=app.players.select_players(), season=app.seasons.select_seasons(), result = app.statisticsPlayer.get_statistics_player())
+        return render_template('statistic_player_add.html', player=app.players.select_players(), season=app.seasons.select_seasons(), statisticsp = app.statisticsPlayer.get_statistics_player())
     else:
         season = request.form['season_id']
         player = request.form['player_id']
@@ -590,7 +590,7 @@ def add_statistic_player():
 @app.route('/statistics/players/delete', methods = ['GET', 'POST'])
 def delete_statistic_player():
     if request.method == 'GET':
-        return render_template('statistics_player.html', result = app.statisticsPlayer.get_statistics_player())
+        return render_template('statistics_player.html', statisticsp = app.statisticsPlayer.get_statistics_player())
     else:
         id = request.form['id']
         app.statisticsPlayer.delete_statistic_player(id)
@@ -599,7 +599,7 @@ def delete_statistic_player():
 @app.route('/statistics/players/update', methods = ['GET', 'POST'])
 def update_statistic_player():
     if request.method == 'GET':
-        return render_template('statistic_player_update.html', player=app.players.select_players(), season=app.seasons.select_seasons(), result = app.statisticsPlayer.get_statistics_player())
+        return render_template('statistic_player_update.html', player=app.players.select_players(), season=app.seasons.select_seasons(), statisticsp = app.statisticsPlayer.get_statistics_player())
     else:
         statistic_id = request.form['statistic_id']
         season = request.form['season_id']
@@ -615,7 +615,7 @@ def search_statistic_player():
         return render_template('statistic_player_search.html')
     else:
         id = request.form['id']
-        return render_template('statistic_player_search.html',result=app.statisticsPlayer.search_statistic_player(id))
+        return render_template('statistic_player_search.html',statisticsp=app.statisticsPlayer.search_statistic_player(id))
 
 
 '''Team pages'''
