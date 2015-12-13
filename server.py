@@ -750,6 +750,19 @@ def create_tables():
     return redirect(url_for('home_page'))
 
 
+'''Database Drop All tables'''
+@app.route('/drop')
+def drop_tables():
+    with dbapi2.connect(app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                cursor.execute("SELECT table_schema,table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_schema,table_name")
+                rows = cursor.fetchall()
+                for row in rows:
+                    cursor.execute("drop table " + row[1] + " cascade")
+
+                connection.commit()
+    return redirect(url_for('create_tables'))
+
 if __name__ == '__main__':
 
     '''Container objects'''
