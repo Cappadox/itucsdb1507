@@ -26,7 +26,7 @@
 		    <th>Touchdowns </th>
 		    <th>Receiving Yards</th>
 		 </tr>
-		{% for statistic_id, season, team, touchdowns, rushingYards in result %}
+		{% for key, season, team, touchdowns, rushingYards in statisticst %}
 		<tr>
 			<td><input type="checkbox" name="statistic_id" value="{{ statistic_id }}" /></td>
 			<td> {{ season }} </td>
