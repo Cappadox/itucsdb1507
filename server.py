@@ -755,9 +755,10 @@ def create_tables():
 def drop_tables():
     with dbapi2.connect(app.config['dsn']) as connection:
                 cursor = connection.cursor()
-                cursor.execute("""select 'drop table if exists "' || tablename || '" cascade;'
-                                from pg_tables
-                                where schemaname = 'public';""")
+                cursor.execute("SELECT table_schema,table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_schema,table_name")
+                rows = cursor.fetchall()
+                for row in rows:
+                    cursor.execute("drop table " + row[1] + " cascade")
 
                 connection.commit()
     return redirect(url_for('create_tables'))
