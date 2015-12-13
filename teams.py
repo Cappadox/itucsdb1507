@@ -24,9 +24,23 @@ class Teams:
                 connection.commit()
 
     def select_teams(self):
+         with dbapi2.connect(self.app.config['dsn']) as connection:
+              cursor = connection.cursor()
+              query = """ SELECT * FROM TEAMS ORDER BY TEAM_ID """
+              cursor.execute(query)
+              connection.commit()
+
+              teams = cursor.fetchall()
+              return teams
+
+    def choose_teams_coaching(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
              cursor = connection.cursor()
-             query = """ SELECT * FROM TEAMS ORDER BY TEAM_ID """
+             query = """ select teams.name, coaches.name, seasons.year
+                    from coaching
+                    inner join teams on teams.team_id=coaching.team_id
+                    inner join coaches on coaches.coach_id=coaching.coach_id
+                    inner join seasons on seasons.season_id=coaching.season_id """
              cursor.execute(query)
              connection.commit()
 
@@ -42,11 +56,11 @@ class Teams:
              team = cursor.fetchall()
              return team
 
-    def delete_team(self, teamid):
+    def delete_team(self, team_id):
          with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
             query = """ DELETE FROM TEAMS WHERE TEAM_ID = %s """
-            cursor.execute(query, [teamid])
+            cursor.execute(query, [team_id])
             connection.commit()
 
     def add_team(self, name, league_id):
@@ -82,3 +96,14 @@ class Teams:
              cursor.execute(query, [team_id])
              key,name,league = cursor.fetchone()
              return name
+
+    def select_team_names(self):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+             cursor = connection.cursor()
+             query = """ SELECT NAME FROM TEAMS ORDER BY TEAM_ID """
+             cursor.execute(query)
+             connection.commit()
+
+             names = cursor.fetchall()
+             return names
+

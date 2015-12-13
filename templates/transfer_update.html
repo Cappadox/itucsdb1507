@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+ {% block title %}Edit Matches{% endblock %}
+ {% block content %}
+	 <form action="{{ url_for('transfers') }}" method="post" role="form">
+		<div class="form-group">
+			<div class="row">
+				<label class="control-label col-sm-2" for="player">Player:</label>
+			  	<div class="col-sm-6">
+					<select name="playerID" class="form-control"">
+						{% for player_id, name, birthday, position in players %}
+					        <option value="{{player_id}}">{{ name }}</option>
+						{% endfor %}
+				    </select>
+				</div>
+			</div>
+		</div><!-- End of form-group -->
+		<div class="form-group">
+			<div class="row">
+				<label class="control-label col-sm-2" for="oldteam">Old Team:</label>
+			  	<div class="col-sm-6">
+					<select name="oldID" class="form-control"">
+						{% for team_id, name, league_id in teams %}
+					        <option value="{{team_id}}">{{ name }}</option>
+						{% endfor %}
+				    </select>
+				</div>
+			</div>
+		</div><!-- End of form-group -->
+		<div class="form-group">
+			<div class="row">
+				<label class="control-label col-sm-2" for="newteam">New Team:</label>
+			  	<div class="col-sm-6">
+					<select name="newID" class="form-control"">
+						{% for team_id, name, league_id in teams %}
+					        <option value="{{team_id}}">{{ name }}</option>
+						{% endfor %}
+				    </select>
+				</div>
+			</div>
+		</div><!-- End of form-group -->
+		<div class="form-group">
+			<div class="row">
+				<label class="control-label col-sm-2" for="season">Season:</label>
+			  	<div class="col-sm-6">
+					<select name="seasonID" class="form-control"">
+						{% for season_id, year in season %}
+					        <option value="{{season_id}}">{{ year }}</option>
+						{% endfor %}
+				    </select>
+				</div>
+			</div>
+		</div><!-- End of form-group -->
+		<div class="form-group">
+		 	<div class="row">
+			  	<label class="control-label col-sm-2" for="fee">Fee:</label>
+			  	<div class="col-sm-6">
+					<input type="number" name="fee" class="form-control" required autofocus />
+				</div>
+			</div>
+		</div> <!-- End of form-group -->
+		<div class="form-group col-sm-8">
+		    <div class="pull-right">
+		      	<input value="Update" name="submit" type="submit" />
+		    </div>
+		 </div> <!-- End of form-group -->
+		 <input type="hidden" name="id" value="{{id}}"/>
+	  </form>
+ {% endblock %}

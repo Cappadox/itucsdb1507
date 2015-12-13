@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block title %}Squad{% endblock %}
+{% block content %}
+
+<form action ={{url_for('search_squads')}} class="form-inline pull-right" role="form" method="post">
+  <div class="form-group">
+	  <label class="control-label" for="name">Team Name</label>
+			  <select class="form-control" name = "name">
+			  {% for team_id, name in teams %}
+			  <option value = "{{team_id}}">{{ name }} </option>
+			  {% endfor %}
+			  </select>
+  </div>
+ <div class="form-group">
+  	<button type="submit" class="btn btn-default">Filter</button>
+  </div>
+</form>
+<br>
+<table class="table table-bordered table-striped">
+<tr>
+<th> SQUAD ID </th> <th> TEAM NAME </th> <th> PLAYER NAME </th> <th> KIT NO </th> <th>UPDATE/DELETE</th>
+</tr>
+{% for squad_id, team_name, player_name, kit_no in squads %}
+<tr>
+<td> {{ squad_id }}</td>
+<td> {{ team_name }}</td>
+<td> {{ player_name }} </td>
+<td> {{ kit_no }} </td>
+<td> <a href="squads/update/{{ squad_id }}" style="text-decoration:none;" class="btn btn-danger btn-sm" role="button"> <span class="glyphicon glyphicon-wrench"></span> UPDATE </a>
+	 <a href="squads/delete/{{ squad_id }}" style="text-decoration:none;" class="btn btn-danger btn-sm" role="button"> <span class="glyphicon glyphicon-remove"></span> DELETE </a>
+</td>
+</tr>
+{% endfor %}
+<br>
+<tr>
+</tr>
+</table>
+{% endblock %}

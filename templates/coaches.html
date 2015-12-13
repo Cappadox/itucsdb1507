@@ -8,9 +8,15 @@
   <input type="text" name="coachBirthday"><br><br>
   <input type="submit" value="Add" name="Add">
 </form>
+<br><br>
+<form method="get">
+  <b>Search Coach:</b><br>
+  <input type="text" name="coachSearch">&nbsp
+  <input type="submit" value="Search" name="Search">
+</form>
 <br>
-<table>
-<td><b>Name &nbsp&nbsp</b></td> <td><b>BirthYear</b></td>
+<table class="table table-bordered table-striped">
+<td><b>Name &nbsp&nbsp</b></td> <td><b>BirthYear</b></td> <td><b>Delete &nbsp&nbsp</b></td><td><b>Update &nbsp&nbsp</b></td>
 {% for key, name, birthday in result %}
 <tr>
 <td style="width:70px;"> {{ name}}</td width="40%"><td>{{ birthday }}</td>

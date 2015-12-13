@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block title %}Player Statistics{% endblock %}
+{% block content %}
+
+<form action="{{ url_for('add_statistic_player') }}" method="get" role="form">
+	<div class="form-group col-sm-14">
+		<div class="pull-right">
+			<input value="Edit Player Statistics" name="submit" type="submit" />
+		</div>
+	</div>
+</form>
+<form action="{{ url_for('search_statistic_player') }}" method="get" role="form">
+	<div class="form-group col-sm-14">
+		<div class="pull-left">
+			<input value="Search Player" name="submit" type="submit" />
+		</div>
+	</div>
+</form>
+<br>
+<br>
+<table class="table table-bordered table-striped">
+		<tr>
+		    <th>Season</th>
+		    <th>Player</th>
+		    <th>Tackles </th>
+		    <th>Penalties</th>
+		 </tr>
+		{% for statistic_id, season, player, tackles, penalties in result %}
+		<tr>
+			<td> {{ season }} </td>
+			<td> {{ player }} </td>
+			<td> {{ tackles }} </td>
+			<td> {{ penalties }} </td>
+		</tr>
+	{% endfor %}
+	</table>
+
+{% endblock %}

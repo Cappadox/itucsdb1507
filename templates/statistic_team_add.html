@@ -1,8 +1,8 @@
  {% extends "layout.html" %}
- {% block title %}Statistics{% endblock %}
+ {% block title %}Team Statistics{% endblock %}
  {% block content %}
 
-<form action="{{ url_for('update_statistic') }}" method="get" role="form">
+<form action="{{ url_for('update_statistic_team') }}" method="get" role="form">
 	<div class="form-group col-sm-2">
 		<div class="pull-left">
 			<input value="Go to Update Page" name="submit" type="submit" />
@@ -13,7 +13,7 @@
 <br>
 <br>
 
-<form action="{{ url_for('add_statistic') }}" method="post" role="form">
+<form action="{{ url_for('add_statistic_team') }}" method="post" role="form">
 	<div class="form-group">
 		<div class="row">
 			<label class="control-label col-sm-2" for="season">Season:</label>
@@ -63,7 +63,7 @@
 
 <br>
 
-<form  action ={{url_for('delete_statistic')}} method="post" type="form">
+<form  action ={{url_for('delete_statistic_team')}} method="post" type="form">
 	<table class="table table-bordered table-striped">
 		<tr>
 		    <th></th>

@@ -4,7 +4,7 @@
 	 <form action="{{ url_for('matches') }}" method="post" role="form">
 		<div class="form-group">
 			<div class="row">
-				<label class="control-label col-sm-2" for="abbreviation">Home Team:</label>
+				<label class="control-label col-sm-2" for="hometeam">Home Team:</label>
 			  	<div class="col-sm-6">
 					<select name="homeID" class="form-control"">
 						{% for team_id, name, league_id in teams %}
@@ -16,7 +16,7 @@
 		</div><!-- End of form-group -->
 		<div class="form-group">
 			<div class="row">
-				<label class="control-label col-sm-2" for="abbreviation">Away Team:</label>
+				<label class="control-label col-sm-2" for="awayteam">Away Team:</label>
 			  	<div class="col-sm-6">
 					<select name="awayID" class="form-control"">
 						{% for team_id, name, league_id in teams %}
@@ -28,7 +28,7 @@
 		</div><!-- End of form-group -->
 		<div class="form-group">
 			<div class="row">
-				<label class="control-label col-sm-2" for="abbreviation">Season:</label>
+				<label class="control-label col-sm-2" for="season">Season:</label>
 			  	<div class="col-sm-6">
 					<select name="seasonID" class="form-control"">
 						{% for season_id, year in season %}
@@ -40,7 +40,7 @@
 		</div><!-- End of form-group -->
 		<div class="form-group">
 			<div class="row">
-				<label class="control-label col-sm-2" for="abbreviation">Official:</label>
+				<label class="control-label col-sm-2" for="official">Official:</label>
 			  	<div class="col-sm-6">
 					<select name="officialID" class="form-control"">
 						{% for key, official in officials %}
@@ -52,7 +52,7 @@
 		</div><!-- End of form-group -->
 		<div class="form-group">
 			<div class="row">
-				<label class="control-label col-sm-2" for="abbreviation">Result:</label>
+				<label class="control-label col-sm-2" for="result">Result:</label>
 			  	<div class="col-sm-6">
 					<select name="result" class="form-control"">
 					        <option value="Draw">Draw</option>

@@ -59,3 +59,15 @@ class Fixtures:
                         WHERE FIXTURE_ID = %s"""
                 cursor.execute(query, (fixture_id, season_id, team_id, points))
                 connection.commit()
+
+    def search_fixture(self, id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+            cursor = connection.cursor()
+            query="""SELECT * FROM FIXTURES
+                    WHERE CAST(TEAM_ID as VARCHAR(30)) LIKE '%s'
+                    ORDER BY TEAM_ID ASC""" % (('%'+id+'%'))
+            cursor.execute(query)
+            connection.commit()
+
+            result = cursor.fetchall()
+            return result

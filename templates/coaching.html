@@ -3,7 +3,76 @@
 {% block content %}
 <form  action ={{url_for('coaching')}} method="post">
 
-</form>
+  <b>Team:</b><br>
+  <select name="team_id" class="form-control"">
+					{% for team_id, name, league_id in teams %}
+						<option value="{{team_id}}">{{ name }}</option>
+					{% endfor %}
+				</select>
 
+  <b>Coach:</b><br>
+  <select name="coach_id" class="form-control"">
+					{% for coach_id, name, birth in coaches %}
+						<option value="{{coach_id}}">{{ name }}</option>
+					{% endfor %}
+				</select>
+
+  <b>Year:</b><br>
+
+  <select name="season_id" class="form-control"">
+					{% for season_id, year in season %}
+						<option value="{{season_id}}">{{ year }}</option>
+					{% endfor %}
+				</select>
+
+  <input type="submit" value="Add" name="Add">
+
+</form>
+<br><br>
+<form method="get">
+  <b>Search Coach or Team:</b><br>
+  <input type="text" name="coachingSearch">&nbsp
+  <input type="submit" value="Search" name="Search">
+</form>
+<br>
+<table class="table table-bordered table-striped">
+<td><b>Team &nbsp&nbsp</b></td> <td><b>Coach &nbsp&nbsp</b></td> <td><b>Year</b></td>
+{% for key, teamName, coachName ,year in coachlist %}
+<tr>
+<td>{{ teamName}}</td>
+<td>{{ coachName}}</td>
+<td>{{ year }}</td>
+<td ><form action="{{ url_for('coaching') }}" method="post" role="form">
+<input value="{{key}}" name="id" type="hidden" /><input value="Delete" name="Delete" type="submit" />
+</td>
+&nbsp&nbsp
+<td>
+<select name="team_idU" class="form-control"">
+					{% for team_id, name,league_id in teams %}
+						<option value="{{team_id}}">{{ name }}</option>
+					{% endfor %}
+				</select></td>
+<td>
+<select name="coach_idU" class="form-control"">
+					{% for coach_id, name, birth in coaches %}
+						<option value="{{coach_id}}">{{ name }}</option>
+					{% endfor %}
+				</select></td>
+<td>
+<select name="season_idU" class="form-control"">
+					{% for season_id, year in season %}
+						<option value="{{season_id}}">{{ year }}</option>
+					{% endfor %}
+				</select></td>
+&nbsp
+<td>
+<input value="{{key}}" name="id" type="hidden" /><input value="Update" name="Update" type="submit" />
+</td>
+
+</tr>
+{% endfor %}
+</table>
+</form>
+{% endblock %}
 
 

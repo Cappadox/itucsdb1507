@@ -20,8 +20,11 @@ from stadiums import Stadium, Stadiums
 from officials import Officials, Official
 from players import Player, Players
 from seasons import Seasons, Seasons2
-from statistics import Statistic, Statistics
+from statisticsTeam import StatisticT, StatisticsT
+from statisticsPlayer import StatisticP, StatisticsP
 from fixtures import Fixture, Fixtures
+from squads import Squad, Squads
+from transfers import Transfer, Transfers
 from flask.templating import render_template_string
 
 
@@ -72,11 +75,24 @@ def coaches():
 @app.route('/coaching', methods=['GET', 'POST'])
 def coaching():
     if request.method == 'GET':
-        return render_template('coaching.html', result = app.coaching.select_coaching())
+        return render_template('coaching.html', coachlist=app.coaching.get_coaching(), teams = app.teams.choose_teams_coaching(), season=app.seasons.select_seasons(),coaches=app.coaches.select_coaches() ,coaching = app.coaching.select_coaching())
     else:
         if 'Add' in request.form:
+            team_id = request.form['team_id']
+            coach_id = request.form['coach_id']
+            season_id = request.form['season_id']
+            app.coaching.add_coaching(team_id,coach_id,season_id)
             return redirect(url_for('coaching'))
         elif 'Delete' in request.form:
+            coaching_id = request.form['id']
+            app.coaching.delete_coaching(coaching_id)
+            return redirect(url_for('coaching'))
+        elif 'Update' in request.form:
+            coaching_id = request.form['id']
+            team_id = request.form['team_idU']
+            coach_id = request.form['coach_idU']
+            season_id = request.form['season_idU']
+            app.coaching.update_coaching(coaching_id,team_id,coach_id,season_id)
             return redirect(url_for('coaching'))
         else:
             return render_template('coaching.html', result = app.coaching.select_coaching())
@@ -163,6 +179,15 @@ def update_fixture():
         app.fixtures.update_fixture(fixture_id, season, team, points)
     return redirect(url_for('update_fixture'))
 
+@app.route('/fixtures/search', methods=['GET', 'POST'])
+def search_fixture():
+    if request.method == 'GET':
+        return render_template('fixture_search.html')
+    else:
+        id = request.form['id']
+        return render_template('fixture_search.html',result=app.fixtures.search_fixture(id))
+
+
 '''*******************************************************************************************************'''
 
 '''Matches Pages'''
@@ -193,6 +218,10 @@ def matches():
 
 @app.route('/matches/', methods=['GET', 'POST'])
 def match_determine():
+    if request.method=='GET':
+        return redirect(url_for('matches'))
+    if request.form['id']=="0":
+        return redirect(url_for('matches'))
     if request.form['submit'] == "Delete":
         id = request.form['id']
         form = request.form
@@ -229,7 +258,7 @@ def match_update():
     if request.method == 'GET':
         return render_template('matches.html', matches = app.matches.get_matches())
     else:
-        return render_template('official_update.html', id = request.form['id'])
+        return render_template('match_update.html', id = request.form['id'])
 
 '''Officials Pages'''
 @app.route('/officials', methods=['GET', 'POST'])
@@ -393,6 +422,7 @@ def seasons():
         else:
             return render_template('seasons.html', result = app.seasons.select_seasons())
 
+
 '''Stadiums Pages'''
 @app.route('/stadiums', methods=['GET', 'POST'])
 def stadiums():
@@ -428,52 +458,160 @@ def stadiums_edit(stadium_id):
         app.countries.update_country(country_id, Country(name, abbreviation))
         return render_template('countries.html', countries = app.countries.get_countries())
 
+''' Squad Pages '''
+@app.route('/squads', methods=['GET', 'POST'])
+def squads():
+    if request.method == 'GET':
+        return render_template('squads.html', teams = app.squads.get_teams(), squads = app.squads.show_squads())
+    else:
+        team_id = request.form['team_id']
+        player_id = request.form['player_id']
+        kit_no = request.form['kit_no']
+        app.squads.add_squad(team_id, player_id, kit_no)
+    return redirect(url_for('squads'))
+
+@app.route('/squads/add', methods=['GET', 'POST'])
+def add_squads():
+    return render_template('squads_add.html', teams = app.teams.select_teams(), players = app.players.select_players())
+
+@app.route('/squads/update/<squad_id>', methods=['GET', 'POST'])
+def update_squads(squad_id):
+    if request.method == 'GET':
+        return render_template('squads_edit.html', squad = app.squads.get_squad(squad_id), teams = app.teams.select_teams(), players = app.players.select_players())
+    else:
+        team_id = request.form['team_id']
+        player_id = request.form['player_id']
+        kit_no = request.form['kit_no']
+        app.squads.update_squad(squad_id, team_id, player_id, kit_no)
+        return redirect(url_for('squads'))
+
+@app.route('/squads/delete/<squad_id>', methods=['GET', 'POST'])
+def delete_squads(squad_id):
+    app.squads.delete_squad(squad_id)
+    return redirect(url_for('squads'))
+
+@app.route('/squads/search', methods = ['GET', 'POST'])
+def search_squads():
+    if request.method == 'GET':
+        return redirect(url_for('squads_search.html'), teams = app.squads.get_teams())
+    else:
+        team_id = request.form['name']
+        return render_template('squads_search.html', teams = app.squads.get_teams(), squads = app.squads.search_squad(team_id))
+
 '''Statistics Pages'''
-@app.route('/statistics', methods = ['GET', 'POST'])
-def statistics():
+@app.route('/statistics/teams', methods = ['GET', 'POST'])
+def statistics_team():
     if request.method == 'GET':
-        return render_template('statistics.html', result = app.statistics.get_statistics())
+        return render_template('statistics_team.html', result = app.statisticsTeam.get_statistics_team())
     else:
         season = request.form['season_id']
         team = request.form['team_id']
         touchdowns = request.form['touchdowns']
         rushingYards = request.form['rushingYards']
-        app.statistics.add_statistic(season, team, touchdowns, rushingYards)
-    return render_template('statistics.html', result = app.statistics.get_statistics())
+        app.statisticsTeam.add_statistic_team(season, team, touchdowns, rushingYards)
+    return render_template('statistics_team.html', result = app.statisticsTeam.get_statistics_team())
 
-@app.route('/statistics/add', methods = ['GET', 'POST'])
-def add_statistic():
+@app.route('/statistics/players', methods = ['GET', 'POST'])
+def statistics_player():
     if request.method == 'GET':
-        return render_template('statistic_add.html', team=app.teams.select_teams(), season=app.seasons.select_seasons(), result = app.statistics.get_statistics())
+        return render_template('statistics_player.html', result = app.statisticsPlayer.get_statistics_player())
+    else:
+        season = request.form['season_id']
+        player = request.form['player_id']
+        tackles = request.form['tackles']
+        penalties = request.form['penalties']
+        app.statisticsPlayer.add_statistic_player(season, player, tackles, penalties)
+    return render_template('statistics_player.html', result = app.statisticsPlayer.get_statistics_player())
+
+
+'''Team Statistics Pages'''
+@app.route('/statistics/teams/add', methods = ['GET', 'POST'])
+def add_statistic_team():
+    if request.method == 'GET':
+        return render_template('statistic_team_add.html', team=app.teams.select_teams(), season=app.seasons.select_seasons(), result = app.statisticsTeam.get_statistics_team())
     else:
         season = request.form['season_id']
         team = request.form['team_id']
         touchdowns = request.form['touchdowns']
         rushingYards = request.form['rushingYards']
-        app.statistics.add_statistic(season, team, touchdowns, rushingYards)
-    return redirect(url_for('add_statistic'))
+        app.statisticsTeam.add_statistic_team(season, team, touchdowns, rushingYards)
+    return redirect(url_for('add_statistic_team'))
 
-@app.route('/statistics/delete', methods = ['GET', 'POST'])
-def delete_statistic():
+@app.route('/statistics/teams/delete', methods = ['GET', 'POST'])
+def delete_statistic_team():
     if request.method == 'GET':
-        return render_template('statistics.html', result = app.statistics.get_statistics())
+        return render_template('statistics_team.html', result = app.statisticsTeam.get_statistics_team())
     else:
         id = request.form['id']
-        app.statistics.delete_statistic(id)
-    return redirect(url_for('add_statistic'))
+        app.statisticsTeam.delete_statistic_team(id)
+    return redirect(url_for('add_statistic_team'))
 
-@app.route('/statistics/update', methods = ['GET', 'POST'])
-def update_statistic():
+@app.route('/statistics/teams/update', methods = ['GET', 'POST'])
+def update_statistic_team():
     if request.method == 'GET':
-        return render_template('statistic_update.html', team=app.teams.select_teams(), season=app.seasons.select_seasons(), result = app.statistics.get_statistics())
+        return render_template('statistic_team_update.html', team=app.teams.select_teams(), season=app.seasons.select_seasons(), result = app.statisticsTeam.get_statistics_team())
     else:
         statistic_id = request.form['statistic_id']
         season = request.form['season_id']
         team = request.form['team_id']
         touchdowns = request.form['touchdowns']
         rushingYards = request.form['rushingYards']
-        app.statistics.update_statistic(statistic_id, season, team, touchdowns, rushingYards)
-    return redirect(url_for('update_statistic'))
+        app.statisticsTeam.update_statistic_team(statistic_id, season, team, touchdowns, rushingYards)
+    return redirect(url_for('update_statistic_team'))
+
+@app.route('/statistics/teams/search', methods=['GET', 'POST'])
+def search_statistic_team():
+    if request.method == 'GET':
+        return render_template('statistic_team_search.html')
+    else:
+        id = request.form['id']
+        return render_template('statistic_team_search.html',result=app.statisticsTeam.search_statistic_team(id))
+
+
+
+    '''Players Statistics Pages'''
+
+@app.route('/statistics/players/add', methods = ['GET', 'POST'])
+def add_statistic_player():
+    if request.method == 'GET':
+        return render_template('statistic_player_add.html', player=app.players.select_players(), season=app.seasons.select_seasons(), result = app.statisticsPlayer.get_statistics_player())
+    else:
+        season = request.form['season_id']
+        player = request.form['player_id']
+        tackles = request.form['tackles']
+        penalties = request.form['penalties']
+        app.statisticsPlayer.add_statistic_player(season, player, tackles, penalties)
+    return redirect(url_for('add_statistic_player'))
+
+@app.route('/statistics/players/delete', methods = ['GET', 'POST'])
+def delete_statistic_player():
+    if request.method == 'GET':
+        return render_template('statistics_player.html', result = app.statisticsPlayer.get_statistics_player())
+    else:
+        id = request.form['id']
+        app.statisticsPlayer.delete_statistic_player(id)
+    return redirect(url_for('add_statistic_player'))
+
+@app.route('/statistics/players/update', methods = ['GET', 'POST'])
+def update_statistic_player():
+    if request.method == 'GET':
+        return render_template('statistic_player_update.html', player=app.players.select_players(), season=app.seasons.select_seasons(), result = app.statisticsPlayer.get_statistics_player())
+    else:
+        statistic_id = request.form['statistic_id']
+        season = request.form['season_id']
+        player = request.form['player_id']
+        tackles = request.form['tackles']
+        penalties = request.form['penalties']
+        app.statisticsPlayer.update_statistic_player(statistic_id, season, player, tackles, penalties)
+    return redirect(url_for('update_statistic_player'))
+
+@app.route('/statistics/players/search', methods=['GET', 'POST'])
+def search_statistic_player():
+    if request.method == 'GET':
+        return render_template('statistic_player_search.html')
+    else:
+        id = request.form['id']
+        return render_template('statistic_player_search.html',result=app.statisticsPlayer.search_statistic_player(id))
 
 
 '''Team pages'''
@@ -502,7 +640,7 @@ def add_teams():
 @app.route('/teams/update/<team_id>', methods=['GET', 'POST'])
 def update_teams(team_id):
     if request.method == 'GET':
-        return render_template('teams_edit.html', team = app.teams.get_team(team_id))
+        return render_template('teams_edit.html', team = app.teams.get_team(team_id), leagues = app.leagues.get_leagues())
     else:
         name = request.form['name']
         league_id = request.form['league_id']
@@ -513,6 +651,77 @@ def update_teams(team_id):
 def delete_teams(team_id):
     app.teams.delete_team(team_id)
     return redirect(url_for('teams'))
+
+
+
+@app.route('/transfers', methods=['GET', 'POST'])
+def transfers():
+    if request.method == 'GET':
+        return render_template('transfers.html', transfers = app.transfers.get_transfers())
+    else:
+        if request.form['submit']=="Save":
+            season_id = request.form['seasonID']
+            old_id = request.form['oldID']
+            new_id = request.form['newID']
+            player_id = request.form['playerID']
+            fee = request.form['fee']
+            transfer=Transfer(season_id,player_id,old_id,new_id,fee)
+            app.transfers.add_transfer(transfer)
+        else:
+            id = request.form['id']
+            season_id = request.form['seasonID']
+            old_id = request.form['oldID']
+            new_id = request.form['newID']
+            player_id = request.form['playerID']
+            fee = request.form['fee']
+            transfer=Transfer(season_id,player_id,old_id,new_id,fee)
+            app.transfers.update_transfer(id, transfer)
+
+        return redirect(url_for('transfers'))
+
+@app.route('/transfers/', methods=['GET', 'POST'])
+def transfer_determine():
+    if request.method=='GET':
+        return redirect(url_for('transfers'))
+    if request.form['id']=="0":
+        return redirect(url_for('transfers'))
+    if request.form['submit'] == "Delete":
+        id = request.form['id']
+        form = request.form
+        form_data={id: form['id']}
+        return redirect(url_for('transfer_delete'), code=307 )
+    elif request.form['submit'] == "Update":
+        return render_template('transfer_update.html', id = request.form['id'], teams=app.teams.select_teams(),
+                             season=app.seasons.select_seasons(),players=app.players.select_players())
+    else:
+        return redirect(url_for('transfers'))
+
+@app.route('/transfers/add', methods=['GET', 'POST'])
+def transfer_add():
+     return render_template('transfer_edit.html', teams=app.teams.select_teams(),
+                             season=app.seasons.select_seasons(),players=app.players.select_players())
+
+@app.route('/transfers/delete', methods=['GET', 'POST'])
+def transfer_delete():
+    if request.method == 'GET':
+        return render_template_string("""You need to click delete button at the end of the desired match.
+                                            Return to the list of matches.
+                                            <form action="{{ url_for('transfer') }}" method="get" role="form">
+                                            <div class="form-group">
+                                            <input value="Return" name="Return" type="submit" /><br><br>
+                                            </div> <!-- End of form-group -->
+                                            </form>""")
+    else:
+        id = request.form['id']
+        app.transfers.delete_transfer(id)
+        return redirect(url_for('transfers'))
+
+@app.route('/transfer/update', methods=['GET', 'POST'])
+def transfer_update():
+    if request.method == 'GET':
+        return render_template('transfers.html', transfers = app.transfers.get_transfers())
+    else:
+        return render_template('transfer_update.html', id = request.form['id'])
 
 
 '''Database initialization'''
@@ -528,11 +737,14 @@ def create_tables():
     app.teams.initialize_tables()
     app.stadiums.initialize_tables()
     app.coaching.initialize_tables()
+    app.squads.initialize_tables()
 
     app.officials.initialize_tables()
     app.matches.initialize_tables()
+    app.transfers.initialize_tables()
 
-    app.statistics.initialize_tables()
+    app.statisticsTeam.initialize_tables()
+    app.statisticsPlayer.initialize_tables()
     app.fixtures.initialize_tables()
 
     return redirect(url_for('home_page'))
@@ -552,8 +764,11 @@ if __name__ == '__main__':
     app.officials = Officials(app)
     app.seasons = Seasons2(app)
     app.matches = Matches(app)
-    app.statistics = Statistics(app)
+    app.statisticsTeam = StatisticsT(app)
+    app.statisticsPlayer = StatisticsP(app)
     app.fixtures = Fixtures(app)
+    app.squads = Squads(app)
+    app.transfers = Transfers(app)
 
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')
     if VCAP_APP_PORT is not None:

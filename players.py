@@ -64,7 +64,7 @@ class Players:
                 cursor = connection.cursor()
                 query = """ DELETE FROM PLAYERS
                         WHERE PLAYER_ID = %s """
-                cursor.execute(query, player_id)
+                cursor.execute(query, [player_id])
                 connection.commit()
 
     def search_player(self, name):
