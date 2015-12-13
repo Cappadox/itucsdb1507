@@ -17,6 +17,7 @@ from countries import Countries, Country
 from leagues import Leagues, League
 from matches import Matches, Match
 from teams import Team, Teams
+from stadiums import Stadium, Stadiums
 from officials import Officials, Official
 from players import Player, Players
 from seasons import Seasons, Seasons2
@@ -350,12 +351,9 @@ def leagues():
             search_terms = request.form['search_terms']
             return render_template('leagues.html', leagues = app.leagues.search_leagues(search_terms))
 
-
-
 @app.route('/leagues/add')
 def leagues_edit():
     return render_template('league_edit.html', countries = app.countries.get_countries())
-
 
 '''Player Pages'''
 @app.route('/players', methods=['GET', 'POST'])
@@ -399,6 +397,7 @@ def delete_players(player_id):
 
 
 '''Seasons Pages'''
+
 @app.route('/seasons', methods=['GET', 'POST'])
 def seasons():
     if request.method == 'GET':
@@ -422,6 +421,42 @@ def seasons():
             return render_template('seasons.html', result = app.seasons.search_season(year))
         else:
             return render_template('seasons.html', result = app.seasons.select_seasons())
+
+
+'''Stadiums Pages'''
+@app.route('/stadiums', methods=['GET', 'POST'])
+def stadiums():
+    if request.method == 'GET':
+        return render_template('stadiums.html', stadiums = app.stadiums.get_stadiums())
+    else:
+        if 'Add' in request.form:
+            name = request.form['name']
+            capacity = request.form['capacity']
+            country_id = request.form['country_id']
+            team_id = request.form['team_id']
+            app.stadiums.add_stadium(name, capacity, country_id, team_id)
+            return render_template('stadiums.html', stadiums = app.stadiums.get_stadiums())
+        elif 'Delete' in request.form:
+            stadium_id = request.form['stadium_id']
+            app.stadiums.delete_stadium(stadium_id)
+            return render_template('stadiums.html', stadiums = app.stadiums.get_stadiums())
+        elif 'Search' in request.form:
+            search_terms = request.form['search_terms']
+            return render_template('stadiums.html', stadiums = app.stadiums.search_stadiums(search_terms))
+
+@app.route('/stadiums/add')
+def stadiums_add():
+    return render_template('stadium_add.html' , countries = app.countries.get_countries(), teams = app.teams.select_teams())
+
+@app.route('/stadiums/edit/<stadium_id>', methods=['GET', 'POST'])
+def stadiums_edit(stadium_id):
+    if request.method == 'GET':
+        return render_template('stadium_edit.html', key = country_id, country=app.countries.get_country(country_id))
+    else:
+        name = request.form['name']
+        abbreviation = request.form['abbreviation']
+        app.countries.update_country(country_id, Country(name, abbreviation))
+        return render_template('countries.html', countries = app.countries.get_countries())
 
 ''' Squad Pages '''
 @app.route('/squads', methods=['GET', 'POST'])
@@ -488,8 +523,8 @@ def statistics_player():
         app.statisticsPlayer.add_statistic_player(season, player, tackles, penalties)
     return render_template('statistics_player.html', result = app.statisticsPlayer.get_statistics_player())
 
-    '''Team Statistics Pages'''
 
+'''Team Statistics Pages'''
 @app.route('/statistics/teams/add', methods = ['GET', 'POST'])
 def add_statistic_team():
     if request.method == 'GET':
@@ -700,6 +735,7 @@ def create_tables():
     app.players.initialize_tables()
     app.leagues.initialize_tables()
     app.teams.initialize_tables()
+    app.stadiums.initialize_tables()
     app.coaching.initialize_tables()
     app.squads.initialize_tables()
 
@@ -736,6 +772,7 @@ if __name__ == '__main__':
     app.players = Players(app)
     app.countries = Countries(app)
     app.leagues = Leagues(app)
+    app.stadiums = Stadiums(app)
     app.officials = Officials(app)
     app.seasons = Seasons2(app)
     app.matches = Matches(app)
