@@ -4,7 +4,6 @@
 <form  action ={{url_for('coaching')}} method="post">
 
   <b>Team:</b><br>
-
   <select name="team_id" class="form-control"">
 					{% for team_id, name, league_id in teams %}
 						<option value="{{team_id}}">{{ name }}</option>
@@ -28,6 +27,12 @@
 
   <input type="submit" value="Add" name="Add">
 
+</form>
+<br><br>
+<form method="get">
+  <b>Search Coach or Team:</b><br>
+  <input type="text" name="coachingSearch">&nbsp
+  <input type="submit" value="Search" name="Search">
 </form>
 <br>
 <table class="table table-bordered table-striped">

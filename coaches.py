@@ -35,6 +35,12 @@ class Coaches2:
                 query = """ INSERT INTO COACHES (NAME, BIRTHDAY) VALUES (%s, %s) """
                 cursor.execute(query, (name, birthday))
                 connection.commit()
+    def search_coach(self, id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """  """
+                cursor.execute(query, [id])
+                connection.commit()
 
     def delete_coach(self, id):
         with dbapi2.connect(self.app.config['dsn']) as connection:

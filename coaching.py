@@ -69,7 +69,7 @@ class Coaching2:
                 cursor.execute(query, [team_id, coach_id, season_id, coaching_id])
                 connection.commit()
 
-    def search_fixture(self, id):
+    def search_coaching(self, id):
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
             query=""
