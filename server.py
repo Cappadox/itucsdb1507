@@ -437,7 +437,7 @@ def seasons():
 @app.route('/stadiums', methods=['GET', 'POST'])
 def stadiums():
     if request.method == 'GET':
-        return render_template('stadiums.html', stadiums = app.stadiums.get_stadiums())
+        return render_template('stadiums.html', stadiums = app.stadiums.get_stadiums(), header_text = "List of all stadiums")
     else:
         if 'Add' in request.form:
             name = request.form['name']
@@ -445,14 +445,15 @@ def stadiums():
             country_id = request.form['country_id']
             team_id = request.form['team_id']
             app.stadiums.add_stadium(name, capacity, country_id, team_id)
-            return render_template('stadiums.html', stadiums = app.stadiums.get_stadiums())
+            return render_template('stadiums.html', stadiums = app.stadiums.get_stadiums(), header_text = "List of all stadiums")
         elif 'Delete' in request.form:
             stadium_id = request.form['stadium_id']
             app.stadiums.delete_stadium(stadium_id)
-            return render_template('stadiums.html', stadiums = app.stadiums.get_stadiums())
+            return render_template('stadiums.html', stadiums = app.stadiums.get_stadiums(), header_text = "List of all stadiums")
         elif 'Search' in request.form:
             search_terms = request.form['search_terms']
-            return render_template('stadiums.html', stadiums = app.stadiums.search_stadiums(search_terms))
+            return render_template('stadiums.html', stadiums = app.stadiums.search_stadiums(search_terms),
+                                   header_text = "Search results: "+ search_terms)
 
 @app.route('/stadiums/add')
 def stadiums_add():
@@ -461,12 +462,17 @@ def stadiums_add():
 @app.route('/stadiums/edit/<stadium_id>', methods=['GET', 'POST'])
 def stadiums_edit(stadium_id):
     if request.method == 'GET':
-        return render_template('stadium_edit.html', key = country_id, country=app.countries.get_country(country_id))
+        stadium = app.stadiums.get_stadium(stadium_id)
+        return render_template('stadiums_edit.html', stadium_id = stadium[0], name = stadium[1], capacity = stadium[2], country_id = stadium[3], team_id = stadium[4],
+                                countries = app.countries.get_countries(), teams = app.teams.select_teams())
     else:
         name = request.form['name']
-        abbreviation = request.form['abbreviation']
-        app.countries.update_country(country_id, Country(name, abbreviation))
-        return render_template('countries.html', countries = app.countries.get_countries())
+        capacity = request.form['capacity']
+        country_id = request.form['country_id']
+        team_id = request.form['team_id']
+        app.stadiums.update_stadium(stadium_id, name, capacity, country_id, team_id)
+        return render_template('stadiums.html', stadiums = app.stadiums.get_stadiums(), header_text = "List of all stadiums")
+
 
 ''' Squad Pages '''
 @app.route('/squads', methods=['GET', 'POST'])

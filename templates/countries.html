@@ -1,40 +1,38 @@
 {% extends "layout.html" %}
 {% block title %}Countries{% endblock %}
 {% block content %}
-<div class="page-header">
-  		<h1 >Countries <small>List of all countries</small></h1>
+	<div class="page-header">
+	  		<h1 >Countries <small>List of all countries</small></h1>
 
-</div>
-<div class=col-sm-6">
-<table class="table table-bordered table-striped table-hover 8">
-		<tr>
-			<th>Name</th>
-			<th>Abbreviation</th>
-			<th>Delete</th>
-			<th>Update</th>
-		</tr>
-	{% for key, country in countries %}
-		<tr >
-			<td class="col-sm-7"> {{ country.name }} </td>
-			<td class="col-sm-3"> {{ country.abbreviation }} </td>
-			<td class="col-sm-1">
-				<form action="{{ url_for('countries') }}" method="post" role="form">
-					<input value="{{key}}" name="id" type="hidden" />
-					<input value="Delete" name="Delete" type="submit" />
-				</form>
-			</td>
-			<td class="col-sm-1">
-				<a href="{{url_for('country_edit', country_id=key )}}"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span</a>
-			</td>
-		</tr>
-	{% endfor %}
-</table>
-	<form action="{{ url_for('countries') }}" method="post" class="form-inline pull-right">
-		<div class="form-group">
-		    <input type="text" name="search_terms" class="form-control" placeholder="Enter search terms">
-		</div>
-		<input value="Search" name="Search" type="submit" />
-	</form>
-</div>
+	</div>
+	<div class="col-sm-6">
+		<table class="table table-bordered table-striped table-hover 8">
+			<tr>
+				<th class="col-sm-8">Name</th>
+				<th class="col-sm-2">Abbreviation</th>
+				<th class="col-sm-2">Operations</th>
+			</tr>
+			{% for key, country in countries %}
+				<tr >
+					<td> {{ country.name }} </td>
+					<td> {{ country.abbreviation }} </td>
+					<td>
+						<form action="{{ url_for('countries') }}" method="post" role="form" style="display: inline">
+							<input value="{{key}}" name="id" type="hidden" />
+							<button class="btn btn-primary btn-sm" name="Delete" type="submit"><span class="glyphicon glyphicon-trash" ></button>
+						</form>
+						<form action="{{url_for('country_edit', country_id=key )}}" method="get" role="form" style="display: inline">
+							<button class="btn btn-primary btn-sm" name="Update" type="submit"><span class="glyphicon glyphicon-wrench" ></button>
+						</form>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+		<form action="{{ url_for('countries') }}" method="post" class="form-inline pull-right">
+			<div class="form-group">
+			    <input type="text" name="search_terms" class="form-control" placeholder="Enter search terms">
+			</div>
+			<input value="Search" name="Search" type="submit" />
+		</form>
+	</div>
 {% endblock %}
- <!--  <button name="Search" type="submit" class="btn btn-default">Search</button> -->
