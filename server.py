@@ -9,7 +9,6 @@ from flask import redirect
 from flask import render_template
 from flask import request
 from flask.helpers import url_for
-from flask.templating import render_template_string
 
 from coaches import Coaches, Coaches2
 from coaching import Coaching,Coaching2
@@ -26,6 +25,7 @@ from statisticsPlayer import StatisticP, StatisticsP
 from fixtures import Fixture, Fixtures
 from squads import Squad, Squads
 from transfers import Transfer, Transfers
+from flask.templating import render_template_string
 
 
 app = Flask(__name__)
@@ -78,7 +78,7 @@ def coaches():
 @app.route('/coaching', methods=['GET', 'POST'])
 def coaching():
     if request.method == 'GET':
-        return render_template('coaching.html', coachlist=app.coaching.get_coaching(), team=app.teams.select_teams(), season=app.seasons.select_seasons(),coaches=app.coaches.select_coaches() ,coaching = app.coaching.select_coaching())
+        return render_template('coaching.html', coachlist=app.coaching.get_coaching(), teams = app.teams.choose_teams_coaching(), season=app.seasons.select_seasons(),coaches=app.coaches.select_coaches() ,coaching = app.coaching.select_coaching())
     else:
         if 'Add' in request.form:
             team_id = request.form['team_id']
@@ -478,7 +478,7 @@ def squads():
 
 @app.route('/squads/add', methods=['GET', 'POST'])
 def add_squads():
-    return render_template('squads_add.html', teams = app.teams.select_teams(), players = app.players.select_players())
+    return render_template('squads_add.html', teams = app.teams.select_teams(), players = app.squads.get_players())
 
 @app.route('/squads/update/<squad_id>', methods=['GET', 'POST'])
 def update_squads(squad_id):
