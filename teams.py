@@ -26,7 +26,11 @@ class Teams:
     def select_teams(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
              cursor = connection.cursor()
-             query = """ SELECT * FROM TEAMS ORDER BY TEAM_ID """
+             query = """ select teams.name, coaches.name, seasons.year
+                    from coaching
+                    inner join teams on teams.team_id=coaching.team_id
+                    inner join coaches on coaches.coach_id=coaching.coach_id
+                    inner join seasons on seasons.season_id=coaching.season_id """
              cursor.execute(query)
              connection.commit()
 

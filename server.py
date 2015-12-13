@@ -74,11 +74,24 @@ def coaches():
 @app.route('/coaching', methods=['GET', 'POST'])
 def coaching():
     if request.method == 'GET':
-        return render_template('coaching.html', result = app.coaching.select_coaching())
+        return render_template('coaching.html',  coachlist=app.coaching.get_coaching(), teams = app.teams.select_teams(), season=app.seasons.select_seasons(),coaches=app.coaches.select_coaches() ,coaching = app.coaching.select_coaching())
     else:
         if 'Add' in request.form:
+            team_id = request.form['team_id']
+            coach_id = request.form['coach_id']
+            season_id = request.form['season_id']
+            app.coaching.add_coaching(team_id,coach_id,season_id)
             return redirect(url_for('coaching'))
         elif 'Delete' in request.form:
+            coaching_id = request.form['id']
+            app.coaching.delete_coaching(coaching_id)
+            return redirect(url_for('coaching'))
+        elif 'Update' in request.form:
+            coaching_id = request.form['id']
+            team_id = request.form['team_idU']
+            coach_id = request.form['coach_idU']
+            season_id = request.form['season_idU']
+            app.coaching.update_coaching(coaching_id,team_id,coach_id,season_id)
             return redirect(url_for('coaching'))
         else:
             return render_template('coaching.html', result = app.coaching.select_coaching())
