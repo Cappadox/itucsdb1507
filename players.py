@@ -36,7 +36,7 @@ class Players:
         with dbapi2.connect(self.app.config['dsn']) as connection:
              cursor = connection.cursor()
              query = """ SELECT * FROM PLAYERS WHERE PLAYER_ID = %s """
-             cursor.execute(query, player_id)
+             cursor.execute(query, [player_id])
              player = cursor.fetchall()
              return player
 
