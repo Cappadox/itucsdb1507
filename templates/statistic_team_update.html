@@ -11,11 +11,8 @@
 </form>
 
 <br><br>
-
-<h2>Update</h2>
-
-<br>
-<br>
+<h3>Update a Team Statistic</h3>
+<br><br>
 
 <form  action ={{url_for('update_statistic_team')}} method="post" type="form">
 	<table class="table table-bordered table-striped">
@@ -26,9 +23,9 @@
 		    <th>Touchdowns </th>
 		    <th>Receiving Yards</th>
 		 </tr>
-		{% for statistic_id, season, team, touchdowns, rushingYards in result %}
+		{% for key, season, team, touchdowns, rushingYards in statisticst %}
 		<tr>
-			<td><input type="checkbox" name="statistic_id" value="{{ statistic_id }}" /></td>
+			<td><input type="checkbox" name="statistic_id" value="{{ key }}" /></td>
 			<td> {{ season }} </td>
 			<td> {{ team }} </td>
 			<td> {{ touchdowns }} </td>

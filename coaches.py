@@ -35,12 +35,15 @@ class Coaches2:
                 query = """ INSERT INTO COACHES (NAME, BIRTHDAY) VALUES (%s, %s) """
                 cursor.execute(query, (name, birthday))
                 connection.commit()
-    def search_coach(self, id):
+    def search_coach(self, name):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
-                query = """  """
-                cursor.execute(query, [id])
+                query="""SELECT * FROM COACHES c WHERE c.NAME LIKE '%s'"""% (('%'+name+'%'))
+                cursor.execute(query)
                 connection.commit()
+                result = [(key, name,birth)
+                        for key, name,birth in cursor]
+                return result
 
     def delete_coach(self, id):
         with dbapi2.connect(self.app.config['dsn']) as connection:

@@ -30,10 +30,17 @@ class StatisticsP:
     def get_statistics_player(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
-            query="""SELECT * FROM STATISTICSP"""
+            query="""SELECT S.STATISTIC_ID, SS.YEAR, P.NAME, S.TACKLES, S.PENALTIES
+                        FROM STATISTICSP S
+                        LEFT JOIN SEASONS SS ON (S.SEASON_ID = SS.SEASON_ID)
+                        LEFT JOIN PLAYERS P ON (S.PLAYER_ID = P.PLAYER_ID)
+                        ORDER BY SS.YEAR ASC"""
             cursor.execute(query)
-            result = cursor.fetchall()
-            return result
+            connection.commit()
+
+            statisticsp = [(key, season, player, tackles, penalties)
+                        for key, season, player, tackles, penalties in cursor]
+            return statisticsp
 
     def add_statistic_player(self, season_id, player_id, tackles, penalties):
         with dbapi2.connect(self.app.config['dsn']) as connection:
@@ -66,9 +73,11 @@ class StatisticsP:
     def search_statistic_player(self, id):
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
-            query="""SELECT * FROM STATISTICSP
-                    WHERE CAST(PLAYER_ID as VARCHAR(30)) LIKE '%s'
-                    ORDER BY STATISTIC_ID ASC""" % (('%'+id+'%'))
+            query="""SELECT STATISTIC_ID, SEASONS.YEAR, PLAYERS.NAME, TACKLES, PENALTIES
+                    FROM STATISTICSP
+                    INNER JOIN SEASONS ON SEASONS.SEASON_ID=STATISTICSP.SEASON_ID
+                    INNER JOIN PLAYERS ON PLAYERS.PLAYER_ID=STATISTICSP.PLAYER_ID
+                    WHERE PLAYERS.NAME LIKE '%s'""" % ('%'+id+'%')
             cursor.execute(query)
             connection.commit()
 
