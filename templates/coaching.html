@@ -2,10 +2,10 @@
 {% block title %}Coaching{% endblock %}
 {% block content %}
 <form  action ={{url_for('coaching')}} method="post">
-
+<br><br><br><br><br><br>
   <b>Team:</b><br>
   <select name="team_id" class="form-control"">
-					{% for team_id, name, league_id in teams %}
+					{% for team_id, name, league_id in team %}
 						<option value="{{team_id}}">{{ name }}</option>
 					{% endfor %}
 				</select>
@@ -18,7 +18,6 @@
 				</select>
 
   <b>Year:</b><br>
-
   <select name="season_id" class="form-control"">
 					{% for season_id, year in season %}
 						<option value="{{season_id}}">{{ year }}</option>
@@ -48,7 +47,7 @@
 &nbsp&nbsp
 <td>
 <select name="team_idU" class="form-control"">
-					{% for team_id, name,league_id in teams %}
+					{% for team_id, name,league_id in team %}
 						<option value="{{team_id}}">{{ name }}</option>
 					{% endfor %}
 				</select></td>

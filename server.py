@@ -75,7 +75,7 @@ def coaches():
 @app.route('/coaching', methods=['GET', 'POST'])
 def coaching():
     if request.method == 'GET':
-        return render_template('coaching.html', coachlist=app.coaching.get_coaching(), teams = app.teams.choose_teams_coaching(), season=app.seasons.select_seasons(),coaches=app.coaches.select_coaches() ,coaching = app.coaching.select_coaching())
+        return render_template('coaching.html', coachlist=app.coaching.get_coaching(), team=app.teams.select_teams(), season=app.seasons.select_seasons(),coaches=app.coaches.select_coaches() ,coaching = app.coaching.select_coaching())
     else:
         if 'Add' in request.form:
             team_id = request.form['team_id']
@@ -780,7 +780,7 @@ if __name__ == '__main__':
     if VCAP_SERVICES is not None:
         app.config['dsn'] = get_elephantsql_dsn(VCAP_SERVICES)
     else:
-          app.config['dsn'] = """user='vagrant' password='vagrant'
-                            host='localhost' port=54321 dbname='itucsdb'"""
+          app.config['dsn'] = """user='postgres' password='12345678'
+                            host='localhost' port=5432 dbname='postgres'"""
 
     app.run(host='0.0.0.0', port=port, debug=debug)
