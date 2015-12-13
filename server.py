@@ -290,8 +290,12 @@ def official_add():
 
 @app.route('/officials/', methods=['GET', 'POST'])
 def official_determine():
+    if request.method=='GET':
+        return redirect(url_for('officials'))
     if request.form['submit'] == "Search":
         return redirect(url_for('search_official'))
+    if request.form['id']=="0":
+        return redirect(url_for('officials'))
     elif request.form['submit'] == "Delete":
         id = request.form['id']
         form = request.form
@@ -759,7 +763,7 @@ def create_tables():
 def drop_tables():
     with dbapi2.connect(app.config['dsn']) as connection:
                 cursor = connection.cursor()
-                cursor.execute("""SELECT table_schema,table_name FROM information_schema.tables 
+                cursor.execute("""SELECT table_schema,table_name FROM information_schema.tables
                                 WHERE table_schema = 'public' ORDER BY table_schema,table_name""")
                 rows = cursor.fetchall()
                 for row in rows:
