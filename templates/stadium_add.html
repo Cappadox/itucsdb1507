@@ -1,0 +1,55 @@
+ {% extends "layout.html" %}
+ {% block title %}Add Stadium{% endblock %}
+ {% block content %}
+ 	<div class="page-header">
+  		<h1>Add Stadium<small> Enter fields for new stadium</small></h1>
+	</div>
+	 <form action="{{ url_for('stadiums') }}" method="post" role="form">
+		<div class="form-group">
+		 	<div class="row">
+			  	<label class="control-label col-sm-2" for="name">Name:</label>
+			  	<div class="col-sm-6">
+					<input type="text" name="name" class="form-control" required autofocus />
+				</div>
+			</div>
+		</div> <!-- End of form-group -->
+		<div class="form-group">
+		 	<div class="row">
+			  	<label class="control-label col-sm-2" for="Abbreviation">Capacity:</label>
+			  	<div class="col-sm-6">
+					<input type="text" name="capacity" class="form-control"  />
+				</div>
+			</div>
+		</div> <!-- End of form-group -->
+		<div class="form-group">
+			<div class="row">
+				<label class="control-label col-sm-2" for="country_id">Country:</label>
+			  	<div class="col-sm-6">
+					<select name="country_id" class="form-control"">
+						{% for key, country in countries %}
+					        <option value="{{key}}">{{ country.abbreviation }}</option>
+						{% endfor %}
+				    </select>
+				</div>
+			</div>
+		</div><!-- End of form-group -->
+		<div class="form-group">
+			<div class="row">
+				<label class="control-label col-sm-2" for="team_id">Team:</label>
+			  	<div class="col-sm-6">
+					<select name="team_id" class="form-control"">
+						{% for team_id, name, league_id in teams %}
+					        <option value="{{ team_id }}">{{ name }}</option>
+						{% endfor %}
+				    </select>
+				</div>
+			</div>
+		</div><!-- End of form-group -->
+		<div class="form-group col-sm-8">
+		    <div class="pull-right">
+		      	<button name="Add" type="submit" class="btn btn-default">Submit</button>
+		    </div>
+		 </div> <!-- End of form-group -->
+	  </form>
+ {% endblock %}
+
