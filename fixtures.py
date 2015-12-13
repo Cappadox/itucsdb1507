@@ -64,7 +64,7 @@ class Fixtures:
                         TEAM_ID = %s,
                         POINTS = %s
                         WHERE FIXTURE_ID = %s"""
-                cursor.execute(query, (fixture_id, season_id, team_id, points))
+                cursor.execute(query, (season_id, team_id, points, fixture_id))
                 connection.commit()
 
     def search_fixture(self, id):
