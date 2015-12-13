@@ -18,9 +18,9 @@
 				<td> {{ country }}</td>
 				<td> {{ team }} </td>
 				<td> {{ capacity }}</td>
-				<td class="col-sm-2">
+				<td>
 					<form action="{{ url_for('stadiums') }}" method="post" role="form" style="display: inline">
-						<input value="{{stadium_id}}" name="id" type="hidden" />
+						<input value="{{stadium_id}}" name="stadium_id" type="hidden" />
 						<button class="btn btn-primary btn-sm" name="Delete" type="submit"><span class="glyphicon glyphicon-trash" ></button>
 					</form>
 					<form action="{{url_for('stadiums_edit', stadium_id=stadium_id )}}" method="get" role="form" style="display: inline">

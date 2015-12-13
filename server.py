@@ -344,7 +344,7 @@ def update_official():
 @app.route('/leagues', methods=['GET', 'POST'])
 def leagues():
     if request.method == 'GET':
-        return render_template('leagues.html', leagues = app.leagues.get_leagues())
+        return render_template('leagues.html', leagues = app.leagues.get_leagues(), header_text = "List of all leagues")
     else:
         if 'Add' in request.form:
             name = request.form['name']
@@ -353,16 +353,30 @@ def leagues():
             app.leagues.add_league(League(name, abbreviation, country_id))
             return redirect(url_for('leagues'))
         elif 'Delete' in request.form:
-            id = request.form['id']
-            app.leagues.delete_league(id)
-            return render_template('leagues.html', leagues = app.leagues.get_leagues())
+            league_id = request.form['league_id']
+            app.leagues.delete_league(league_id)
+            return redirect(url_for('leagues'))
         elif 'Search' in request.form:
             search_terms = request.form['search_terms']
-            return render_template('leagues.html', leagues = app.leagues.search_leagues(search_terms))
+            return render_template('leagues.html', leagues = app.leagues.search_leagues(search_terms),
+                                   header_text = "Search results: "+ search_terms)
 
 @app.route('/leagues/add')
-def leagues_edit():
+def leagues_add():
     return render_template('league_edit.html', countries = app.countries.get_countries())
+
+@app.route('/leagues/edit/<league_id>', methods=['GET', 'POST'])
+def leagues_edit(league_id):
+    if request.method == 'GET':
+        league = app.leagues.get_league(league_id)
+        return render_template('leagues_edit.html', league_id = league[0], name = league[1], abbreviation = league[2], country_id = league[3],
+                                countries = app.countries.get_countries())
+    else:
+        name = request.form['name']
+        abbreviation = request.form['abbreviation']
+        country_id = request.form['country_id']
+        app.leagues.update_league(league_id, name, abbreviation, country_id)
+        return redirect(url_for('leagues'))
 
 '''Player Pages'''
 @app.route('/players', methods=['GET', 'POST'])
@@ -444,11 +458,11 @@ def stadiums():
             country_id = request.form['country_id']
             team_id = request.form['team_id']
             app.stadiums.add_stadium(name, capacity, country_id, team_id)
-            return render_template('stadiums.html', stadiums = app.stadiums.get_stadiums(), header_text = "List of all stadiums")
+            return redirect(url_for('stadiums'))
         elif 'Delete' in request.form:
             stadium_id = request.form['stadium_id']
             app.stadiums.delete_stadium(stadium_id)
-            return render_template('stadiums.html', stadiums = app.stadiums.get_stadiums(), header_text = "List of all stadiums")
+            return redirect(url_for('stadiums'))
         elif 'Search' in request.form:
             search_terms = request.form['search_terms']
             return render_template('stadiums.html', stadiums = app.stadiums.search_stadiums(search_terms),
@@ -470,7 +484,7 @@ def stadiums_edit(stadium_id):
         country_id = request.form['country_id']
         team_id = request.form['team_id']
         app.stadiums.update_stadium(stadium_id, name, capacity, country_id, team_id)
-        return render_template('stadiums.html', stadiums = app.stadiums.get_stadiums(), header_text = "List of all stadiums")
+        return redirect(url_for('stadiums'))
 
 
 ''' Squad Pages '''

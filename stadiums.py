@@ -60,8 +60,8 @@ class Stadiums:
             cursor.execute(query, (stadium_id))
             connection.commit()
 
-            stadium_id, name, capacity, country, team = cursor.fetchone()
-            return stadium_id, name, capacity, country, team
+            stadium_id, name, capacity, country_id, team_id = cursor.fetchone()
+            return stadium_id, name, capacity, country_id, team_id
 
     def get_stadiums(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
