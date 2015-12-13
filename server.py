@@ -25,6 +25,7 @@ from statisticsPlayer import StatisticP, StatisticsP
 from fixtures import Fixture, Fixtures
 from squads import Squad, Squads
 from transfers import Transfer, Transfers
+from positions import Position, Positions
 from flask.templating import render_template_string
 
 
@@ -386,7 +387,7 @@ def search_players():
 
 @app.route('/players/add', methods=['GET', 'POST'])
 def add_players():
-    return render_template('players_add.html')
+    return render_template('players_add.html', positions = app.positions.get_positions())
 
 @app.route('/players/update/<player_id>', methods=['GET', 'POST'])
 def update_players(player_id):
@@ -792,6 +793,7 @@ if __name__ == '__main__':
     app.fixtures = Fixtures(app)
     app.squads = Squads(app)
     app.transfers = Transfers(app)
+    app.positions = Positions(app)
 
     VCAP_APP_PORT = os.getenv('VCAP_APP_PORT')
     if VCAP_APP_PORT is not None:
