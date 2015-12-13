@@ -2,14 +2,23 @@
 {% block title %}Team{% endblock %}
 {% block content %}
 
-<form action = {{url_for('search_teams') }} method="post">
-<input type = "text" name = "nametosearch" placeholder="Enter the team name to search">
-<input type = "submit" name = "searchbyname">
+<div class="page-header">
+	<h1>Teams <small>List of all teams</small></h1>
+</div>
+<form class="form-inline pull-right" role="form" method="post" action = {{url_for('search_teams') }} method="post">
+<div class="form-group">
+<input type = "text" name = "nametosearch" class="form-control" placeholder="Enter the team name to search">
+</div>
+<button type = "submit" name = "searchbyname"> Search </button>
 </form>
+<br>
 
 <table class="table table-bordered table-striped">
 <tr>
-<th> TEAM ID </th> <th> NAME </th> <th> LEAGUE ID </th> <th>UPDATE/DELETE</th>
+<th class="col-sm-1"> TEAM ID </th>
+<th class="col-sm-3"> NAME </th>
+<th class="col-sm-2"> LEAGUE ID </th>
+<th class="col-sm-2">UPDATE/DELETE</th>
 </tr>
 {% for team_id, name, league_id in teams %}
 <tr>

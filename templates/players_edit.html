@@ -20,9 +20,22 @@
 <div class="form-group">
     <label class="control-label col-sm-2" for="position">Position:</label>
     <div class="col-sm-6">
-		<input type="text" class="form-control" name="position" value="{{ position }}">
-	</div>
-</div>
+  		<select class="form-control" name = "position">
+			  <option> Center </option>
+			  <option> Offensive Guard </option>
+			  <option> Offensive Tackle </option>
+			  <option> Quarterback </option>
+			  <option> Running Back </option>
+			  <option> Wide Receiver </option>
+			  <option> Tight End </option>
+			  <option> Defensive Tackle </option>
+			  <option> Defensive End </option>
+			  <option> Linebacker </option>
+			  <option> Cornerback </option>
+			  <option> Safety </option>
+		</select>
+  	</div>
+  </div>
 
 {% endfor %}
 <div class="form-group">

@@ -18,8 +18,8 @@ class Players:
                     CREATE TABLE IF NOT EXISTS PLAYERS
                     ( PLAYER_ID serial NOT NULL PRIMARY KEY,
                       NAME varchar(100) NOT NULL,
-                      BIRTHDAY date NULL,
-                      POSITION varchar(100) NULL
+                      BIRTHDAY date NOT NULL,
+                      POSITION varchar(100) NOT NULL
                     )
                     """)
                 connection.commit()
@@ -36,7 +36,7 @@ class Players:
         with dbapi2.connect(self.app.config['dsn']) as connection:
              cursor = connection.cursor()
              query = """ SELECT * FROM PLAYERS WHERE PLAYER_ID = %s """
-             cursor.execute(query, player_id)
+             cursor.execute(query, [player_id])
              player = cursor.fetchall()
              return player
 
