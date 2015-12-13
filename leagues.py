@@ -71,6 +71,7 @@ class Leagues:
                         for league_id, name, abbreviation, country_name in cursor]
 
             return leagues
+
     def update_league(self, league_id, name, abbreviation, country_id):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()

@@ -2,54 +2,49 @@
 {% block title %}Edit Stadium{% endblock %}
 {% block content %}
  	<div class="page-header">
-  		<h1>Edit Stadium<small> Enter fields for new stadium</small></h1>
+  		<h1>Edit Stadium<small> Update stadium information</small></h1>
 	</div>
 	<form action="{{url_for('stadiums_edit', stadium_id=stadium_id)}}" method="post" role="form">
-		<div class="form-group">
-		 	<div class="row">
-			  	<label class="control-label col-sm-2" for="name">Name:</label>
-			  	<div class="col-sm-6">
-					<input type="text" name="name" value="{{name}}" class="form-control" required autofocus />
+		<div class="col-sm-6">
+			<div class="form-group">
+			 	<div class="row">
+				  	<label class="control-label" for="name">Name:</label>
+				  	<input type="text" name="name" value="{{name}}" class="form-control" required autofocus />
 				</div>
-			</div>
-		</div> <!-- End of form-group -->
-		<div class="form-group">
-		 	<div class="row">
-			  	<label class="control-label col-sm-2" for="capacity">Capacity:</label>
-			  	<div class="col-sm-6">
-					<input type="text" name="capacity" value="{{capacity}}" class="form-control"  />
+			</div> <!-- End of form-group -->
+			<div class="form-group">
+			 	<div class="row">
+				  	<label class="control-label" for="capacity">Capacity:</label>
+						<input type="text" name="capacity" value="{{capacity}}" class="form-control"  />
 				</div>
-			</div>
-		</div> <!-- End of form-group -->
-		<div class="form-group">
-			<div class="row">
-				<label class="control-label col-sm-2" for="country_id">Country:</label>
-			  	<div class="col-sm-6">
+			</div> <!-- End of form-group -->
+			<div class="form-group">
+				<div class="row">
+					<label class="control-label" for="country_id">Country:</label>
 					<select name="country_id" class="form-control"">
 						{% for key, country in countries %}
 					        <option {% if key == country_id: %} selected = 'selected' {%endif%} value="{{key}}" >{{ country.abbreviation }}</option>
 						{% endfor %}
 				    </select>
 				</div>
-			</div>
-		</div><!-- End of form-group -->
-		<div class="form-group">
-			<div class="row">
-				<label class="control-label col-sm-2" for="team_id">Team:</label>
-			  	<div class="col-sm-6">
+			</div><!-- End of form-group -->
+			<div class="form-group">
+				<div class="row">
+					<label class="control-label" for="team_id">Team:</label>
 					<select name="team_id" class="form-control"">
 						{% for key, name, league_id in teams %}
 					        <option {% if key == team_id: %} selected = 'selected' {%endif%} value="{{ team_id }}">{{ name }}</option>
 						{% endfor %}
 				    </select>
 				</div>
-			</div>
-		</div><!-- End of form-group -->
-		<div class="form-group col-sm-8">
-		    <div class="pull-right">
-		      	<button name="Add" type="submit" class="btn btn-default">Submit</button>
-		    </div>
-		 </div> <!-- End of form-group -->
-	  </form>
+			</div><!-- End of form-group -->
+			<br>
+			<div class="form-group">
+			    <div class="pull-right">
+			      	<button name="Add" type="submit" class="btn btn-default">Submit</button>
+			    </div>
+			</div> <!-- End of form-group -->
+		</div>
+	</form>
  {% endblock %}
 

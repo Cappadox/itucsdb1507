@@ -363,7 +363,7 @@ def leagues():
 
 @app.route('/leagues/add')
 def leagues_add():
-    return render_template('league_edit.html', countries = app.countries.get_countries())
+    return render_template('leagues_add.html', countries = app.countries.get_countries())
 
 @app.route('/leagues/edit/<league_id>', methods=['GET', 'POST'])
 def leagues_edit(league_id):
