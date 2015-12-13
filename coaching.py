@@ -72,7 +72,7 @@ class Coaching2:
     def search_coaching(self, id):
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
-            query=""
+            query=""""""
 
             cursor.execute(query)
             connection.commit()
