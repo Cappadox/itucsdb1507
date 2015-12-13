@@ -4,12 +4,16 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- Neccessary Bootsrap files -->
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<!-- Bootstrap -->
+    <link href="{{ url_for('static', filename='./css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{{ url_for('static', filename='./jquery.min.js') }}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{ url_for('static', filename='./js/bootstrap.min.js') }}"></script>
+
 	<title>American Football - {% block title %}{% endblock %}</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+	<link rel="stylesheet" href="../static/js/bootstrap.min.js)" />
+
 </head>
 <body>
 	<header>
