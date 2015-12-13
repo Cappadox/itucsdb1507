@@ -6,7 +6,7 @@
   <div class="form-group">
     <label class="control-label col-sm-2" for="team_id">Team ID:</label>
     	<div class="col-sm-6">
-  			<select class="form-control" name = "team_id">
+  			<select class="form-control" name = "team_id" required>
 			  {% for team_id, name, league_id in teams %}
 			  <option value = "{{team_id}}">{{team_id}} - {{ name }} </option>
 			  {% endfor %}
@@ -17,7 +17,7 @@
   <div class="form-group">
 	  <label class="control-label col-sm-2" for="player_id">Player ID:</label>
 		  <div class="col-sm-6">
-			  <select class="form-control" name = "player_id">
+			  <select class="form-control" name = "player_id" required>
 			  {% for player_id, name in players %}
 			  <option value = "{{player_id}}" >{{player_id}} - {{ name }} </option>
 			  {% endfor %}
@@ -28,7 +28,7 @@
   <div class="form-group">
 	  <label class="control-label col-sm-2" for="kit_no">Kit Number:</label>
 		  <div class="col-sm-6">
-			  <input type="number" class="form-control" name="kit_no" min="0" max = "99">
+			  <input type="number" class="form-control" name="kit_no" min="0" max = "99" required>
 	  </div>
   </div>
 
