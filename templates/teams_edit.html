@@ -15,11 +15,11 @@
 	  <label class="control-label col-sm-2" for="name">League ID:</label>
 		  <div class="col-sm-6">
 			  <select class="form-control" name = "league_id">
-			  {% for key, league in leagues %}
-			  {% if key == league_id: %}
-			  <option value = "{{key}}" selected> {{key}} - {{ league.name }} </option>
+			  {% for leagueid, name, abbreviation, country_name in leagues %}
+			  {% if leagueid == league_id: %}
+			  <option value = "{{leagueid}}" selected> {{leagueid}} - {{ name }} </option>
 			  {% else: %}
-			  <option value = "{{key}}"> {{key}} - {{ league.name }} </option>
+			  <option value = "{{leagueid}}"> {{leagueid}} - {{ name }} </option>
 			  {% endif %}
 			  {% endfor %}
 			  </select>
