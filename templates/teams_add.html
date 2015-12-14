@@ -14,8 +14,8 @@
 	  <label class="control-label col-sm-2" for="name">League ID:</label>
 		  <div class="col-sm-6">
 			  <select class="form-control" name = "league_id" required>
-			  {% for key, league in leagues %}
-			  <option value = "{{key}}">{{key}} - {{ league.name }} </option>
+			  {% for league_id, name, abbreviation, country_name in leagues %}
+			  <option value = "{{league_id}}">{{league_id}} - {{ name }} </option>
 			  {% endfor %}
 			  </select>
 	  </div>
