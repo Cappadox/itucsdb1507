@@ -502,7 +502,7 @@ After the team is deleted, route redirects to squads page. Delete operation is d
             connection.commit()
 
 *Search Operation*
-------------------
+^^^^^^^^^^^^^^^^^^
 
 A route is defined in order to search and filter squads by team name. Searching is made in a way that in squads.html, team names are selected and added to a dropdown list.
 And squads can be filtered by selecting team name. Search form is in squads.html::
