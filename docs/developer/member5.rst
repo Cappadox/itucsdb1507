@@ -368,7 +368,7 @@ Table is created by following sql code::
                     KIT_NO int NOT NULL
                     )
 *Selection*
------------
+^^^^^^^^^^^
 
 If "/squads" route is loaded by GET method, squads are going to be selected and will be printed to squads.html::
 
@@ -402,7 +402,7 @@ Selection operation is done by the following function which is in squads.py::
              return squads
 
 *Insert Operation*
-------------------
+^^^^^^^^^^^^^^^^^^
 
 A route is defined in order to use Squad Adding html page. Teams and Players are selected and added to Dropdown Menus since they're foreign keys.::
 
@@ -438,7 +438,7 @@ Insertion operation is done by the following function which is in squads.py::
                 connection.commit()
 
 *Update Operation*
-------------------
+^^^^^^^^^^^^^^^^^^
 
 In update operation, route is defined uniquely for the corresponding tuple's squad_id.::
 
@@ -483,7 +483,7 @@ Update operation is done by the following function in squads.py::
 
 
 *Delete Operation*
-------------------
+^^^^^^^^^^^^^^^^^^
 
 Delete operation is very similar to Update operation. Like update, in delete operation, route is defined uniquely for the corresponding tuple's squad id.::
 
