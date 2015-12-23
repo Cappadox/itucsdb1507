@@ -30,6 +30,7 @@ Code
             self.x = x
 
 .. toctree::
+   :maxdepth: 2
 
    member1
    member2
