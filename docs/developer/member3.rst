@@ -17,6 +17,8 @@ I implemented country, league and stadium entities and belonging operations. I c
 * Search Methods
    Search methods designed to search by name in all three entities as case sensitive. They basically takes a string that represents search words and returns all related entries.
 
+
+.. note:: The difference between single and all get functions is not limited with the number of elements returned. There is also difference between returned element's properties. Single get functions returns values a in the table but get entities methods change foreing key IDs with more understandable variables. (*country_id* changed with *country_name* in *LEAGUES* table for example.) Beacuse get entities methods used to list entities to users while get entity methods used by another back-end functions.
 Delete and Update Operations and Their Form
 -------------------------------------------
 I want to implement delete and update functions in list page in a such way that users can easily reach. In order to archive this I placed delete and update buttons following the entries in list page.
@@ -280,3 +282,129 @@ Search countries method runs a *SELECT* argument with *WHERE* argument which com
                         for league_id, name, abbreviation, country_name in cursor]
 
             return leagues
+
+.. note:: *LEAGUES* table holds the countries where stadiums located by referencing *COUNTRIES* table. This information established with storing *country_id* as a foreing key. But this ID number is meaningless to users. In order to properly show country information with country name **LEFT JOIN** method used and countries table joined on stadiums table with *country_id* in common.
+Stadium Implementation
+----------------------
+Stadium is a small entity that used to store records of stadiums.
+
+.. note:: We first planned to give a reference to stadium in *MATCHES* table but we could not able to implement time due to lack of time.
+
+Stadium Table
+^^^^^^^^^^^^^
+Stadium table consists of following columns:
+
+* *STADIUM_ID* as **serial** type and primary key
+   This is the primary key of the table
+* *NAME* as **varchar(100)** and not null
+   This column holds the name of the stadium and it can't be null
+* *CAPACITY* as **integer**
+   This column used to store capacity of stadium if given.
+* *COUNTRY_ID* as **integer** type, nut null and references to countries table
+   This is foreing key to COUNTRIES table, represent the country where stadium placed.
+* *TEAM_ID* as **integer** type, nut null and references to countries table
+   This is foreing key to TEAMS table, represent the owner team of the stadium.
+
+*add_stadium* Method
+^^^^^^^^^^^^^^^^^^^^
+This method takes variables corresponds to coloumns of *STADIUMS* and insert new row to the table.
+
+.. code-block:: python
+
+    def add_stadium(self, name, capacity, country_id, team_id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query ="""
+                    INSERT INTO STADIUMS (NAME, CAPACITY, COUNTRY_ID, TEAM_ID)
+                        VALUES (%s, %s, %s, %s) """
+                cursor.execute(query, (name, capacity, country_id, team_id))
+                connection.commit()
+
+*delete_stadium* Method
+^^^^^^^^^^^^^^^^^^^^^^^
+This method takes an *stadium_id* and deletes corresponding row from database.
+
+.. code-block:: python
+
+       def delete_stadium(self, stadium_id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ DELETE FROM STADIUMS WHERE STADIUM_ID =%s """
+                cursor.execute(query, [stadium_id])
+                connection.commit()
+
+*update_stadium* Method
+^^^^^^^^^^^^^^^^^^^^^^^
+This method takes an *stadium_id* and new information that belongs to this entry.
+
+.. code-block:: python
+
+    def update_stadium(self, stadium_id, name, capacity, country_id, team_id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ UPDATE STADIUMS
+                                SET NAME = %s, CAPACITY = %s, COUNTRY_ID = %s, TEAM_ID = %s
+                            WHERE STADIUM_ID = %s """
+                cursor.execute(query, (name, capacity, country_id, team_id, stadium_id))
+                connection.commit()
+
+*get_stadium* Method
+^^^^^^^^^^^^^^^^^^^^
+Using fetchone function, this method returns information of an stadium whose *stadium_id* given as parameter.
+
+.. code-block:: python
+
+    def get_stadium(self, stadium_id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+            cursor = connection.cursor()
+            query="""SELECT * FROM STADIUMS
+                        WHERE STADIUM_ID =%s """
+            cursor.execute(query, (stadium_id))
+            connection.commit()
+
+            stadium_id, name, capacity, country_id, team_id = cursor.fetchone()
+            return stadium_id, name, capacity, country_id, team_id
+
+
+*get_stadiums* Method
+^^^^^^^^^^^^^^^^^^^^^
+Without an input parameter this method returns all stadiums and information belongs to that stadiums by using fetchall function. **LEFT JOIN** used in order to get league's and country's name.
+
+.. code-block:: python
+
+    def get_stadiums(self):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+            cursor = connection.cursor()
+            query="""SELECT S.STADIUM_ID, S.NAME, S.CAPACITY, C.NAME, T.NAME
+                        FROM  STADIUMS S
+                        LEFT JOIN COUNTRIES C ON (S.COUNTRY_ID = C.COUNTRY_ID)
+                        LEFT JOIN TEAMS T ON (S.TEAM_ID = T.TEAM_ID)
+                        """
+            cursor.execute(query)
+            connection.commit()
+
+            stadiums = [(key, name, capacity, country, team)
+                        for key, name, capacity, country, team in cursor]
+
+            return stadiums
+
+*search_stadiums* Method
+^^^^^^^^^^^^^^^^^^^^^^^^
+This method searches stadiums with stadium name and return results in a same fashion with *get_stadiums* method. Again **LEFT JOIN** used in order to get league's and country's name.
+
+.. code-block:: python
+
+    def search_stadiums(self, search_terms):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+            cursor = connection.cursor()
+            query="""SELECT S.STADIUM_ID, S.NAME, S.CAPACITY, C.NAME, T.NAME
+                        FROM  STADIUMS S
+                        LEFT JOIN COUNTRIES C ON (S.COUNTRY_ID = C.COUNTRY_ID)
+                        LEFT JOIN TEAMS T ON (S.TEAM_ID = T.TEAM_ID)
+                        WHERE S.NAME LIKE '%s' ORDER BY S.NAME""" % (('%'+search_terms+'%'))
+            cursor.execute(query)
+            connection.commit()
+            stadiums = [(key, name, capacity, country, team)
+                        for key, name, capacity, country, team in cursor]
+
+            return stadiums
