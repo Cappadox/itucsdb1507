@@ -94,6 +94,7 @@ Stadiums could be added by givin 3 neccessary and 1 optional information. In the
       Stadium adding page
 
 Stadiums have also a listing page with basic operations.
+
    .. figure:: images/member3/stadium_list.png
       :scale: 100 %
 
@@ -102,12 +103,14 @@ Stadiums have also a listing page with basic operations.
 Edit page of stadiums is very similar to add page and it is come with the current entriy's data.
 
 Stadiums have also a listing page with basic operations.
+
    .. figure:: images/member3/stadium_edit.png
       :scale: 100 %
 
       Stadiums edit page
 
 Users can search the stadiums with their names
+
    .. figure:: images/member3/stadium_search_result.png
       :scale: 100 %
 

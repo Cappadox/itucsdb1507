@@ -34,12 +34,18 @@ In this way I achieved the function that I want, users were able to delete / upd
 
 .. code-block:: html
 
-      <form action="{{ url_for('countries') }}" method="post" role="form" style="display: inline">
+      <form action="{{ url_for('countries') }}" method="post" 
+                            role="form" style="display: inline">
          <input value="{{key}}" name="id" type="hidden" />
-         <button class="btn btn-primary btn-sm" name="Delete" type="submit"><span class="glyphicon glyphicon-trash" ></button>
+         <button class="btn btn-primary btn-sm" name="Delete" type="submit">
+            <span class="glyphicon glyphicon-trash" >
+         </button>
       </form>
-      <form action="{{url_for('country_edit', country_id=key )}}" method="get" role="form" style="display: inline">
-         <button class="btn btn-primary btn-sm" name="Update" type="submit"><span class="glyphicon glyphicon-wrench" ></button>
+      <form action="{{url_for('country_edit', country_id=key)}}" method="get" 
+                            role="form" style="display:inline">
+         <button class="btn btn-primary btn-sm" name="Update" type="submit">
+            <span class="glyphicon glyphicon-wrench" ><
+            /button>
       </form>
 
 
@@ -155,7 +161,8 @@ This method takes a string and search in countires table by matching this string
     def search_countries(self, search_terms):
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
-            query="""SELECT * FROM COUNTRIES WHERE NAME LIKE '%s' ORDER BY NAME""" % (('%'+search_terms+'%'))
+            query="""SELECT * FROM COUNTRIES WHERE NAME LIKE '%s' ORDER BY NAME""" 
+                                                    % (('%'+search_terms+'%'))
             cursor.execute(query)
             connection.commit()
             countries = [(key, Country(name, abbreviation))
@@ -273,7 +280,8 @@ Search countries method runs a *SELECT* argument with *WHERE* argument which com
             query="""SELECT L.LEAGUE_ID, L.NAME, L.ABBREVIATION, C.NAME
                         FROM LEAGUES L
                         LEFT JOIN COUNTRIES C ON (L.COUNTRY_ID = C.COUNTRY_ID)
-                        WHERE L.NAME LIKE '%s' ORDER BY L.NAME""" % (('%'+search_terms+'%'))
+                        WHERE L.NAME LIKE '%s' ORDER BY L.NAME""" 
+                                    % (('%'+search_terms+'%'))
 
             cursor.execute(query)
             connection.commit()
@@ -343,7 +351,7 @@ This method takes an *stadium_id* and new information that belongs to this entry
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
                 query = """ UPDATE STADIUMS
-                                SET NAME = %s, CAPACITY = %s, COUNTRY_ID = %s, TEAM_ID = %s
+                                SET NAME=%s, CAPACITY=%s, COUNTRY_ID=%s, TEAM_ID=%s
                             WHERE STADIUM_ID = %s """
                 cursor.execute(query, (name, capacity, country_id, team_id, stadium_id))
                 connection.commit()
@@ -401,7 +409,8 @@ This method searches stadiums with stadium name and return results in a same fas
                         FROM  STADIUMS S
                         LEFT JOIN COUNTRIES C ON (S.COUNTRY_ID = C.COUNTRY_ID)
                         LEFT JOIN TEAMS T ON (S.TEAM_ID = T.TEAM_ID)
-                        WHERE S.NAME LIKE '%s' ORDER BY S.NAME""" % (('%'+search_terms+'%'))
+                        WHERE S.NAME LIKE '%s' ORDER BY S.NAME""" 
+                                            % (('%'+search_terms+'%'))
             cursor.execute(query)
             connection.commit()
             stadiums = [(key, name, capacity, country, team)

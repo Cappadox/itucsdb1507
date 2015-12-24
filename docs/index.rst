@@ -11,7 +11,10 @@ Welcome to itucsdb1507's documentation!
    * Seda Yıldırım
    * Sefa Eren Şahin
 
-**project description goes here (a few paragraphs)**
+
+We designed a database to hold all the information that we need to know about American Football. Our database contains Player & Team & Coach informations. Leagues, Matches and much more!
+This web application allows users to change existing informations, add new data and see existing tables and statistics. You can see all tables from navigation bar above and start to explore our databese and application.
+
 
 Contents:
 
