@@ -13,10 +13,10 @@ screenshots whereever appropriate**
       This is the caption of the figure (a simple paragraph).
 
 .. toctree::
+   :maxdepth: 2
 
    member1
    member2
    member3
    member4
    member5
-   
