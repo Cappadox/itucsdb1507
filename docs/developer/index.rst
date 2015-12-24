@@ -4,10 +4,18 @@ Developer Guide
 Database Design
 ---------------
 
-**explain the database design of your project**
+Main purpose of this database is creating a web application to hold basic information about American Football.
 
-**include the E/R diagram(s)**
+Our database mainly contains information about Teams, Players, Coaches, Matches, Leagues etc.
 
+Teams and Players tables are the most active tables. Tables like Player Statistics, Team Statistics, Transfers, Fixture are designed to keep the relations
+between Teams and Players. Teams and Players tables are referenced by other tables alot.
+
+Countries, Players, Officials, and Seasons tables are core tables. These entities do not reference any other table.
+
+PostgreSQL is the relational database management system used in Database Design.
+
+Psycopg2 is used as database adapter.
 
 .. figure:: images/er.png
    :scale: 100 %

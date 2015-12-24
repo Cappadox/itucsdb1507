@@ -17,6 +17,7 @@ The site contains various information about American Football, and this user gui
 The user guides for the parts implemented by said team members can be found below.
 
 .. toctree::
+   :maxdepth: 2
 
    member1
    member2

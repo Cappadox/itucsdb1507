@@ -5,14 +5,19 @@ Parts Implemented by Sefa Eren Şahin
 
 Players Table
 -------------
-This table consists of 4 columns::
+This table consists of 4 columns
 
++---------------+-----------+-------------+
 | Column Name   | Data Type | Key         |
-| ------------- |:---------:| -----------:|
++===============+===========+=============+
 | PLAYER_ID     | serial    | PRIMARY KEY |
++---------------+-----------+-------------+
 | NAME          | varchar   | none        |
++---------------+-----------+-------------+
 | BIRTHDAY      | date      | none        |
++---------------+-----------+-------------+
 | POSITION      | varchar   | none        |
++---------------+-----------+-------------+
 
 *Table Initialization*
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -176,13 +181,17 @@ Searching is done by the following function in players.py::
 Teams Table
 -----------
 
-This table consists of 4 columns::
+This table consists of 4 columns
 
++---------------+-----------+-----------------------+
 | Column Name   | Data Type | Key                   |
-| ------------- |:---------:| ---------------------:|
++===============+===========+=======================+
 | TEAM_ID       | serial    | PRIMARY KEY           |
++---------------+-----------+-----------------------+
 | NAME          | varchar   | none                  |
++---------------+-----------+-----------------------+
 | LEAGUE_ID     | date      | FK LEAGUES(LEAGUE_ID) |
++---------------+-----------+-----------------------+
 
 *Table Initialization*
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -346,14 +355,19 @@ Searching is done by the following function in teams.py::
 Squads Table
 ------------
 
-This table consists of 4 columns::
+This table consists of 4 columns
 
++---------------+-----------+-----------------------+
 | Column Name   | Data Type | Key                   |
-| ------------- |:---------:| ---------------------:|
++===============+===========+=======================+
 | SQUAD_ID      | serial    | PRIMARY KEY           |
++---------------+-----------+-----------------------+
 | TEAM_ID       | int       | FK TEAMS(TEAM_ID)     |
++---------------+-----------+-----------------------+
 | PLAYER_ID     | int       | FK PLAYERS(PLAYER_ID) |
++---------------+-----------+-----------------------+
 | KIT_NO        | int       | none                  |
++---------------+-----------+-----------------------+
 
 *Table Initialization*
 ^^^^^^^^^^^^^^^^^^^^^^
