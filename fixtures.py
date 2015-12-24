@@ -64,15 +64,17 @@ class Fixtures:
                         TEAM_ID = %s,
                         POINTS = %s
                         WHERE FIXTURE_ID = %s"""
-                cursor.execute(query, (fixture_id, season_id, team_id, points))
+                cursor.execute(query, (season_id, team_id, points, fixture_id))
                 connection.commit()
 
     def search_fixture(self, id):
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
-            query="""SELECT * FROM FIXTURES
-                    WHERE CAST(TEAM_ID as VARCHAR(30)) LIKE '%s'
-                    ORDER BY TEAM_ID ASC""" % (('%'+id+'%'))
+            query="""SELECT FIXTURE_ID, SEASONS.YEAR, TEAMS.NAME, POINTS
+                    FROM FIXTURES
+                    INNER JOIN SEASONS ON SEASONS.SEASON_ID=FIXTURES.SEASON_ID
+                    INNER JOIN TEAMS ON TEAMS.TEAM_ID=FIXTURES.TEAM_ID
+                    WHERE TEAMS.NAME LIKE '%s'""" % ('%'+id+'%')
             cursor.execute(query)
             connection.commit()
 

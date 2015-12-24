@@ -10,7 +10,8 @@
 	</div>
 </form>
 
-<br>
+<br><br>
+<h3>Add a Player Statistic</h3>
 <br>
 
 <form action="{{ url_for('add_statistic_player') }}" method="post" role="form">
@@ -62,6 +63,9 @@
 </form>
 
 <br>
+<br>
+ <h3 >Delete a Player Statistic</h3>
+<br>
 
 <form  action ={{url_for('delete_statistic_player')}} method="post" type="form">
 	<table class="table table-bordered table-striped">
@@ -72,9 +76,9 @@
 		    <th>Tackles </th>
 		    <th>Penalties</th>
 		 </tr>
-		{% for statistic_id, season, player, tackles, penalties in result %}
+		{% for key, season, player, tackles, penalties in statisticsp %}
 		<tr>
-			<td><input type="checkbox" name="id" value="{{ statistic_id }}" /></td>
+			<td><input type="checkbox" name="id" value="{{ key }}" /></td>
 			<td> {{ season }} </td>
 			<td> {{ player }} </td>
 			<td> {{ tackles }} </td>

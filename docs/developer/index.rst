@@ -8,6 +8,13 @@ Database Design
 
 **include the E/R diagram(s)**
 
+
+.. figure:: images/er.png
+   :scale: 100 %
+   :alt: map to buried treasure
+
+   ER Relation Diagram of American Football Database
+
 Code
 ----
 
@@ -23,6 +30,7 @@ Code
             self.x = x
 
 .. toctree::
+   :maxdepth: 2
 
    member1
    member2

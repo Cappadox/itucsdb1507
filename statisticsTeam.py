@@ -73,9 +73,11 @@ class StatisticsT:
     def search_statistic_team(self, id):
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
-            query="""SELECT * FROM STATISTICST
-                    WHERE CAST(TEAM_ID as VARCHAR(30)) LIKE '%s'
-                    ORDER BY STATISTIC_ID ASC""" % (('%'+id+'%'))
+            query="""SELECT STATISTIC_ID, SEASONS.YEAR, TEAMS.NAME, TOUCHDOWNS, RUSHINGYARDS
+                    FROM STATISTICST
+                    INNER JOIN SEASONS ON SEASONS.SEASON_ID=STATISTICST.SEASON_ID
+                    INNER JOIN TEAMS ON TEAMS.TEAM_ID=STATISTICST.TEAM_ID
+                    WHERE TEAMS.NAME LIKE '%s'""" % ('%'+id+'%')
             cursor.execute(query)
             connection.commit()
 

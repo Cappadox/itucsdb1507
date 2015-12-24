@@ -2,25 +2,27 @@
  {% block title %}Add Country{% endblock %}
  {% block content %}
 	<div class="page-header">
-  		<h1>Edit Country<small> Update country information for country</small></h1>
+  		<h1>Edit Country<small> Update country information</small></h1>
 	</div>
-	 <form action="{{url_for('country_edit', country_id=key)}}" method="post" role="form">
-		 <div class="form-group">
-		 	<div class="row">
-			  	<label class="control-label col-sm-2" for="name">Name:</label>
-			  	<div class="col-sm-10">
-					<input type="text" name="name" value="{{country.name}}"required autofocus />
+	<form action="{{url_for('country_edit', country_id=key)}}" method="post" role="form">
+		<div class="col-sm-6">
+			<div class="form-group">
+			 	<div class="row">
+				  	<label class="control-label" for="name">Name:</label>
+					<input type="text" name="name" value="{{country.name}}" class="form-control" required autofocus />
 				</div>
-			</div>
 			</div> <!-- End of form-group -->
 			<div class="form-group">
-			<div class="row">
-				<label class="control-label col-sm-2" for="abbreviation">Abbreviation:</label>
-			  	<div class="col-sm-10">
-					<input type="text" name="abbreviation" value="{{country.abbreviation}}"/><br><br>
+				<div class="row">
+					<label class="control-label" for="abbreviation">Abbreviation:</label>
+					<input type="text" name="abbreviation" value="{{country.abbreviation}}" class="form-control" required/><br><br>
 				</div>
 			</div>
-			 <input value="Update" name="Update" type="submit" /><br><br>
-		 </div> <!-- End of form-group -->
-	  </form>
+			<div class="form-group">
+				<div class="pull-right">
+					 <button name="Add" type="submit" class="btn btn-default">Submit</button>
+				</div>
+			</div>
+		</div>
+	 </form>
  {% endblock %}

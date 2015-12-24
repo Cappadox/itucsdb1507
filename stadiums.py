@@ -52,6 +52,17 @@ class Stadiums:
                 cursor.execute(query, [stadium_id])
                 connection.commit()
 
+    def get_stadium(self, stadium_id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+            cursor = connection.cursor()
+            query="""SELECT * FROM STADIUMS
+                        WHERE STADIUM_ID =%s """
+            cursor.execute(query, (stadium_id))
+            connection.commit()
+
+            stadium_id, name, capacity, country_id, team_id = cursor.fetchone()
+            return stadium_id, name, capacity, country_id, team_id
+
     def get_stadiums(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
@@ -68,6 +79,15 @@ class Stadiums:
 
             return stadiums
 
+    def update_stadium(self, stadium_id, name, capacity, country_id, team_id):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                query = """ UPDATE STADIUMS
+                                SET NAME = %s, CAPACITY = %s, COUNTRY_ID = %s, TEAM_ID = %s
+                            WHERE STADIUM_ID = %s """
+                cursor.execute(query, (name, capacity, country_id, team_id, stadium_id))
+                connection.commit()
+
     def search_stadiums(self, search_terms):
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
@@ -82,4 +102,6 @@ class Stadiums:
                         for key, name, capacity, country, team in cursor]
 
             return stadiums
+
+
 

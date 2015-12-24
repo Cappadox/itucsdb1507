@@ -77,7 +77,7 @@ class Squads:
     def get_teams(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
              cursor = connection.cursor()
-             query = """ SELECT teams.team_id, teams.name FROM SQUADS
+             query = """ SELECT DISTINCT teams.team_id, teams.name FROM SQUADS
                      LEFT JOIN TEAMS
                      ON SQUADS.TEAM_ID = TEAMS.TEAM_ID ORDER BY TEAM_ID"""
              cursor.execute(query)

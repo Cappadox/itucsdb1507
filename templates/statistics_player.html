@@ -2,6 +2,8 @@
 {% block title %}Player Statistics{% endblock %}
 {% block content %}
 
+<h3>Player Statistics</h3>
+
 <form action="{{ url_for('add_statistic_player') }}" method="get" role="form">
 	<div class="form-group col-sm-14">
 		<div class="pull-right">
@@ -25,7 +27,7 @@
 		    <th>Tackles </th>
 		    <th>Penalties</th>
 		 </tr>
-		{% for statistic_id, season, player, tackles, penalties in result %}
+		{% for key, season, player, tackles, penalties in statisticsp %}
 		<tr>
 			<td> {{ season }} </td>
 			<td> {{ player }} </td>

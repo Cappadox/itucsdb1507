@@ -13,8 +13,8 @@
 <td> {{ team_id }}</td>
 <td> {{ name }}</td>
 <td> {{ league_id }} </td>
-<td> <a href="update/{{ team_id }}" style="text-decoration:none;" class="btn btn-danger btn-sm" role="button"> UPDATE </a>
-	 <a href="delete/{{ team_id }}" style="text-decoration:none;" class="btn btn-danger btn-sm" role="button"> DELETE </a>
+<td> <a href="update/{{ team_id }}" style="text-decoration:none;" class="btn btn-danger btn-sm" role="button"> <span class="glyphicon glyphicon-wrench"></span> UPDATE </a>
+	 <a href="delete/{{ team_id }}" style="text-decoration:none;" class="btn btn-danger btn-sm" role="button"> <span class="glyphicon glyphicon-remove"></span> DELETE </a>
 </td>
 </tr>
 {% endfor %}
