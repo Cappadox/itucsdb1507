@@ -29,7 +29,7 @@ Table is created by following sql code::
 *Selection*
 ^^^^^^^^^^^
 
-If "//players" route is loaded by GET method, players are going to be selected and will be printed to players.html::
+If "/players" route is loaded by GET method, players are going to be selected and will be printed to players.html::
 
    @app.route('/players', methods=['GET', 'POST'])
    def players():
@@ -74,7 +74,7 @@ After the form is filled and submitted in page, form action directs to the follo
            app.players.add_player(name, birthday, position)
        return redirect(url_for('players'))
 
-If "//players" route is loaded by POST method, which is the player addition form's method, player will be added and route will redirect to itself again.
+If "/players" route is loaded by POST method, which is the player addition form's method, player will be added and route will redirect to itself again.
 If route is loaded by GET method, players.html page will be opened up.
 
 Insertion operation is done by the following function which is in players.py::
@@ -89,7 +89,7 @@ Insertion operation is done by the following function which is in players.py::
 *Update Operation*
 ^^^^^^^^^^^^^^^^^^
 
-In update operation, route is defined uniquely for the corresponding tuple's player_id.::
+In update operation, route is defined uniquely for the corresponding tuple's player_id::
 
    @app.route('/players/update/<player_id>', methods=['GET', 'POST'])
    def update_players(player_id):
