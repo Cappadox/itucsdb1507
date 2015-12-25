@@ -71,7 +71,7 @@ After the form is filled and submitted in page, form action directs to the follo
    @app.route('/players', methods=['GET', 'POST'])
    def players():
        if request.method == 'GET':
-           return render_template('players.html', players = app.players.select_players())
+           return render_template('players.html', players=app.players.select_players())
        else:
            name = request.form['name']
            birthday = request.form['birthday']
@@ -87,7 +87,8 @@ Insertion operation is done by the following function which is in players.py::
    def add_player(self, name, birthday, position):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
-                query = """ INSERT INTO PLAYERS (NAME, BIRTHDAY, POSITION) VALUES (%s, %s, %s) """
+                query = """ INSERT INTO PLAYERS (NAME, BIRTHDAY, POSITION)
+                        VALUES (%s, %s, %s) """
                 cursor.execute(query, (name, birthday, position))
                 connection.commit()
 
@@ -99,7 +100,8 @@ In update operation, route is defined uniquely for the corresponding tuple's pla
    @app.route('/players/update/<player_id>', methods=['GET', 'POST'])
    def update_players(player_id):
        if request.method == 'GET':
-           return render_template('players_edit.html', player = app.players.get_player(player_id))
+           return render_template('players_edit.html',
+           player = app.players.get_player(player_id))
        else:
            name = request.form['name']
            birthday = request.form['birthday']
@@ -164,7 +166,8 @@ A route is defined in order to search players by player name. Search form is in 
         return redirect(url_for('players_search.html'))
     else:
         searchname = request.form['nametosearch']
-        return render_template('players_search.html', players = app.players.search_player(searchname))
+        return render_template('players_search.html',
+        players = app.players.search_player(searchname))
 
 Since the form has POST method, after the submission, search name will be requested from form. After searching, results will be listed in players_search.html.
 
@@ -173,7 +176,8 @@ Searching is done by the following function in players.py::
    def search_player(self, name):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
-                query = """ SELECT * FROM PLAYERS WHERE NAME LIKE %s ORDER BY PLAYER_ID """
+                query = """ SELECT * FROM PLAYERS WHERE NAME LIKE %s
+                        ORDER BY PLAYER_ID """
                 cursor.execute(query, ['%'+name+'%'])
                 players = cursor.fetchall()
                 return players
@@ -273,7 +277,8 @@ In update operation, route is defined uniquely for the corresponding tuple's tea
    @app.route('/teams/update/<team_id>', methods=['GET', 'POST'])
    def update_teams(team_id):
     if request.method == 'GET':
-        return render_template('teams_edit.html', team = app.teams.get_team(team_id), leagues = app.leagues.get_leagues())
+        return render_template('teams_edit.html', team = app.teams.get_team(team_id),
+        leagues = app.leagues.get_leagues())
     else:
         name = request.form['name']
         league_id = request.form['league_id']
@@ -337,7 +342,8 @@ A route is defined in order to search teams by team name. Search form is in team
         return redirect(url_for('teams_search.html'))
     else:
         searchname = request.form['nametosearch']
-        return render_template('teams_search.html', teams = app.teams.search_team(searchname))
+        return render_template('teams_search.html',
+        teams = app.teams.search_team(searchname))
 
 
 Since the form has POST method, after the submission, search name will be requested from form. After searching, results will be listed in teams_search.html.
@@ -389,7 +395,8 @@ If "/squads" route is loaded by GET method, squads are going to be selected and 
    @app.route('/squads', methods=['GET', 'POST'])
    def squads():
     if request.method == 'GET':
-        return render_template('squads.html', teams = app.squads.get_teams(), squads = app.squads.show_squads())
+        return render_template('squads.html', teams = app.squads.get_teams(),
+        squads = app.squads.show_squads())
     else:
         team_id = request.form['team_id']
         player_id = request.form['player_id']
@@ -422,7 +429,8 @@ A route is defined in order to use Squad Adding html page. Teams and Players are
 
    @app.route('/squads/add', methods=['GET', 'POST'])
    def add_squads():
-    return render_template('squads_add.html', teams = app.teams.select_teams(), players = app.squads.get_players())
+    return render_template('squads_add.html', teams = app.teams.select_teams(),
+    players = app.squads.get_players())
 
 
 After the form is filled and submitted in page, form action directs to the following route::
@@ -430,7 +438,8 @@ After the form is filled and submitted in page, form action directs to the follo
    @app.route('/squads', methods=['GET', 'POST'])
    def squads():
     if request.method == 'GET':
-        return render_template('squads.html', teams = app.squads.get_teams(), squads = app.squads.show_squads())
+        return render_template('squads.html', teams = app.squads.get_teams(),
+        squads = app.squads.show_squads())
     else:
         team_id = request.form['team_id']
         player_id = request.form['player_id']
@@ -447,7 +456,8 @@ Insertion operation is done by the following function which is in squads.py::
    def add_squad(self, team_id, player_id, kit_no):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
-                query = """ INSERT INTO SQUADS (TEAM_ID, PLAYER_ID, KIT_NO) VALUES (%s, %s, %s) """
+                query = """ INSERT INTO SQUADS (TEAM_ID, PLAYER_ID, KIT_NO)
+                        VALUES (%s, %s, %s) """
                 cursor.execute(query, (team_id, player_id, kit_no))
                 connection.commit()
 
@@ -459,7 +469,8 @@ In update operation, route is defined uniquely for the corresponding tuple's squ
    @app.route('/squads/update/<squad_id>', methods=['GET', 'POST'])
    def update_squads(squad_id):
        if request.method == 'GET':
-           return render_template('squads_edit.html', squad = app.squads.get_squad(squad_id), teams = app.teams.select_teams(), players = app.players.select_players())
+           return render_template('squads_edit.html', squad = app.squads.get_squad(squad_id),
+           teams = app.teams.select_teams(), players = app.players.select_players())
        else:
            team_id = request.form['team_id']
            player_id = request.form['player_id']
@@ -527,7 +538,8 @@ And squads can be filtered by selecting team name. Search form is in squads.html
         return redirect(url_for('squads_search.html'), teams = app.squads.get_teams())
     else:
         team_id = request.form['name']
-        return render_template('squads_search.html', teams = app.squads.get_teams(), squads = app.squads.search_squad(team_id))
+        return render_template('squads_search.html', teams = app.squads.get_teams(),
+        squads = app.squads.search_squad(team_id))
 
 Team names ae selected by the following function in squads.py. This function selects team names distinctly. To obtain team name corresponding to team_id, LEFT JOIN is used.::
 
