@@ -1,16 +1,20 @@
 User Guide
 ==========
 
-**explain how your application works from the user perspective, use
-screenshots whereever appropriate**
+Our application works as a main website for American Football. Here, users can find various information about the said sport.
+Users can add, view and edit all the data as they wish. The representation of the site map can be found below.
 
-**to add a picture, use the following example**::
+The site opens up to the welcome page, with the names of the contributors. From here, users can navigate to different pages via the navbar. The navigation bar is alphabetically ordered to ease the user experience.
 
-   .. figure:: picture.png
-      :scale: 50 %
-      :alt: map to buried treasure
+   .. figure:: images/homepage.png
+      :width: 100 %
+      :align: center
 
-      This is the caption of the figure (a simple paragraph).
+      *Figure: The welcome page*
+
+The site contains various information about American Football, and this user guide further explains the site as it helps the users navigate seamlessly.
+
+The user guides for the parts implemented by said team members can be found below.
 
 .. toctree::
    :maxdepth: 2
