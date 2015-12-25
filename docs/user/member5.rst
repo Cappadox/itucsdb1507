@@ -5,6 +5,7 @@ Basic operations of there entities which are Players, Teams and Squads can be pe
 
    .. figure:: images/member5/menus.png
       :scale: 100 %
+      *Navbars of Players, Teams and Squads*
 
 Players
 -------
@@ -19,6 +20,7 @@ Players can be added by selecting "Add Player" from dropdown menu.
       :scale: 100 %
 
       *Player addition can be completed by clicking Add Player button after filling and selecting required fields.*
+
 
 All required fields must be filled otherwise there will occur an error message.
 
@@ -35,7 +37,9 @@ Players can be listed by selecting "Show Player" from dropdown menu.
    .. figure:: images/member5/player_show.png
       :scale: 100 %
 
-Players can be deleted by clicking Delete button related with the corresponding row. Clicking Update button redirects user to player update page.^
+      *List of players*
+
+Players can be deleted by clicking Delete button related with the corresponding row. Clicking Update button redirects user to player update page.
 
 Updating
 ^^^^^^^^
@@ -43,7 +47,9 @@ Updating
    .. figure:: images/member5/player_update.png
       :scale: 100 %
 
-      *Player data is prefilled into update form. After making the desired changes, clicking Update button will update the player.*
+      *Player data is prefilled into update form.*
+
+After making the desired changes, clicking Update button will update the player.
 
 Searching
 ^^^^^^^^^
@@ -67,7 +73,7 @@ Teams can be added by selecting "Add Team" from dropdown menu.
    .. figure:: images/member5/team_add.png
       :scale: 100 %
 
-      *Team addition can be completed by clicking Add Team button after filling and selecting required fields.*^
+      *Team addition can be completed by clicking Add Team button after filling and selecting required fields.*
 
 All required fields must be filled otherwise there will occur an error message.
 
@@ -84,7 +90,11 @@ Teams can be listed by selecting "Show Teams" from dropdown menu.
    .. figure:: images/member5/team_show.png
       :scale: 100 %
 
+      *List of teams*
+
+
 Teams can be deleted by clicking Delete button related with the corresponding row. Clicking Update button redirects user to team update page.
+
 
 Updating
 ^^^^^^^^
@@ -92,7 +102,9 @@ Updating
    .. figure:: images/member5/team_update.png
       :scale: 100 %
 
-      *Team data is prefilled into update form. After making the desired changes, clicking Update button will update the team.*
+      *Team data is prefilled into update form.*
+
+After making the desired changes, clicking Update button will update the team.
 
 Searching
 ^^^^^^^^^
@@ -133,6 +145,9 @@ Squads can be listed by selecting "Show Squads" from dropdown menu.
    .. figure:: images/member5/squad_show.png
       :scale: 100 %
 
+      *List of squads*
+
+
 Squads can be deleted by clicking Delete button related with the corresponding row. Clicking Update button redirects user to squad update page.
 
 Updating
@@ -141,7 +156,9 @@ Updating
    .. figure:: images/member5/squad_update.png
       :scale: 100 %
 
-      *Squad data is prefilled into update form. After making the desired changes, clicking Update button will update the squad.*
+      *Squad data is prefilled into update form.*
+
+After making the desired changes, clicking Update button will update the squad.
 
 Searching
 ^^^^^^^^^
@@ -152,6 +169,7 @@ Users can filter squads by team name by selecting the team name from the search 
       :scale: 100 %
 
       *Squad filtering form*
+
 
 After filtering, squads related with selected team are listed.
 
