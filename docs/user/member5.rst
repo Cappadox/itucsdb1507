@@ -49,7 +49,7 @@ Updating
 
       *Player data is prefilled into update form.*
 
-After making the desired changes, clicking Update button will update the player.*
+After making the desired changes, clicking Update button will update the player.
 
 Searching
 ^^^^^^^^^
@@ -158,7 +158,7 @@ Updating
 
       *Squad data is prefilled into update form.*
 
-After making the desired changes, clicking Update button will update the squad.*
+After making the desired changes, clicking Update button will update the squad.
 
 Searching
 ^^^^^^^^^
