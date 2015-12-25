@@ -77,8 +77,10 @@ Python Part
          form_data={id: form['id']}
          return redirect(url_for('transfer_delete'), code=307 )
       elif request.form['submit'] == "Update":
-         return render_template('transfer_update.html', id = request.form['id'], teams=app.teams.select_teams(),
-                             season=app.seasons.select_seasons(),players=app.players.select_players())
+         return render_template('transfer_update.html', id = request.form['id'],
+                                 teams=app.teams.select_teams(),
+                                 season=app.seasons.select_seasons(),
+                                 players=app.players.select_players())
       else:
          return redirect(url_for('transfers'))
 
@@ -99,6 +101,22 @@ In our database countries table has following columns
    *This column holds the full name of the official and it can't be null*
 * *AGE* as **INT** and not null
    *This column holds the age of the official*
+
+As python/SQL code:
+
+.. code-block:: python
+
+    def initialize_tables(self):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS OFFICIALS (
+                        OFFICIAL_ID SERIAL  NOT NULL PRIMARY KEY,
+                        NAME varchar(100)  NOT NULL,
+                        AGE INT NOT NULL
+                    );""")
+
+                connection.commit()
 
 Since this is a core entity, it does not has a foreing key.
 
@@ -184,7 +202,7 @@ Simply it returns all officials in database without taking a parameter.
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
             query="""SELECT * FROM OFFICIALS
-                        ORDER BY OFFICIAL_ID ASC"""
+                     ORDER BY OFFICIAL_ID ASC"""
             cursor.execute(query)
             connection.commit()
 
@@ -237,6 +255,24 @@ Matches table consists of following columns:
 * *RESULT* as **varchar(30)** and not null
    *This column holds the result of the match and it cannot be null*
 
+As python/SQL code:
+
+.. code-block:: python
+
+    def initialize_tables(self):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS MATCHES (
+                        MATCH_ID SERIAL NOT NULL PRIMARY KEY,
+                        SEASON_ID int NOT NULL REFERENCES SEASONS(SEASON_ID),
+                        HOME_ID int NOT NULL REFERENCES TEAMS(TEAM_ID),
+                        VISITOR_ID int NOT NULL REFERENCES TEAMS(TEAM_ID),
+                        OFFICIAL_ID int REFERENCES OFFICIALS(OFFICIAL_ID),
+                        RESULT VARCHAR(30) NOT NULL
+                        );""")
+
+                connection.commit()
 *add_match* Method
 ^^^^^^^^^^^^^^^^^^
 This method takes a match object and performs *INSERT* operation onto database.
@@ -247,9 +283,11 @@ This method takes a match object and performs *INSERT* operation onto database.
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
                 cursor.execute("""
-                    INSERT INTO MATCHES (SEASON_ID, HOME_ID, VISITOR_ID, OFFICIAL_ID, RESULT)
+                    INSERT INTO MATCHES (SEASON_ID, HOME_ID,
+                    VISITOR_ID, OFFICIAL_ID, RESULT)
                     VALUES (%s, %s, %s, %s, %s) """,
-                    (match.season_id, match.home_id, match.away_id, match.official_id, match.result))
+                    (match.season_id, match.home_id, match.away_id,
+                     match.official_id, match.result))
                 connection.commit()
 
 *delete_match Method*
@@ -301,11 +339,11 @@ This method used to fetch all matches from the database. It does not take a para
             connection.commit()
 
             matches = [(key, Match(season_id, official_id, home_id, away_id, result,
-                                   season=self.app.seasons.get_season(season_id),
-                                   official_name=self.app.officials.get_official(official_id),
-                                   home_team=self.app.teams.get_team_name(home_id),
-                                   away_team=self.app.teams.get_team_name(away_id)))
-                        for key, season_id, home_id, away_id, official_id, result in cursor]
+                             season=self.app.seasons.get_season(season_id),
+                             official_name=self.app.officials.get_official(official_id),
+                             home_team=self.app.teams.get_team_name(home_id),
+                             away_team=self.app.teams.get_team_name(away_id)))
+                    for key, season_id, home_id, away_id, official_id, result in cursor]
 
             return matches
 
@@ -315,8 +353,6 @@ This method used to fetch all matches from the database. It does not take a para
 Transfer Implementation
 -----------------------
 Transfer is a small entity that used to store records of transfers.
-
-.. note:: We first planned to give a reference to transfer in *MATCHES* table but we could not able to implement time due to lack of time.
 
 Transfer Table
 ^^^^^^^^^^^^^^
@@ -335,6 +371,24 @@ Transfer table consists of following columns:
 * *FEE* as **varchar(30)** and not null
    *This column holds the fee of the transfer and it cannot be null*
 
+As python/SQL code:
+
+.. code-block:: python
+
+    def initialize_tables(self):
+        with dbapi2.connect(self.app.config['dsn']) as connection:
+                cursor = connection.cursor()
+                cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS TRANSFERS (
+                        TRANSFER_ID SERIAL NOT NULL PRIMARY KEY,
+                        SEASON_ID int NOT NULL REFERENCES SEASONS(SEASON_ID),
+                        OLD_ID int NOT NULL REFERENCES TEAMS(TEAM_ID),
+                        NEW_ID int NOT NULL REFERENCES TEAMS(TEAM_ID),
+                        PLAYER_ID int REFERENCES PLAYERS(PLAYER_ID),
+                        FEE VARCHAR(30) NOT NULL
+                        );""")
+
+                connection.commit()
 
 *add_transfer* Method
 ^^^^^^^^^^^^^^^^^^^^^
@@ -346,9 +400,11 @@ This method takes a transfer object and performs *INSERT* operation on *TRANSFER
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
                 cursor.execute("""
-                    INSERT INTO TRANSFERS (SEASON_ID, OLD_ID, NEW_ID, PLAYER_ID, FEE)
+                    INSERT INTO TRANSFERS (SEASON_ID, OLD_ID,
+                    NEW_ID, PLAYER_ID, FEE)
                     VALUES (%s, %s, %s, %s, %s) """,
-                    (transfer.season_id, transfer.old_id, transfer.new_id, transfer.player_id, transfer.fee))
+                    (transfer.season_id, transfer.old_id, transfer.new_id,
+                    transfer.player_id, transfer.fee))
                 connection.commit()
 
 *delete_transfer* Method
