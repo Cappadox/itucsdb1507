@@ -74,7 +74,7 @@ class Officials:
             cursor = connection.cursor()
             query="""SELECT * FROM OFFICIALS
                     WHERE NAME LIKE '%s' AND CAST(AGE as VARCHAR(30)) LIKE '%s'
-                    ORDER BY OFFICIAL_ID ASC""" % (('%'+name+'%','%'+id+'%'))
+                    ORDER BY OFFICIAL_ID ASC""" % (('%'+name+'%',id+'%'))
             cursor.execute(query)
             connection.commit()
             print(name)
