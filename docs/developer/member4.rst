@@ -44,7 +44,8 @@ This operation is done by INSERT INTO feature in SQL. The said code is shown bel
     def add_fixture(self, season_id, team_id, points):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
-                query = """ INSERT INTO FIXTURES (SEASON_ID, TEAM_ID, POINTS) VALUES (%s, %s, %s) """
+                query = """ INSERT INTO FIXTURES (SEASON_ID, TEAM_ID, POINTS) VALUES
+                  (%s, %s, %s) """
                 cursor.execute(query, (season_id, team_id, points))
                 connection.commit()
 
@@ -163,7 +164,8 @@ This operation is done by INSERT INTO feature in SQL. The said code is shown bel
     def add_statistic_player(self, season_id, player_id, tackles, penalties):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
-                query = """ INSERT INTO STATISTICSP (SEASON_ID, PLAYER_ID, tackles, penalties) VALUES (%s, %s, %s, %s) """
+                query = """ INSERT INTO STATISTICSP (SEASON_ID, PLAYER_ID, tackles,
+                  penalties) VALUES (%s, %s, %s, %s) """
                 cursor.execute(query, (season_id, player_id, tackles, penalties))
                 connection.commit()
 
@@ -192,7 +194,8 @@ This method takes the Statistic_ID of a query and updates the said entry by simp
 
 .. code-block:: python
 
-    def update_statistic_player(self, statistic_id, season_id, player_id, tackles, penalties):
+    def update_statistic_player(self, statistic_id, season_id, player_id, tackles,
+      penalties):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
                 query = """ UPDATE STATISTICSP
@@ -201,7 +204,8 @@ This method takes the Statistic_ID of a query and updates the said entry by simp
                         TACKLES = %s,
                         PENALTIES = %s
                         WHERE STATISTIC_ID = %s"""
-                cursor.execute(query, (season_id, player_id, tackles, penalties, statistic_id))
+                cursor.execute(query, (season_id, player_id, tackles, penalties,
+                  statistic_id))
                 connection.commit()
 
 *search_statistic_player* Method
@@ -252,7 +256,7 @@ This method simply returns all the player statistics in the database. It uses LE
 Team Statistics Table
 ---------------------
 
-Team Statistics table was implemented to hold the various statistics data of the teams in the database. It has *Statistic_ID* as a **primary key**, and *Season_ID* and *Team_ID* as a **foreign key**. It also has *tackles* and *penalties* data as local data.
+Team Statistics table was implemented to hold the various statistics data of the teams in the database. It has *Statistic_ID* as a **primary key**, and *Season_ID* and *Team_ID* as a **foreign key**. It also has *touchdowns* and *rushing yards* data as local data.
 The following code initializes the Team Statistics table.
 
 .. code-block:: python
@@ -283,7 +287,8 @@ This operation is done by INSERT INTO feature in SQL. The said code is shown bel
     def add_statistic_team(self, season_id, team_id, touchdowns, rushingYards):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
-                query = """ INSERT INTO STATISTICST (SEASON_ID, TEAM_ID, touchdowns, rushingYards) VALUES (%s, %s, %s, %s) """
+                query = """ INSERT INTO STATISTICST (SEASON_ID, TEAM_ID, touchdowns,
+                  rushingYards) VALUES (%s, %s, %s, %s) """
                 cursor.execute(query, (season_id, team_id, touchdowns, rushingYards))
                 connection.commit()
 
@@ -312,7 +317,8 @@ This method takes the Statistic_ID of a query and updates the said entry by simp
 
 .. code-block:: python
 
-    def update_statistic_team(self, statistic_id, season_id, team_id, touchdowns, rushingYards):
+    def update_statistic_team(self, statistic_id, season_id, team_id, touchdowns,
+      rushingYards):
         with dbapi2.connect(self.app.config['dsn']) as connection:
                 cursor = connection.cursor()
                 query = """ UPDATE STATISTICST
@@ -321,7 +327,8 @@ This method takes the Statistic_ID of a query and updates the said entry by simp
                         TOUCHDOWNS = %s,
                         RUSHINGYARDS = %s
                         WHERE STATISTIC_ID = %s"""
-                cursor.execute(query, (season_id, team_id, touchdowns, rushingYards, statistic_id))
+                cursor.execute(query, (season_id, team_id, touchdowns, rushingYards,
+                  statistic_id))
                 connection.commit()
 
 *search_statistic_team* Method
@@ -336,7 +343,8 @@ It uses JOIN feature of SQL to display the proper results.
     def search_statistic_team(self, id):
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
-            query="""SELECT STATISTIC_ID, SEASONS.YEAR, TEAMS.NAME, TOUCHDOWNS, RUSHINGYARDS
+            query="""SELECT STATISTIC_ID, SEASONS.YEAR, TEAMS.NAME, TOUCHDOWNS,
+               RUSHINGYARDS
                     FROM STATISTICST
                     INNER JOIN SEASONS ON SEASONS.SEASON_ID=STATISTICST.SEASON_ID
                     INNER JOIN TEAMS ON TEAMS.TEAM_ID=STATISTICST.TEAM_ID
@@ -357,7 +365,8 @@ This method simply returns all the team statistics in the database. It uses LEFT
     def get_statistics_team(self):
         with dbapi2.connect(self.app.config['dsn']) as connection:
             cursor = connection.cursor()
-            query="""SELECT S.STATISTIC_ID, SS.YEAR, T.NAME, S.TOUCHDOWNS, S.RUSHINGYARDS
+            query="""SELECT S.STATISTIC_ID, SS.YEAR, T.NAME, S.TOUCHDOWNS,
+               S.RUSHINGYARDS
                         FROM STATISTICST S
                         LEFT JOIN SEASONS SS ON (S.SEASON_ID = SS.SEASON_ID)
                         LEFT JOIN TEAMS T ON (S.TEAM_ID = T.TEAM_ID)
