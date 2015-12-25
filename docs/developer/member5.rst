@@ -39,7 +39,7 @@ If "/players" route is loaded by GET method, players are going to be selected an
    @app.route('/players', methods=['GET', 'POST'])
    def players():
        if request.method == 'GET':
-           return render_template('players.html', players = app.players.select_players())
+           return render_template('players.html', players=app.players.select_players())
        else:
            name = request.form['name']
            birthday = request.form['birthday']
@@ -469,7 +469,7 @@ In update operation, route is defined uniquely for the corresponding tuple's squ
    @app.route('/squads/update/<squad_id>', methods=['GET', 'POST'])
    def update_squads(squad_id):
        if request.method == 'GET':
-           return render_template('squads_edit.html', squad = app.squads.get_squad(squad_id),
+           return render_template('squads_edit.html',squad=app.squads.get_squad(squad_id),
            teams = app.teams.select_teams(), players = app.players.select_players())
        else:
            team_id = request.form['team_id']
